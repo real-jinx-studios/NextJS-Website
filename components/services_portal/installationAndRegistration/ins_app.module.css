@@ -1,0 +1,132 @@
+.description{
+    margin-bottom:3em;
+}
+.description h3{
+    font-size: 1.1rem;
+    color:var(--clr-neutral-800);
+}
+.downloader_wrapper{
+    display:flex;
+}
+.downloader{
+    flex:0 0 42%;
+}
+.downloader_info{
+flex:0 0 58%;
+}
+.downloader_info p{
+    font-size:0.71rem;
+    color: var(--clr-neutral-800);
+
+}
+.downloader_title{
+display:flex;
+    line-height: 1;
+}
+.downloader_title p{
+    font-size:0.95rem;
+    margin:0;
+    margin-left:1em;
+    color: var(--clr-neutral-800);
+}
+.downloader_button{
+    margin-top:2em;
+display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+}
+
+/*recent versions*/
+.recent_versions, .old_versions{
+    padding-top:1em;
+    padding-bottom:1em;
+    display:grid;
+    grid-gap:2em;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.file_wrapper{
+    display: flex;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    z-index:1;
+
+
+
+}
+.file_wrapper::before{
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: var(--clr-neutral-50);
+    content: "\f019";
+    /*    content:'DOWNLOAD';*/
+    text-align: center;
+    font-size:2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top:0;
+    left:0;
+    right:100%;
+    bottom:0;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    background-color: var(--clr-neutral-500);
+}
+
+.file_wrapper:hover::before{
+    right:84%;
+    background-color: var(--clr-primary);
+}
+.file_wrapper.green:hover::before{
+    right:84%;
+    background-color: #3b8a21;
+}
+.file_wrapper.blue:hover::before{
+    right:84%;
+    background-color: var(--clr-primary);
+}
+.file_wrapper.red:hover::before{
+    right:84%;
+    background-color: #ea2222;
+}
+.file_wrapper.gray:hover::before{
+    right:84%;
+    background-color: var(--clr-neutral-500);
+}
+.file_wrapper p{
+font-size:0.92rem;
+    color:var(--clr-neutral-800);
+
+}
+.file_wrapper svg{
+    width:2.7em;
+    height:2.7em;
+
+}
+.old_versions_wrapper{    text-align: center;
+
+    border-top:1px solid var(--clr-neutral-500);
+    border-bottom:1px solid var(--clr-neutral-500);
+    padding:2em;
+    margin-bottom:1em;
+}
+.disclaimer{
+    font-size: 0.89rem;
+    text-align: center;
+    margin-bottom:2em;
+    color: var(--clr-neutral-800);
+}
+.version_footer{
+text-align:center;
+}
+.version_footer p{
+    font-size: 0.89rem;
+    color: var(--clr-neutral-500);
+}
+.version_footer p > a{
+    cursor:pointer;
+    color: var(--clr-primary);
+}

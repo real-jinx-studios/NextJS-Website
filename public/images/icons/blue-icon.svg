@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
+  <g id="Icon" transform="translate(-392 -1823)">
+    <rect id="base" width="15" height="15" transform="translate(392 1823)" fill="#4dc4ef"/>
+    <g id="_" data-name="+" transform="translate(-28 -162)">
+      <line id="Line_2" data-name="Line 2" y2="8" transform="translate(427.5 1988.5)" fill="none" stroke="#042442" stroke-width="1"/>
+      <line id="Line_3" data-name="Line 3" x2="8" transform="translate(423.5 1992.5)" fill="none" stroke="#042442" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

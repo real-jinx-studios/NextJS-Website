@@ -1,0 +1,117 @@
+.section{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section form{
+    position: relative;
+    max-width: 65%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color:var(--clr-neutral-50);
+    border-radius: 20px;
+    padding: 5em 8em;
+    overflow: hidden;
+    transition: 0.3s;
+}
+.section form::before{
+    user-select: none;
+    pointer-events: none;
+    content: "";
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right:0;
+    background: #ffffff00 url("/images/parrot-img.svg") no-repeat -20% 29%;
+}
+.section form *{z-index: 1}
+.submit_button{
+    margin-top: 20px;
+    width:298px;
+    height:39px;
+    cursor: pointer;
+}
+.section form p, .section form a{
+    color:var(--clr-neutral-900) !important;
+    margin-top: 20px;
+
+}
+.section form a{
+    text-decoration: underline;
+    margin-top:0;
+}
+
+
+.error{
+    background-color:#D92B3A88;
+    color:var(--clr-neutral-50);
+    border:1px solid #D92B3A;
+    border-radius: 15px;
+    line-height: 0;
+    margin-top: -2em;
+    margin-bottom: 15px;
+    transition: 0.15s;
+    width:298px;
+    padding-top:1.5em;
+    padding-bottom:1.5em;
+    text-align: center;
+}
+.register_wrapper{
+    display:grid;
+    gap:1.5em;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    margin-bottom:1.3em;
+}
+
+@media only screen and (max-width: 1491px) {
+    .register_wrapper{
+        display:grid;
+        gap:1.5em;
+        grid-template-columns: 1fr 1fr ;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+}
+@media only screen and (max-width: 1027px) {
+    .section form{
+      margin-top: 200px;
+    }
+    .register_wrapper{
+        display:grid;
+        gap:1.5em;
+        grid-template-columns: 1fr ;
+    }
+}@media only screen and (max-width: 529px) {
+    .section form{
+        position: relative;
+        max-width: 95%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color:var(--clr-neutral-50);
+        border-radius: 20px;
+
+        overflow: hidden;
+        transition: 0.3s;
+    }
+}@media only screen and (max-width: 327px) {
+    .section form{
+        position: relative;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color:var(--clr-neutral-50);
+        border-radius: 20px;
+
+        transition: 0.3s;
+    }
+}

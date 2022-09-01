@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="51" height="27" viewBox="0 0 51 27">
+  <g id="hamburger_menu" data-name="hamburger menu" transform="translate(1.5 1)">
+    <path id="hr_line_3" data-name="hr line 3" d="M0,.5H48" transform="translate(0 24)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"/>
+    <path id="hr_line_2" data-name="hr line 2" d="M0,.5H48" transform="translate(0 12)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"/>
+    <path id="hr_line" data-name="hr line" d="M0,.5H48" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"/>
+  </g>
+</svg>

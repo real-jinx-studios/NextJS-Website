@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <g id="Group_149" data-name="Group 149" transform="translate(-1602 -30)">
+    <g id="Search" transform="translate(278 5)">
+      <g id="Search-2" data-name="Search" transform="translate(926 -5.5)">
+        <g id="ic_search_" data-name="ic_search " transform="translate(398 30.5)" opacity="0.8">
+          <rect id="square" width="30" height="30" transform="translate(0)" fill="none"/>
+          <path id="path" d="M51.186,65.471H50.111l-.4-.4a8.4,8.4,0,0,0,2.149-5.64,8.729,8.729,0,1,0-8.729,8.729,8.4,8.4,0,0,0,5.64-2.149l.4.4v1.074L55.886,74.2,57.9,72.186Zm-8.057,0a6.043,6.043,0,1,1,6.043-6.043A6.018,6.018,0,0,1,43.129,65.471Z" transform="translate(-31.4 -47.7)" fill="#03284b"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

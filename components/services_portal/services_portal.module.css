@@ -1,0 +1,238 @@
+.section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  top: calc(var(--offset-top) + 2.2em);
+  margin-top: 1em;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff00 url("/images/parrot-img.svg") no-repeat 50% 50%;
+
+  background-size: 100% 100%;
+}
+.section h2::selection {
+  background-color: var(--clr-neutral-50) !important;
+  color: var(--clr-neutral-800) !important;
+}
+
+.services_wrapper {
+  position: relative;
+  padding: 3.2em 2em;
+  width: 1170px;
+  display: flex;
+  gap: 2em;
+  border-radius: var(--border-radius);
+  background: var(--clr-neutral-50);
+}
+.services_nav_wrapper {
+  position: relative;
+  width: 25%;
+}
+.services_nav_wrapper::after {
+  content: "";
+  position: absolute;
+  right: -0.11em;
+  top: 0;
+  bottom: 0;
+  width: 0.11em;
+  background: var(--clr-neutral-500);
+}
+.nav_item,
+.nav_item_active {
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 1.96em;
+}
+.nav_item_icon {
+  position: absolute;
+  left: -0.9em;
+  top: 50%;
+  width: 1.5em;
+  height: 1.5em;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+.nav_item_active .nav_item_icon {
+  transform: translateY(-85%);
+}
+
+.whatever h3 {
+  color: var(--clr-neutral-800);
+}
+.nav_item_inner {
+  font-size: 1rem;
+  position: relative;
+  padding: 0.5em 1em;
+
+  color: var(--clr-neutral-500);
+}
+.nav_item_inner::before {
+  content: "";
+  position: absolute;
+  background: var(--clr-neutral-500);
+  height: 0.13em;
+  width: 100%;
+  bottom: 0;
+  left: 1em;
+  transform-origin: left;
+  transform: scaleX(0.11);
+  transition: all 0.3s ease;
+}
+.nav_item:hover .nav_item_inner {
+  color: var(--clr-neutral-800);
+}
+.nav_item:hover .nav_item_inner::before {
+  transform: scaleX(0.89);
+  background: var(--clr-neutral-800);
+}
+.nav_item_active .nav_item_inner {
+  color: var(--clr-neutral-800);
+}
+.nav_item_active .nav_item_inner::before {
+  content: "";
+  position: absolute;
+  background: var(--clr-neutral-800);
+  height: 0.13em;
+  width: 100%;
+  bottom: 0;
+  left: 1em;
+  transform-origin: left;
+  transform: scaleX(0.89);
+  transition: all 0.3s ease;
+}
+.content_wrapper {
+  padding: 0 0.3em;
+  margin: 0 auto;
+  width: 75%;
+  overflow-y: auto;
+}
+
+/*individual section css*/
+.content {
+}
+.title_wrapper {
+}
+.title_wrapper h2 {
+  color: var(--clr-neutral-800);
+}
+.content_inner {
+}
+/*.billing_form{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap:1.3em;
+}*/
+.billing_form {
+  position: relative;
+  /*  display:grid;*/
+  margin-bottom: 5em;
+  /* grid-gap:1.3em;
+
+    grid-template-columns: 1fr 1fr;*/
+}
+.updating_form > *:not(:nth-child(1)) {
+  opacity: 0.5;
+  user-select: none;
+  pointer-events: none;
+}
+.loading_overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  pointer-events: none;
+}
+.submit_buttons {
+  grid-column-start: -3;
+  grid-column-end: -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.submit_buttons button {
+  margin-top: 1em;
+}
+.submit_buttons h3 {
+  color: var(--clr-warn);
+}
+
+/*Installation and registration*/
+.content_inner_reg_ins_nav {
+  /*width:80%;*/
+}
+.content_inner_reg_ins_nav ul {
+  margin-bottom: 3.9em;
+  display: flex;
+  justify-content: space-around;
+}
+.tab,
+.active_tab {
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 1.96em;
+  padding: 0.3em 0.6em;
+  font-size: 1.13rem;
+  color: var(--clr-neutral-500);
+}
+.tab::before {
+  content: "";
+  position: absolute;
+  background: var(--clr-neutral-500);
+  height: 0.13em;
+  width: 100%;
+  bottom: 0;
+  left: 0.6em;
+  transform-origin: left;
+  transform: scaleX(0.11);
+  transition: all 0.3s ease;
+}
+.tab:hover {
+  color: var(--clr-neutral-800);
+}
+.tab:hover::before {
+  transform: scaleX(0.89);
+  background: var(--clr-neutral-800);
+}
+.active_tab {
+  color: var(--clr-neutral-800);
+}
+.active_tab::before {
+  content: "";
+  position: absolute;
+  background: var(--clr-neutral-800);
+  height: 0.13em;
+  width: 100%;
+  bottom: 0;
+  left: 0.6em;
+  transform-origin: left;
+  transform: scaleX(0.89);
+  transition: all 0.3s ease;
+}
+
+.content_inner_reg_ins_inner_content {
+}
+
+/*edit account*/
+.change_password_section,
+.email_username_section {
+  display: flex;
+  gap: 1.1em;
+  flex-direction: column;
+  margin-bottom: 2.5em;
+}
+.change_password_section h3 {
+  color: var(--clr-neutral-800);
+}
+.content_inner_edit_account {
+  width: 100%;
+}

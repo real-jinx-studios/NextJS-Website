@@ -1,0 +1,299 @@
+.title_wrapper h2{
+    color:var(--clr-neutral-800);
+}
+.content_inner_custom_payment{
+    display:flex;
+    overflow: hidden;
+    justify-content: space-between;
+}
+.custom_payment_form{
+    max-width:50%;
+
+}
+.custom_payment_token_wrapper{
+    opacity:0;
+    user-select: none;
+    pointer-events: none;
+    transform: translateX(50%);
+    transition: all 0.3s ease;
+}
+.custom_payment_token_wrapper.visible{
+    max-width:50%;
+    opacity:1;
+    user-select: initial;
+    pointer-events: initial;
+    transform: translateX(0);
+}
+.token_field{
+    display:flex;
+
+}
+.token_price_table{
+    width:100%;
+    border-collapse: collapse;
+}
+.token_price_table > thead > tr th{
+    border-bottom: 1px solid var(--clr-neutral-550);
+    margin-bottom: 0.5em;
+    color: var(--clr-neutral-800);
+}.token_price_table > tbody > tr{
+     transition: all 0.3s ease;
+ }
+.token_price_table th{
+    padding: 0.5em 0.8em;
+}
+.token_price_table td{
+    padding: 0.3em 0.8em;
+}
+.active_tier{
+    background-color: var(--clr-neutral-800);
+    color: var(--clr-neutral-50);
+}
+
+/*custom checkout*/
+.content_inner_custom_checkout{
+    position:relative;
+    display:flex;
+    overflow: hidden;
+    flex-direction: column;
+}
+.cancel_custom_checkout_wrapper{
+}
+.cancel_custom_checkout{
+    width:max-content;
+    padding:0.3em 0.3em;
+    cursor:pointer;
+    display:flex;
+    margin-bottom:1em;
+    border-radius:9px;
+    border:1px solid #ea2222;
+    margin-left:auto;
+    transition: all 0.198s cubic-bezier(0.48, 0, 0.12, 1);
+
+}
+.cancel_icon{
+    width:1.8rem;
+    height:1.8rem;
+    stroke:#ea2222;
+    transition: all 0.198s cubic-bezier(0.48, 0, 0.12, 1);
+}
+.cancel_text{
+    color:#ea2222;
+    font-size:1.1rem;
+    line-height:1.8rem;
+    margin-left:0.25em;
+    margin-right:0.25em;
+    transition: all 0.198s cubic-bezier(0.48, 0, 0.12, 1);
+
+}
+.cancel_custom_checkout:hover{
+    display:flex;
+    margin-bottom:1em;
+    background-color:#ea2222;
+
+}
+.cancel_custom_checkout:hover .cancel_icon, .cancel_custom_checkout:hover .cancel_text{
+    stroke:var(--clr-neutral-50);
+    color:var(--clr-neutral-50);
+}
+.fixed{
+    border-bottom:2px solid var(--clr-neutral-500);
+    display: flex;
+    justify-content:space-between;
+}
+.type{
+
+}
+/*same styles as the custom radio input element*/
+.type_wrapper{
+    display: flex;
+    align-items: center;
+
+    border-radius: 100px;
+    padding: 0.5em 0.8em;
+    margin-bottom:0.5em;
+
+    transition: .3s;
+    background: #288EE233;
+}
+.type_decoration{
+    width: 18px;
+    height: 18px;
+    border-radius: 100px;
+
+    background: var(--clr-primary);
+    position: relative;
+}.type_decoration::before {
+     content: '';
+
+     display: inline-block;
+     width: inherit;
+     height: inherit;
+     border-radius: inherit;
+
+     background: var(--clr-primary);
+     transform: scale(1.1);
+     opacity: 1;
+     transition: .3s ease;
+ }
+
+.type_text{
+    color: var(--clr-primary);
+    margin-left: 0.92em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 900;
+    transition: .3s;
+}
+.total_wrapper{
+    display: flex;
+    align-items: center;
+    border-radius: 100px;
+    padding: 0.5em 0.8em;
+    padding-top:0;
+    padding-left:0;
+    margin-bottom:0.5em;
+    transition: .3s;
+    /*border:2px solid #288EE233;*/
+}
+.total_total{
+    color: var(--clr-primary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 900;
+    transition: .3s;
+}
+.total_title, .type_title{
+    margin-bottom:1.1rem;
+}
+.total_cost{
+    margin-bottom:0.3em;
+    line-height:1;
+    font-size: 1.5rem;
+
+    color:var(--clr-primary);
+}
+.total_cost_per_token{
+    font-size: 0.8rem;
+    color: var(--clr-neutral-750);
+}
+.custom_payment_form_wrapper{
+    padding-top:3em;
+    height:600px;
+    overflow-y: auto;
+}
+.custom_checkout_form{
+    margin-bottom:5em;
+}
+.custom_checkout_form_fields{
+    margin-bottom:3em;
+    display:grid;
+    grid-gap:1.3em;
+    grid-template-columns: 1fr;
+}
+@media (min-width: 432px) {
+    .custom_checkout_form_fields {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+.custom_payment_section_title{
+    color:var(--clr-neutral-800);
+
+    text-decoration:underline;
+}
+
+/*paypal mockup*/
+.paypal_button_container_inner {
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+    gap:0.68em;
+}
+.paypal_button_container{
+
+}
+
+.paypal_button, .card_payment{
+    position:relative;
+    cursor:pointer;
+    height:49px;
+    width:80%;
+    border-radius:5px;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    border:2px solid #fefefe00;
+    transition: all 0.3s ease;
+    font-weight: bold;
+
+}
+.paypal_button{
+    background-color:var(--clr-neutral-150);
+}
+.paypal_button:hover{
+    border-color:var(--clr-neutral-800);
+    background-color:var(--clr-neutral-800);
+}
+.paypal_button:hover img {
+    filter:invert(1);
+}
+.card_payment{
+    color:var(--clr-neutral-800);
+    border-color:var(--clr-neutral-800);
+    background-color:var(--clr-neutral-50);
+
+}
+.card_payment:hover{
+    color:var(--clr-neutral-50);
+
+    background-color:var(--clr-neutral-800);
+}
+.card_payment::before{
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    opacity: 0;
+    color: var(--clr-neutral-50);
+    content: "\f582";
+    text-align: center;
+    font-size:2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top:150%;
+    left:0;
+    right:68%;
+    bottom:0;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+.card_payment:hover::before{
+    top:0;
+    opacity: 1;
+}
+.paypal_button::before{
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    opacity: 0;
+    color: var(--clr-neutral-50);
+    content: "\f556";
+    text-align: center;
+    font-size:2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top:150%;
+    left:0;
+    right:68%;
+    bottom:0;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+.paypal_button:hover::before{
+    top:0;
+    opacity: 1;
+}

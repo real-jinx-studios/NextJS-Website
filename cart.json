@@ -1,0 +1,479 @@
+{
+  "cart": [
+    {
+      "LegalName": "IVO_TEST Студент",
+      "ContactName": "Иво Ненов",
+      "VatID": "0987654321",
+      "Email": "ivo.nenov@eztitles.com",
+      "Billing": {
+        "Country": "Bulgaria",
+        "City": "Ruse",
+        "PostCode": "7000",
+        "Address": "24, Ivan Vazov Str."
+      },
+      "Shipping": {
+        "Country": "Bulgaria",
+        "City": "Sofia",
+        "PostCode": "1799",
+        "Address": "Младост 2, бл. 245",
+        "RecipientName": "Иво Ненов",
+        "RecipientPhone": "+359 2 123 456"
+      },
+      "workstationIdDetails": [],
+      "hardwareItems": [
+        {
+          "ProductId": 8,
+          "ProductIcon": "/images/icons/usb-icon_01.png",
+          "ProductVariation": "Hardware Key",
+          "ProductCode": "USB",
+          "ProductName": "USB",
+          "BaseProductPrice": 9500,
+          "BaseRentalPrice": null,
+          "BaseInstallment12first": null,
+          "BaseInstallment12regular": null,
+          "BaseInstallment24first": null,
+          "BaseInstallment24regular": null,
+          "BaseInstallment36first": null,
+          "BaseInstallment36regular": null,
+          "isActive": true,
+          "isHardwareKey": true,
+          "License": "Purchase",
+          "Duration": "Lifetime",
+          "Quantity": 1
+        }
+      ],
+      "items": [
+        {
+          "ProductId": 4,
+          "ProductIcon": "/images/icons/ezc_what_2.png",
+          "ProductVariation": "GUI",
+          "ProductCode": "EZC_G",
+          "ProductName": "EZConvert",
+          "BaseProductPrice": 78000,
+          "BaseRentalPrice": 8000,
+          "BaseInstallment12first": 20100,
+          "BaseInstallment12regular": 20000,
+          "BaseInstallment24first": 11700,
+          "BaseInstallment24regular": 11600,
+          "BaseInstallment36first": 8900,
+          "BaseInstallment36regular": 8800,
+          "isActive": true,
+          "isHardwareKey": true,
+          "License": "Purchase",
+          "Duration": "Installment",
+          "Quantity": 1
+        }
+      ],
+      "totalItems": 0,
+      "totalUniqueItems": 0,
+      "cartTotal": 0,
+      "installmentPlan": 36,
+      "isLoadingDefault": false,
+      "metadata": {
+        "currency": { "code": "EUR", "symbol": "€" },
+        "subtotal": {
+          "amount": 0,
+          "formatted": "0.00",
+          "formattedWithCurrencySymbol": "0.00€",
+          "formattedWithCode": "0.00EUR"
+        },
+        "total": {
+          "amount": 0,
+          "formatted": "0.00",
+          "formattedWithCurrencySymbol": "0.00€",
+          "formattedWithCode": "0.00EUR"
+        },
+        "vat": 20,
+        "countryCode": "BG",
+        "isVat": true,
+        "installment": true,
+        "numberOfInstallments": 1,
+        "numberOfRents": 0,
+        "numberOfLifetimes": 0,
+        "numberOfHardwares": 1,
+        "isVatCleared": false,
+        "isEmpty": false
+      },
+      "cartId": "w32525345t",
+      "products": [
+        {
+          "ProductId": 1,
+          "ProductIcon": "/images/icons/eztit_icon2.png",
+          "ProductVariation": "Essential",
+          "ProductCode": "EZT_E",
+          "ProductName": "EZTitles",
+          "BaseProductPrice": 172000,
+          "BaseRentalPrice": 8000,
+          "BaseInstallment12first": 43600,
+          "BaseInstallment12regular": 43500,
+          "BaseInstallment24first": 24300,
+          "BaseInstallment24regular": 23800,
+          "BaseInstallment36first": 17400,
+          "BaseInstallment36regular": 17300,
+          "isActive": true,
+          "isHardwareKey": false
+        },
+        {
+          "ProductId": 2,
+          "ProductIcon": "/images/icons/eztit_icon2.png",
+          "ProductVariation": "Standard",
+          "ProductCode": "EZT_S",
+          "ProductName": "EZTitles",
+          "BaseProductPrice": 194000,
+          "BaseRentalPrice": 9000,
+          "BaseInstallment12first": 49100,
+          "BaseInstallment12regular": 49000,
+          "BaseInstallment24first": 27300,
+          "BaseInstallment24regular": 26800,
+          "BaseInstallment36first": 20300,
+          "BaseInstallment36regular": 19400,
+          "isActive": true,
+          "isHardwareKey": false
+        },
+        {
+          "ProductId": 3,
+          "ProductIcon": "/images/icons/eztit_icon2.png",
+          "ProductVariation": "Ultimate",
+          "ProductCode": "EZT_U",
+          "ProductName": "EZTitles",
+          "BaseProductPrice": 238000,
+          "BaseRentalPrice": 10000,
+          "BaseInstallment12first": 60100,
+          "BaseInstallment12regular": 60000,
+          "BaseInstallment24first": 32700,
+          "BaseInstallment24regular": 32600,
+          "BaseInstallment36first": 24300,
+          "BaseInstallment36regular": 24300,
+          "isActive": true,
+          "isHardwareKey": false
+        },
+        {
+          "ProductId": 4,
+          "ProductIcon": "/images/icons/ezc_what_2.png",
+          "ProductVariation": "GUI",
+          "ProductCode": "EZC_G",
+          "ProductName": "EZConvert",
+          "BaseProductPrice": 78000,
+          "BaseRentalPrice": 8000,
+          "BaseInstallment12first": 20100,
+          "BaseInstallment12regular": 20000,
+          "BaseInstallment24first": 11700,
+          "BaseInstallment24regular": 11600,
+          "BaseInstallment36first": 8900,
+          "BaseInstallment36regular": 8800,
+          "isActive": true,
+          "isHardwareKey": true
+        },
+        {
+          "ProductId": 5,
+          "ProductIcon": "/images/icons/ezc_what_2.png",
+          "ProductVariation": "Professional",
+          "ProductCode": "EZC_P",
+          "ProductName": "EZConvert",
+          "BaseProductPrice": 680000,
+          "BaseRentalPrice": 48000,
+          "BaseInstallment12first": 60100,
+          "BaseInstallment12regular": 60000,
+          "BaseInstallment24first": 32700,
+          "BaseInstallment24regular": 32600,
+          "BaseInstallment36first": 24300,
+          "BaseInstallment36regular": 24300,
+          "isActive": true,
+          "isHardwareKey": false
+        },
+        {
+          "ProductId": 6,
+          "ProductIcon": "/images/icons/ep_icon3.png",
+          "ProductVariation": "for Cambria File Convert",
+          "ProductCode": "CS",
+          "ProductName": "EZTitles Plug-in",
+          "BaseProductPrice": 50000,
+          "BaseRentalPrice": 6000,
+          "BaseInstallment12first": null,
+          "BaseInstallment12regular": null,
+          "BaseInstallment24first": null,
+          "BaseInstallment24regular": null,
+          "BaseInstallment36first": null,
+          "BaseInstallment36regular": null,
+          "isActive": true,
+          "isHardwareKey": true
+        },
+        {
+          "ProductId": 7,
+          "ProductIcon": "/images/icons/ep_icon3.png",
+          "ProductVariation": "for ProMedia Carbon",
+          "ProductCode": "CC",
+          "ProductName": "EZTitles Plug-in",
+          "BaseProductPrice": 50000,
+          "BaseRentalPrice": 6000,
+          "BaseInstallment12first": null,
+          "BaseInstallment12regular": null,
+          "BaseInstallment24first": null,
+          "BaseInstallment24regular": null,
+          "BaseInstallment36first": null,
+          "BaseInstallment36regular": null,
+          "isActive": true,
+          "isHardwareKey": true
+        },
+        {
+          "ProductId": 8,
+          "ProductIcon": "/images/icons/usb-icon_01.png",
+          "ProductVariation": "Hardware Key",
+          "ProductCode": "USB",
+          "ProductName": "USB",
+          "BaseProductPrice": 9500,
+          "BaseRentalPrice": null,
+          "BaseInstallment12first": null,
+          "BaseInstallment12regular": null,
+          "BaseInstallment24first": null,
+          "BaseInstallment24regular": null,
+          "BaseInstallment36first": null,
+          "BaseInstallment36regular": null,
+          "isActive": true,
+          "isHardwareKey": true
+        }
+      ],
+      "productsNested": [
+        {
+          "ProductName": "EZTitles",
+          "ProductDescription": "Subtitling software",
+          "ProductVariations": [
+            {
+              "ProductId": 1,
+              "ProductIcon": "/images/icons/eztit_icon2.png",
+              "ProductVariation": "Essential",
+              "ProductCode": "EZT_E",
+              "ProductName": "EZTitles",
+              "BaseProductPrice": 172000,
+              "BaseRentalPrice": 8000,
+              "BaseInstallment12first": 43600,
+              "BaseInstallment12regular": 43500,
+              "BaseInstallment24first": 24300,
+              "BaseInstallment24regular": 23800,
+              "BaseInstallment36first": 17400,
+              "BaseInstallment36regular": 17300,
+              "isActive": true,
+              "isHardwareKey": false
+            },
+            {
+              "ProductId": 2,
+              "ProductIcon": "/images/icons/eztit_icon2.png",
+              "ProductVariation": "Standard",
+              "ProductCode": "EZT_S",
+              "ProductName": "EZTitles",
+              "BaseProductPrice": 194000,
+              "BaseRentalPrice": 9000,
+              "BaseInstallment12first": 49100,
+              "BaseInstallment12regular": 49000,
+              "BaseInstallment24first": 27300,
+              "BaseInstallment24regular": 26800,
+              "BaseInstallment36first": 20300,
+              "BaseInstallment36regular": 19400,
+              "isActive": true,
+              "isHardwareKey": false
+            },
+            {
+              "ProductId": 3,
+              "ProductIcon": "/images/icons/eztit_icon2.png",
+              "ProductVariation": "Ultimate",
+              "ProductCode": "EZT_U",
+              "ProductName": "EZTitles",
+              "BaseProductPrice": 238000,
+              "BaseRentalPrice": 10000,
+              "BaseInstallment12first": 60100,
+              "BaseInstallment12regular": 60000,
+              "BaseInstallment24first": 32700,
+              "BaseInstallment24regular": 32600,
+              "BaseInstallment36first": 24300,
+              "BaseInstallment36regular": 24300,
+              "isActive": true,
+              "isHardwareKey": false
+            }
+          ]
+        },
+        {
+          "ProductName": "EZConvert",
+          "ProductDescription": "Convertion software",
+          "ProductVariations": [
+            {
+              "ProductId": 4,
+              "ProductIcon": "/images/icons/ezc_what_2.png",
+              "ProductVariation": "GUI",
+              "ProductCode": "EZC_G",
+              "ProductName": "EZConvert",
+              "BaseProductPrice": 78000,
+              "BaseRentalPrice": 8000,
+              "BaseInstallment12first": 20100,
+              "BaseInstallment12regular": 20000,
+              "BaseInstallment24first": 11700,
+              "BaseInstallment24regular": 11600,
+              "BaseInstallment36first": 8900,
+              "BaseInstallment36regular": 8800,
+              "isActive": true,
+              "isHardwareKey": true
+            },
+            {
+              "ProductId": 5,
+              "ProductIcon": "/images/icons/ezc_what_2.png",
+              "ProductVariation": "Professional",
+              "ProductCode": "EZC_P",
+              "ProductName": "EZConvert",
+              "BaseProductPrice": 680000,
+              "BaseRentalPrice": 48000,
+              "BaseInstallment12first": 60100,
+              "BaseInstallment12regular": 60000,
+              "BaseInstallment24first": 32700,
+              "BaseInstallment24regular": 32600,
+              "BaseInstallment36first": 24300,
+              "BaseInstallment36regular": 24300,
+              "isActive": true,
+              "isHardwareKey": false
+            }
+          ]
+        },
+        {
+          "ProductName": "EZTitles Plug-in",
+          "ProductDescription": "Plug-ins for encoding",
+          "ProductVariations": [
+            {
+              "ProductId": 6,
+              "ProductIcon": "/images/icons/ep_icon3.png",
+              "ProductVariation": "for Cambria File Convert",
+              "ProductCode": "CS",
+              "ProductName": "EZTitles Plug-in",
+              "BaseProductPrice": 50000,
+              "BaseRentalPrice": 6000,
+              "BaseInstallment12first": null,
+              "BaseInstallment12regular": null,
+              "BaseInstallment24first": null,
+              "BaseInstallment24regular": null,
+              "BaseInstallment36first": null,
+              "BaseInstallment36regular": null,
+              "isActive": true,
+              "isHardwareKey": true
+            },
+            {
+              "ProductId": 7,
+              "ProductIcon": "/images/icons/ep_icon3.png",
+              "ProductVariation": "for ProMedia Carbon",
+              "ProductCode": "CC",
+              "ProductName": "EZTitles Plug-in",
+              "BaseProductPrice": 50000,
+              "BaseRentalPrice": 6000,
+              "BaseInstallment12first": null,
+              "BaseInstallment12regular": null,
+              "BaseInstallment24first": null,
+              "BaseInstallment24regular": null,
+              "BaseInstallment36first": null,
+              "BaseInstallment36regular": null,
+              "isActive": true,
+              "isHardwareKey": true
+            }
+          ]
+        }
+      ],
+      "billingDetails": {
+        "LegalName": "IVO_TEST Студент",
+        "Country": "Bulgaria",
+        "City": "Ruse",
+        "VAT_ID": "0987654321",
+        "Address": "24, Ivan Vazov Str.",
+        "PostCode": "7000"
+      }
+    },
+    {
+      "billingDetails": {
+        "LegalName": "Ivo",
+        "Country": "Bulgaria",
+        "VAT_ID": "0987654321",
+        "City": "Ruse",
+        "PostCode": "7000",
+        "Address": "24, Ivan Vazov Str."
+      },
+      "shippingDetails": {
+        "Country": "Bulgaria",
+        "City": "Sofia",
+        "PostCode": "1799",
+        "Address": "Младост 2, бл. 245",
+        "Recipient": "Иво Ненов",
+        "RecipientPhone": "+359 2 123 456"
+      },
+      "workstationIdDetails": [
+        {
+          "WorkstationID": "D4HO_S251NXAGA19877V",
+          "ProductCode": "EZT_S",
+          "ProductName": "EZTitles Standard",
+          "Period": 2
+        },
+        {
+          "WorkstationID": "D4HO_S251NXAGA19877V",
+          "ProductCode": "EZT_S",
+          "ProductName": "EZTitles Standard",
+          "Period": 2
+        },
+        {
+          "WorkstationID": "D4HO_S251NXAGA19877V",
+          "ProductCode": "EZT_S",
+          "ProductName": "EZTitles Standard",
+          "Period": 2
+        }
+      ],
+      "items": [
+        {
+          "ProductCode": "EZT_S",
+          "ProductName": "EZTitles Standard",
+          "Quantity": 3,
+          "UnitPrice": 1940,
+          "Amount": 1940,
+          "License": "Rent",
+          "Duration": 2
+        },
+        {
+          "ProductCode": "EZC_P",
+          "ProductName": "EZConvert Professional",
+          "Quantity": 2,
+          "UnitPrice": 1940,
+          "Amount": 1940,
+          "License": "Purchase",
+          "Duration": -1
+        },
+        {
+          "ProductCode": "CS",
+          "ProductName": "EZTitles Plug-in for Cambria File Convert",
+          "Quantity": 1,
+          "UnitPrice": 500,
+          "Amount": 500,
+          "License": "Purchase",
+          "Duration": -1
+        }
+      ],
+      "isEmpty": false,
+      "totalItems": 0,
+      "totalUniqueItems": 0,
+      "cartTotal": 0,
+      "metadata": {
+        "currency": { "code": "EUR", "symbol": "€" },
+        "subtotal": {
+          "amount": 0,
+          "formatted": "0.00",
+          "formattedWithCurrencySymbol": "0.00€",
+          "formattedWithCode": "0.00EUR"
+        },
+        "total": {
+          "amount": 0,
+          "formatted": "0.00",
+          "formattedWithCurrencySymbol": "0.00€",
+          "formattedWithCode": "0.00EUR"
+        },
+        "countryCode": "BG",
+        "vat": 0,
+        "isVat": true,
+        "isVatCleared": false,
+        "installment": false,
+        "rent": false,
+        "lifetime": false
+      },
+      "cartId": "zdlbkqivo"
+    }
+  ]
+}

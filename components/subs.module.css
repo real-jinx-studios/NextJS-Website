@@ -1,0 +1,119 @@
+.card_outer{
+margin-left: 2%;
+    margin-bottom: 200px;
+height: fit-content;
+    width: 298px;
+    background-color: #3D3D3Dee;
+    border-radius: 8px;
+    border:2px solid #35C9F2;
+    overflow: hidden;
+    transition: 0.3s;
+
+}
+/*.card_outer:hover{
+    border:2px solid #c7441f;
+    background-color: #c7441f;
+    background-color: #2e77bb;
+    cursor: pointer;
+
+}*/
+.card_inner{
+    height:100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+
+}
+.card_title{
+    color:#ffffff;
+    flex: 0 0 30%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 0px 18px;
+
+}
+.card_content{
+    color:#ffffff;
+    flex: 0 0 50%;
+
+}
+.card_bottom{
+    border-top:1px solid #35C9F2;
+    color:#ffffff;
+    flex: 0 0 20%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+
+
+}
+.price, .buy_button{
+    flex-grow: 1;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: right;
+
+}
+.buy_button{
+    transition: 0.3s;
+
+
+}
+.price h3{
+    padding-bottom: 0;
+    margin-bottom: 0;
+    margin-top: 6px;
+    margin-right: 2px;
+    font-weight: 200;
+    font-size: 29px;
+}
+.buy_button_actual{
+    background-color: #35C9F288;
+    border:1px solid #ffffff;
+    border-radius: 8px;
+    color:#ffffff;
+    width:fit-content;
+    padding: 0px 18px;
+
+    height: fit-content;
+    width: fit-content;
+    cursor: pointer;
+
+}
+.buy_button_actual:hover{
+    background-color: #35C9F2;
+
+}
+.card_content_description{
+    text-align: left;
+    color: #ffffff88;
+    padding:8px;
+}
+.card_content_formats{
+    cursor:pointer;
+    user-select: none;
+}
+.card_content_format_list{
+text-align: left;
+    height: auto;
+    background-color: #919191;
+    margin: 0px 12px;
+    margin-bottom: 0px;
+    border-radius: 16px;
+    padding: 3px 0;
+    margin-bottom: 8px;
+    transition: 0.3s;
+
+}
+.card_content_format_list ul{
+    transition: 0.3s;
+
+}
+.card_content_format_list li{
+    font-weight: 100;
+    font-size: 14px;
+    transition: 0.3s;
+
+}

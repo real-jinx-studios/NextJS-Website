@@ -1,0 +1,193 @@
+.section{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    top:calc(var(--offset-top) + 2.2em);
+    margin-top:1em;
+    position:relative;
+    overflow:hidden;
+    background: #ffffff00 url("/images/parrot-img.svg") no-repeat 50% 50%;
+
+    background-size:100% 100%;
+}
+.section_decal_1{
+    position:absolute;
+    background: #ffffff00 url("/images/background-decal.svg") no-repeat 33% 88%;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    opacity:0.5;
+    transform: rotate(125deg);
+
+}
+.section_decal_2{
+    position:absolute;
+    background: #ffffff00 url("/images/background-decal.svg") no-repeat 20% 59%;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    opacity:0.5;
+    transform: rotate(-90deg);
+
+}
+
+.form{
+    width:max-content;
+    border-radius: var(--border-radius);
+    padding: 2.3em 5em;
+    overflow: hidden;
+    transition: 0.3s;
+    position: relative;
+    background-color:var(--clr-neutral-50);
+}
+.form::before{
+    user-select: none;
+    pointer-events: none;
+    content: "";
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right:0;
+   /* background: #ffffff00 url("/images/parrot-img.svg") no-repeat -20% 29%;*/
+}
+.form_section_wrapper{
+    max-width:var(--input-filed-width);
+    position:relative;
+    margin:2em auto;
+}
+
+.form_section_title_wrapper h3{
+color:var(--clr-neutral-900);
+}
+.form_section_title_wrapper::before{
+    position:absolute;
+    content: attr(step-number);
+    text-align: center;
+    border:1px solid var(--clr-primary);
+    border-radius: 50%;
+    line-height:calc(2rem - 1px);
+    font-size:1rem;
+    top:0;
+    left:-2.5em;
+    width:2rem;
+    height:2rem;
+    transform:translateX(-50%);
+
+}
+.input_wrapper{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap:1.3em;
+}
+
+.input_wrapper *{z-index: 1}
+.submit_button{
+    width:298px;
+    height:39px;
+    cursor: pointer;
+}
+.submit_button_disabled{
+    cursor: not-allowed;
+    user-select: none;
+    border:none;
+    background-color:var(--clr-neutral-250)
+}
+.input_wrapper p, .input_wrapper a{
+    color:var(--clr-neutral-900) !important;
+
+}
+.input_wrapper a{
+    text-decoration: underline;
+}
+
+
+.error{
+    background-color:#D92B3A88;
+    color:var(--clr-neutral-50);
+    border:1px solid #D92B3A;
+    border-radius: 15px;
+    line-height: 0;
+    margin-top: -2em;
+    margin-bottom: 15px;
+    transition: 0.15s;
+    width:298px;
+    padding-top:1.5em;
+    padding-bottom:1.5em;
+    text-align: center;
+}
+.register_wrapper{
+    display:grid;
+    gap:1.5em;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    margin-bottom:1.3em;
+}
+
+@media only screen and (max-width: 1491px) {
+    .register_wrapper{
+        display:grid;
+        gap:1.5em;
+        grid-template-columns: 1fr 1fr ;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+}
+@media only screen and (max-width: 1027px) {
+    .section form{
+        margin-top: 200px;
+    }
+    .register_wrapper{
+        display:grid;
+        gap:1.5em;
+        grid-template-columns: 1fr ;
+    }
+}@media only screen and (max-width: 529px) {
+    .section form{
+        position: relative;
+        max-width: 95%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color:var(--clr-neutral-50);
+        border-radius: 20px;
+
+        overflow: hidden;
+        transition: 0.3s;
+    }
+}@media only screen and (max-width: 327px) {
+    .section form{
+        position: relative;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color:var(--clr-neutral-50);
+        border-radius: 20px;
+
+        transition: 0.3s;
+    }
+}
+
+
+.loader_wrapper{
+    position:relative;
+    width:150px;
+    height:150px;
+}
+.title__section{
+    text-align:center;
+    padding:2em 0;
+    max-width:var(--input-filed-width);
+}
+.title__section h1, .title__section p{
+    color:var(--clr-neutral-800)
+}

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="286" height="222" viewBox="0 0 286 222">
+  <defs>
+    <filter id="base" x="0" y="0" width="286" height="222" filterUnits="userSpaceOnUse">
+      <feOffset dy="15" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="25" result="blur"/>
+      <feFlood flood-opacity="0.149"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_288" data-name="Group 288" transform="translate(11024 21541)">
+    <g id="Group_287" data-name="Group 287">
+      <g id="Group_286" data-name="Group 286">
+        <g id="Group_285" data-name="Group 285">
+          <g id="Group_231" data-name="Group 231" transform="translate(-11800.656 -23070.334)">
+            <g transform="matrix(1, 0, 0, 1, 776.66, 1529.33)" filter="url(#base)">
+              <rect id="base-2" data-name="base" width="136" height="72" rx="7" transform="translate(75 60)" fill="#0c61b4"/>
+            </g>
+            <path id="Polygon_2" data-name="Polygon 2" d="M18.906,4.464a3,3,0,0,1,5.188,0L40.381,32.493A3,3,0,0,1,37.787,37H5.213a3,3,0,0,1-2.594-4.507Z" transform="translate(942.656 1604.334) rotate(90)" fill="#fff"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
