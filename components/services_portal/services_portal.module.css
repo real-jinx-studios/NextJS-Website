@@ -113,9 +113,14 @@
 .content {
 }
 .title_wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2em;
 }
 .title_wrapper h2 {
   color: var(--clr-neutral-800);
+  margin: 0;
 }
 .content_inner {
 }
@@ -225,6 +230,7 @@
 /*edit account*/
 .change_password_section,
 .email_username_section {
+  position: relative;
   display: flex;
   gap: 1.1em;
   flex-direction: column;
@@ -235,4 +241,8 @@
 }
 .content_inner_edit_account {
   width: 100%;
+}
+
+.change_password_section form {
+  position: relative;
 }

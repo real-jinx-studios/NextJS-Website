@@ -110,7 +110,6 @@ export default function BillingInfoSteps({
   };
 
   useEffect(() => {
-    console.log("fuck all this bullshit", cState.setStepToBeActive);
     if (cState.setStepToBeActive === true) {
       const isValid = handleBillingSubmit();
       setStepValid(isValid);

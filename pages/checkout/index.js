@@ -6,7 +6,7 @@ import AuthCheck from "../../components/forms/auth/AuthCheck";
 import AuthFormWarpper from "../../components/forms/AuthFormWrapper";
 import CheckoutWrapper from "../../components/checkout/CheckoutWrapper";
 
-function Checkout() {
+export default function Checkout() {
   return (
     <AuthCheck
       fallback={
@@ -21,7 +21,3 @@ function Checkout() {
     </AuthCheck>
   );
 }
-
-export default dynamic(() => Promise.resolve(Checkout), {
-  ssr: false,
-});

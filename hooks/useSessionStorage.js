@@ -4,7 +4,11 @@ export function useSessionStorage(key, initialValue) {
     if (typeof window !== "undefined") {
       const jsonValue = sessionStorage.getItem(key);
       if (jsonValue != null) {
-        return JSON.parse(jsonValue);
+        try {
+          return JSON.parse(jsonValue);
+        } catch (e) {
+          return null;
+        }
       }
     }
     if (typeof initialValue === "function") {

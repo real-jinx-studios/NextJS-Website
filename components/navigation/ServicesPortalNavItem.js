@@ -9,25 +9,25 @@ import AskPermissionModal from "../modal/AskPermissionModal";
 import { use } from "chai";
 
 export default function ServicesPortalNavItem() {
-  const { getClientInfo } = useClient();
+  const { getClientInfo, getClientVerified } = useClient();
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   useEffect(() => {
     const clientInfo = getClientInfo();
     if (clientInfo) {
       setUserLoggedIn(true);
     }
-  }, []);
+  }, [getClientVerified]);
 
   return (
-    <div>
-      {userLoggedIn ? (
-        <ServicesPortalButton />
-      ) : (
+    <AuthCheck
+      fallback={
         <Link href="/services-portal">
           <a className={styles.nav_link_a}>Login</a>
         </Link>
-      )}
-    </div>
+      }
+    >
+      <ServicesPortalButton />
+    </AuthCheck>
   );
 }
 
@@ -42,7 +42,7 @@ function ServicesPortalButton() {
 
     setDropdownVisible(false);
     setIsOnDropdown(false);
-    router.reload();
+    //router.reload();
   };
 
   return (

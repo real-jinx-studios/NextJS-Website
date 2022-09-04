@@ -387,6 +387,7 @@ function WorkstationIdField({
           flex-direction: column;
           align-items: center;
           gap: 1em;
+          max-height: 330px;
         }
         .suggestion-item {
           padding: 0.5em 1em;

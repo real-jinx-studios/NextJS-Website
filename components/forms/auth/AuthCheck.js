@@ -3,49 +3,27 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useClient } from "../../../lib/context";
 
-import LoaderDots from "../../utils/loaderDots";
+import FancyLoader from "../../utils/FancyLoader";
 
 // Component's children only shown to logged-in users
 function AuthCheck(props) {
-  const { verifyClientToken, getClientToken, logoutClient } = useClient();
+  const {
+    getClientVerified,
+
+    isClientVerified,
+  } = useClient();
   const [verified, setVerified] = useState(false);
-  const clientToken = getClientToken();
+  const [loading, setLoading] = useState(true);
 
-  let validating = false;
-
-  if (clientToken) {
-    validating = true;
-
-    verifyClientToken()
-      .then((res) => {
-        if (res === 200) {
-          validating = false;
-          setVerified(true);
-          return true;
-        } else if (res === 400) {
-          validating = false;
-          logoutClient();
-          setVerified(false);
-
-          return false;
-        } else {
-          validating = false;
-          setVerified(false);
-          return false;
-        }
-      })
-      .catch((err) => {
-        validating = false;
-        setVerified(false);
-        return false;
-      });
-  }
+  useEffect(() => {
+    setVerified(getClientVerified());
+    setLoading(false);
+  }, [isClientVerified]);
 
   const childrenWithProps = React.Children.map(props.children, (child) => {
     if (React.isValidElement(child)) {
       return React.cloneElement(child, {
         verified: verified,
-        clientToken: clientToken,
       });
     }
     return child;
@@ -53,8 +31,12 @@ function AuthCheck(props) {
 
   return verified ? (
     <>{childrenWithProps}</>
-  ) : validating ? (
-    <LoaderDots size="m" color="system" />
+  ) : loading ? (
+    <div className="section offset-top">
+      <div className="container flex-center-center">
+        <FancyLoader size="150" fontSize="1.25" white="true" />
+      </div>
+    </div>
   ) : (
     props.fallback || (
       <section className="section offset-top">

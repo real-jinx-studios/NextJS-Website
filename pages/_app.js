@@ -11,8 +11,10 @@ import { CartContext } from "../lib/cartContext";
 import { ClientProvider } from "../lib/context";
 import { CountriesProvider } from "../lib/countriesContext";
 import { ProductsProvider } from "../lib/productsContext";
+import UserIdleHandler from "../components/utils/UserIdleHandler";
 import Sidebar from "../components/navigation/Sidebar";
 import SidebarVariant from "../components/navigation/SidebarVariant";
+import AuthCheck from "../components/forms/auth/AuthCheck";
 
 const StateViewer = dynamic(() => import("../components/utils/StateViewer"), {
   ssr: false,
@@ -84,6 +86,9 @@ export default function App({ Component, pageProps: { ...pageProps } }) {
         setSidebarVariantOpen={setSidebarVariantOpen}
         sidebarVariantOpen={sidebarVariantOpen}
       />
+      <AuthCheck fallback={<></>}>
+        <UserIdleHandler />
+      </AuthCheck>
     </ClientProvider>
   );
 }

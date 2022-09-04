@@ -33,6 +33,9 @@ export default function BillingInformation() {
   const shippingRecipientPhoneRef = useRef();
   const shippingPostcodeRef = useRef();
 
+  const shippingCountryForwardRef = useRef();
+
+  const [isShippingSameAsBilling, setIsShippingSameAsBilling] = useState(false);
   useEffect(() => {
     setIsLoading(true);
     if (getClientInfo()) {
@@ -129,6 +132,31 @@ export default function BillingInformation() {
     return errorObject;
   };
 
+  const handleShippingSameAsBilling = (e) => {
+    setIsShippingSameAsBilling(!isShippingSameAsBilling);
+    if (!isShippingSameAsBilling) {
+      shippingRecipientRef.current.value = contactNameRef.current.value;
+      shippingAddressRef.current.value = billingAddressRef.current.value;
+      shippingCityRef.current.value = billingCityRef.current.value;
+      shippingPostcodeRef.current.value = billingPostcodeRef.current.value;
+      shippingCountryRef.current.value = billingCountryRef.current.value;
+
+      shippingCountryForwardRef.current.set({
+        country: billingCountryRef.current.value,
+        isVat: billingCountryRef.current.selectedOptions[0].dataset.isVat,
+        vat: billingCountryRef.current.selectedOptions[0].dataset
+          .vatPrercentage,
+        code: billingCountryRef.current.selectedOptions[0].dataset.code,
+        vatCode: billingCountryRef.current.selectedOptions[0].dataset.vatCode,
+        substractVAT:
+          billingCountryRef.current.selectedOptions[0].dataset.substractVat,
+      });
+
+      shippingRecipientPhoneRef.current.value =
+        shippingRecipientPhoneRef.current.value;
+    }
+  };
+
   if (!isLoading) {
     return (
       <>
@@ -169,8 +197,28 @@ export default function BillingInformation() {
           </div>
         </div>
         <div className={styles.content}>
+          <style jsx>{`
+            .same-as-billing-wrapper {
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+              gap: 1rem;
+              align-items: center;
+            }
+          `}</style>
           <div className={styles.title_wrapper}>
             <h2>Shipping Information</h2>
+
+            <div className="same-as-billing-wrapper">
+              <input
+                type="checkbox"
+                name="isShipping"
+                value={isShippingSameAsBilling}
+                checked={isShippingSameAsBilling}
+                onChange={() => handleShippingSameAsBilling()}
+              />
+              <label htmlFor="isShipping">Shipping same as billing</label>
+            </div>
           </div>
           <div className={styles.content_inner}>
             <form
@@ -191,6 +239,7 @@ export default function BillingInformation() {
                 }}
                 formErrors={formErrors}
                 requiredFields={[]}
+                ref={shippingCountryForwardRef}
               />
               <div className={styles.submit_buttons}>
                 {Object.keys(formErrors).length > 0 && (

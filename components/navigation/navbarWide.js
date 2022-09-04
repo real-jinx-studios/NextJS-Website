@@ -68,7 +68,7 @@ export default function NavbarWide({
     //delete all local storage
     localStorage.clear();
 
-    router.reload();
+    //router.reload();
   };
   const handleCheckoutClick = () => {
     router.replace("/checkout");

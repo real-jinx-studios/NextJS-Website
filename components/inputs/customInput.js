@@ -240,10 +240,6 @@ function Password({ props }) {
     }
   };
 
-  if (props.isRegisterPassword) {
-    customLog([{ passwordError, formErrors }, props.name]);
-  }
-
   return (
     <div className={styles.input_wrapper}>
       <style jsx>{`

@@ -6,7 +6,7 @@ import BillingInformation from "./BillingInformation";
 import CustomPayment from "./customPayment/customPayment";
 import WalletManagement from "./walletManagement/walletManagement";
 import InstallationRegistration from "./installationAndRegistration/installationRegistration";
-import EditAccount from "./EditAccount";
+import EditAccount from "./editAccount/EditAccount";
 import DuePayments from "./DuePayments";
 import { useClient } from "../../lib/context";
 import ParrotLoader from "../utils/ParrotLoader";
@@ -23,7 +23,8 @@ export default function ServicesPortalMain(props) {
   const [duePaymentsLoading, setDuePaymentsLoading] = useState(false);
   const [isAskPermissionOpen, setIsAskPermissionOpen] = useState(false);
 
-  const { getFullClientInfo, logoutClient, getClientToken } = useClient();
+  const { getFullClientInfo, logoutClient, getClientToken, getDuePayments } =
+    useClient();
 
   useEffect(() => {
     setIsLoading(true);
@@ -46,16 +47,9 @@ export default function ServicesPortalMain(props) {
   const handleFetchDuePayments = async () => {
     setIsLoading(true);
     setDuePaymentsLoading(true);
-    const res = await promiseResolver(
-      fetch("/api/rest/WebSite/due-payments", {
-        method: "POST",
-        body: JSON.stringify({
-          LoginToken: getClientToken(),
-        }),
-      })
-    );
+    const res = await getDuePayments();
 
-    const data = await res[0].json();
+    const data = res;
     setDuePayments(data);
     setIsLoading(false);
     setDuePaymentsLoading(false);

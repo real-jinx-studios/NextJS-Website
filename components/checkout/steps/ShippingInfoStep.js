@@ -23,7 +23,9 @@ export default function ShippingInfoStep({
   const { getClientInfo, getFullClientInfo } = useClient();
   const { cState, dispatch } = cartState();
   const [userData, setUserData] = useState(null);
-
+  const [isShippingSameAsBilling, setIsShippingSameAsBilling] = useState(
+    cState.billingInfo.isShippingSameAsBilling
+  );
   const isShippingValid = cState.checkout.shipping;
 
   useEffect(() => {
@@ -86,6 +88,8 @@ export default function ShippingInfoStep({
   const shippingRecipientPhoneRef = useRef();
   const shippingPostcodeRef = useRef();
 
+  const shippingCountryForwardRef = useRef();
+
   const handleShippingSubmit = (e) => {
     e?.preventDefault();
     if (typeof e === "object") {
@@ -119,6 +123,42 @@ export default function ShippingInfoStep({
     const isValid = handleShippingSubmit();
     setStepValid(isValid);
     stepDecrement();
+  };
+
+  const handleShippingSameAsBilling = (e) => {
+    setIsShippingSameAsBilling(!isShippingSameAsBilling);
+    if (!isShippingSameAsBilling) {
+      dispatch({
+        type: "SET_SHIPPING_SAME_AS_BILLING",
+        payload: !isShippingSameAsBilling,
+      });
+      setUserData({
+        Shipping: {
+          RecipientName: cState.billingInfo.ContactName,
+          Address: cState.billingInfo.Billing.Address,
+          City: cState.billingInfo.Billing.City,
+          PostCode: cState.billingInfo.Billing.PostCode,
+          Country: cState.billingInfo.Billing.Country,
+          RecipientPhone: isShippingValid
+            ? cState.shippingInfo.Shipping.RecipientPhone
+            : "",
+        },
+      });
+      shippingRecipientRef.current.value = cState.billingInfo.ContactName;
+      shippingAddressRef.current.value = cState.billingInfo.Billing.Address;
+      shippingCityRef.current.value = cState.billingInfo.Billing.City;
+      shippingPostcodeRef.current.value = cState.billingInfo.Billing.PostCode;
+      shippingCountryRef.current.value = cState.billingInfo.Billing.Country;
+
+      shippingCountryForwardRef.current.set({
+        country: cState.billingInfo.Billing.Country,
+        isVat: cState.vat.isVat,
+        vat: cState.vat.vatPercentage,
+        code: cState.vat.code,
+        vatCode: cState.vat.vatCode,
+        substractVAT: cState.vat.substractVAT,
+      });
+    }
   };
 
   //check if form has any errors
@@ -173,7 +213,8 @@ export default function ShippingInfoStep({
           .same-as-billing-wrapper {
             display: flex;
             flex-direction: row;
-            justify-content: space-around;
+            justify-content: center;
+            gap: 1rem;
             align-items: center;
             margin-bottom: 20px;
           }
@@ -212,7 +253,21 @@ export default function ShippingInfoStep({
               ]}
               formErrors={formErrors}
               setFormErrors={setFormErrors}
+              ref={shippingCountryForwardRef}
             />
+
+            <div>
+              <div className="same-as-billing-wrapper">
+                <input
+                  type="checkbox"
+                  name="isShipping"
+                  value={isShippingSameAsBilling}
+                  checked={isShippingSameAsBilling}
+                  onChange={() => handleShippingSameAsBilling()}
+                />
+                <label htmlFor="isShipping">Shipping same as billing</label>
+              </div>
+            </div>
             <div className={styles.step_actions}>
               <button
                 className="button button_basic_long_on_light_bg"
