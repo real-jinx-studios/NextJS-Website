@@ -23,8 +23,14 @@ jobs:
 
       - name: npm install, build, and test
         run: |
+          npm install
           npm run build --if-present
           npm run test --if-present
+
+      - name: Zip artifact for deployment
+        run: |
+          zip -r release.zip * .next
+          rm -r .next node_modules public
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -44,6 +50,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-app
+
+      - name: unzip artifact for deployment
+        run: |
+          unzip -o release.zip
 
       - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
