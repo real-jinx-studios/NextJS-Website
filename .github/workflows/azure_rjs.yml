@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: ./release.zip
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -62,4 +62,4 @@ jobs:
           app-name: "rjs"
           slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D6EB397CD07F46CFA4582B9089ED4853 }}
-          package: ./release.zip
+          package: release.zip
