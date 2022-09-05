@@ -19,6 +19,9 @@ export default function ProductsShowcase() {
   }, []);
   return (
     <section className="section wide offset-top">
+      <div className="container">
+        <h1>YAAAAS</h1>
+      </div>
       <style jsx>{`
         .main_inner {
           margin: 0 auto;
