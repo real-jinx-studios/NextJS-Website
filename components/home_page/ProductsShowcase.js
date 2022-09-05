@@ -289,7 +289,7 @@ export default function ProductsShowcase() {
               <p className="details_subtitle">
                 <strong>Starting from €58/month</strong>
                 <br />
-                <em>for EZTitles Essentialsss</em>
+                <em>for EZTitles Essentials</em>
               </p>
             </div>
             <div className="details_buttons">
