@@ -52,6 +52,11 @@ jobs:
         with:
           name: node-app
 
+      - name: Unzip artifact for deployment
+        run: |
+          unzip -q release.zip
+          rm release.zip
+
       - name: Show files
         run: ls -a
 
@@ -62,4 +67,4 @@ jobs:
           app-name: "rjs"
           slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D6EB397CD07F46CFA4582B9089ED4853 }}
-          package: release.zip
+          package: .
