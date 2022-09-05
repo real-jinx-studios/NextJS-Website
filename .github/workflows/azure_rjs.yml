@@ -30,7 +30,8 @@ jobs:
       - name: Zip artifact for deployment
         run: |
           zip release.zip ./* -qr -x "node_modules/*"
-          rm -r ./* -x "release.zip"
+          rm -r !("release.zip")
+          ls -a
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
