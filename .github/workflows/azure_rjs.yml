@@ -29,15 +29,15 @@ jobs:
 
       - name: Zip artifact for deployment
         run: |
-          zip release.zip ./* -qr -x "node_modules/*"
-          rm -r !("release.zip")
+          zip ../release.zip ./* -qr -x "node_modules/*"
+          rm -r *
           ls -a
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: ./release.zip
+          path: ../release.zip
 
   deploy:
     runs-on: ubuntu-latest
