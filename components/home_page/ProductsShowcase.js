@@ -287,7 +287,7 @@ export default function ProductsShowcase() {
                 Subtitles and Closed Captions creation software
               </h3>
               <p className="details_subtitle">
-                <strong>Starting from €58/month</strong>
+                <strong>Starting from €51/month</strong>
                 <br />
                 <em>for EZTitles Essentials</em>
               </p>
