@@ -52,6 +52,9 @@ jobs:
         with:
           name: node-app
 
+      - name: Show files
+        run: ls -a
+
       - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
@@ -59,4 +62,4 @@ jobs:
           app-name: "rjs"
           slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D6EB397CD07F46CFA4582B9089ED4853 }}
-          package: release.zip
+          package: ./release.zip
