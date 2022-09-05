@@ -21,22 +21,15 @@ jobs:
         with:
           node-version: "16.x"
 
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
-
       - name: Zip artifact for deployment
         run: |
-          zip -r release.zip * .next
-          rm -r .next node_modules public
+          zip -r release.zip /components /pages /styles /next.config.js /package.json /package-lock.json .env .env.local .env.production .env.development
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: .
+          path: ./release.zip
 
   deploy:
     runs-on: ubuntu-latest
