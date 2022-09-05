@@ -23,6 +23,7 @@ jobs:
 
       - name: Zip artifact for deployment
         run: |
+          ls -a
           zip -r release.zip /components /pages /styles /next.config.js /package.json /package-lock.json .env .env.local .env.production .env.development
 
       - name: Upload artifact for deployment job
