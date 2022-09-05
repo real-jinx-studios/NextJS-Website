@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "lint": "next lint",
-    "start": "node_modules/next/dist/bin/next dev -p $PORT"
+    "start": "node_modules/next/dist/bin/next start -p $PORT"
   },
   "dependencies": {
     "@builder.io/partytown": "^0.5.1",
