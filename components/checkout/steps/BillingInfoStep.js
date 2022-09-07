@@ -18,6 +18,8 @@ export default function BillingInfoSteps({
   stepIncrement,
   stepName,
   isValid,
+  isDirty,
+  setStepDirty,
 }) {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -151,6 +153,15 @@ export default function BillingInfoSteps({
     setFormErrors(errorObject);
     return errorObject;
   };
+  useEffect(() => {
+    if (!isDirty) {
+      setStepDirty(true);
+    } else {
+      if (!isLoading) {
+        checkFormForErrors();
+      }
+    }
+  }, [isLoading]);
 
   return (
     <div className={styles.billing}>

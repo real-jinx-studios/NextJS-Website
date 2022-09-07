@@ -15,12 +15,20 @@ export default function PaymentStep({
   setStepValid,
 
   stepDecrement,
+  isDirty,
+  setStepDirty,
 }) {
   const { cState, dispatch } = cartState();
   const [isLoading, setIsLoading] = useState(false);
   const [allStepsValid, setAllStepsValid] = useState(true);
 
   const [isPaypalIntegration, setIsPaypalIntegration] = useState(true);
+
+  useEffect(() => {
+    if (!isDirty) {
+      setStepDirty(true);
+    }
+  }, [isDirty]);
 
   const handleCancel = (e) => {
     e.preventDefault();
@@ -160,6 +168,14 @@ export default function PaymentStep({
                 }
               })}
             </ul>
+            <div className={styles.step_actions}>
+              <button
+                className="button button_basic_long_on_light_bg"
+                onClick={handleCancel}
+              >
+                Previous
+              </button>
+            </div>
           </div>
         )}
       </div>

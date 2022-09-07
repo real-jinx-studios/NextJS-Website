@@ -8,6 +8,7 @@ import LoaderDots from "../../utils/loaderDots";
 import ShippingInfoForm from "../../forms/ShippingInfoForm";
 import { cartState } from "../../../lib/cartContext";
 import { useClient } from "../../../lib/context";
+import { use } from "chai";
 
 export default function ShippingInfoStep({
   setCurrentStepNumber,
@@ -17,6 +18,9 @@ export default function ShippingInfoStep({
   stepIncrement,
   setStepValid,
   stepDecrement,
+  isValid,
+  isDirty,
+  setStepDirty,
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [formErrors, setFormErrors] = useState({});
@@ -27,6 +31,16 @@ export default function ShippingInfoStep({
     cState.billingInfo.isShippingSameAsBilling
   );
   const isShippingValid = cState.checkout.shipping;
+
+  useEffect(() => {
+    if (!isDirty) {
+      setStepDirty(true);
+    } else {
+      if (!isLoading) {
+        checkFormForErrors();
+      }
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -98,11 +112,13 @@ export default function ShippingInfoStep({
     setIsLoading(true);
 
     const err = checkFormForErrors();
+
     if (Object.keys(err).length > 0) {
       setIsLoading(false);
 
       return false;
     }
+
     dispatch({
       type: "SET_SHIPPING_INFO",
       payload: {
@@ -164,7 +180,6 @@ export default function ShippingInfoStep({
   //check if form has any errors
   const checkFormForErrors = () => {
     const errorObject = {};
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
     if (!shippingRecipientRef.current.value) {
       errorObject.RecipientName = "Please enter a recipient name";
     }
@@ -271,7 +286,7 @@ export default function ShippingInfoStep({
             <div className={styles.step_actions}>
               <button
                 className="button button_basic_long_on_light_bg"
-                onClick={verifyStep}
+                onClick={handleShippingSubmit}
               >
                 Next
               </button>

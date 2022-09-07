@@ -13,6 +13,8 @@ export default function WorkstationIdStep({
   stepIncrement,
   stepDecrement,
   setStepValid,
+  isDirty,
+  setStepDirty,
 }) {
   const { cState, dispatch } = cartState();
   const { getClientToken } = useClient();
@@ -23,6 +25,12 @@ export default function WorkstationIdStep({
   const [usedWorkstationIds, setUsedWorkstationIds] = useState(null);
 
   const isWorkstationIdValid = cState.checkout.workstation;
+
+  useEffect(() => {
+    if (!isDirty) {
+      setStepDirty(true);
+    }
+  }, [isDirty]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -102,9 +110,6 @@ export default function WorkstationIdStep({
 
     return true;
   };
-  useEffect(() => {
-    console.log(formErrors);
-  }, [formErrors]);
 
   const verifyStep = (e) => {
     const isValid = handleSubmit(e);

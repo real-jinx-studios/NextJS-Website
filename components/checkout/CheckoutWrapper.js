@@ -36,6 +36,7 @@ export default function CheckoutWrapper() {
       isVisible: true,
 
       isEditable: true,
+      isDirty: cState.checkout["billingDirty"],
 
       isActive: currentStepNumber === 0,
       isClosed: false,
@@ -55,7 +56,7 @@ export default function CheckoutWrapper() {
 
       isEditable: true,
       isVisible: cState.checkout.shippableCount > 0,
-
+      isDirty: cState.checkout["shippingDirty"],
       isActive: currentStepNumber === 1,
       isClosed: true,
       isNextable: true,
@@ -68,7 +69,7 @@ export default function CheckoutWrapper() {
       name: "Workstation IDs",
       id: "workstation",
       stepNumber: 2,
-
+      isDirty: cState.checkout["workstationDirty"],
       component: WorkstationIdStep,
       isValid: cState.checkout["workstation"],
       isEditable: true,
@@ -90,7 +91,7 @@ export default function CheckoutWrapper() {
       isVisible: cState.items.length > 0,
 
       isEditable: false,
-
+      isDirty: cState.checkout["paymentDirty"],
       isActive: currentStepNumber === 3,
       isClosed: true,
       hasNext: false,
@@ -143,6 +144,8 @@ export default function CheckoutWrapper() {
                 hasNext={step.hasNext}
                 hasSkip={step.hasSkip}
                 hasPrevious={step.hasPrevious}
+                isValid={step.isValid}
+                isDirty={step.isDirty}
                 stepIncrement={() => {
                   dispatch({
                     type: "INCREMENT_STEP",
@@ -162,6 +165,15 @@ export default function CheckoutWrapper() {
                     },
                   });
                 }}
+                setStepDirty={(isDirty) => {
+                  dispatch({
+                    type: "SET_STEP_DIRTY",
+                    payload: {
+                      stepName: step.id,
+                      isDirty,
+                    },
+                  });
+                }}
                 setCurrentStepNumber={setCurrentStepNumber}
               />
             );
@@ -173,6 +185,7 @@ export default function CheckoutWrapper() {
                 stepName={step.name}
                 stepId={step.id}
                 isValid={step.isValid}
+                isDirty={step.isDirty}
                 checkoutSteps={checkoutSteps}
               />
             );

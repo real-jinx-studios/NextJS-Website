@@ -1,7 +1,14 @@
 import styles from "./steps.module.css";
 import { cartState } from "../../../lib/cartContext";
-export default function ClosedStep({ stepNumber, stepName, isValid, stepId }) {
+export default function ClosedStep({
+  stepNumber,
+  stepName,
+  isValid,
+  stepId,
+  isDirty,
+}) {
   const { dispatch } = cartState();
+
   return (
     <div
       className={styles.billing}
@@ -15,7 +22,13 @@ export default function ClosedStep({ stepNumber, stepName, isValid, stepId }) {
       <div className={`${styles.billing__inner} `} data-step={stepNumber}>
         <h3
           className={`${styles.billing__title} ${
-            stepId === "payment" ? "" : isValid ? styles.valid : styles.invalid
+            isDirty
+              ? stepId === "payment"
+                ? ""
+                : isValid
+                ? styles.valid
+                : styles.invalid
+              : ""
           }`}
         >
           {stepName}
