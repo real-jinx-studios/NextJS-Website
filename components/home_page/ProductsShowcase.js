@@ -294,7 +294,7 @@ export default function ProductsShowcase() {
             </div>
             <div className="details_buttons">
               <Link href="/products/free-trial?destination=products/free-trial">
-                <a className="button button_basic_long blue">FREE TRIAL</a>
+                <a className="button button_basic_long blue">FREE TRIALZZZZz</a>
               </Link>
               <Link href="/checkout">
                 <a className="button button_basic_long blue">BUY NOW</a>

@@ -15,16 +15,6 @@ export default function CheckoutWrapper() {
 
   const [currentStepNumber, setCurrentStepNumber] = useState(0);
 
-  useEffect(() => {
-    if (cState.checkStepOrder === true) {
-      //check if cart requires shipping or hardware ids
-
-      dispatch({
-        type: "CLEAR_CHECK_STEP_ORDER",
-      });
-    }
-  }, [cState.checkStepOrder]);
-
   //calculate checkout state from cart state
   const checkoutSteps = [
     {
@@ -112,12 +102,16 @@ export default function CheckoutWrapper() {
   });
 
   useEffect(() => {
+    console.log("on mount, SET_CHECKOUT_STEPS_LENGTH");
     dispatch({
       type: "SET_CHECKOUT_STEPS_LENGTH",
       payload: checkoutStepsFiltered.length,
     });
   }, []);
   useEffect(() => {
+    console.log(
+      "checkoutStepsFiltered.length use effect with dependency, ADD_STEP"
+    );
     dispatch({
       type: "ADD_STEP",
       payload: checkoutStepsFiltered,

@@ -20,37 +20,28 @@ export default function BillingInfoSteps({
   isValid,
 }) {
   const [isLoading, setIsLoading] = useState(true);
+  const { getClientInfo, getFullClientInfo, isFetchingUser, clientData } =
+    useClient();
 
   const [formErrors, setFormErrors] = useState({});
-  const [isShippingSameAsBilling, setIsShippingSameAsBilling] = useState(false);
-  const { getClientInfo, getFullClientInfo } = useClient();
+  const [isShippingSameAsBilling, setIsShippingSameAsBilling] =
+    useState(isFetchingUser);
   const [userData, setUserData] = useState(null);
   const { cState, dispatch } = cartState();
 
   const isBillingValid = cState.checkout.billing;
 
   useEffect(() => {
+    if (isFetchingUser) return;
     setIsLoading(true);
     if (isBillingValid) {
       setUserData(cState.billingInfo);
       setIsShippingSameAsBilling(cState.billingInfo.isShippingSameAsBilling);
-      setIsLoading(false);
     } else if (!userData) {
-      if (getClientInfo()) {
-        setUserData(getClientInfo());
-        setIsLoading(false);
-      } else {
-        const getData = async () => {
-          const data = await getFullClientInfo();
-          setUserData(data);
-          setIsLoading(false);
-        };
-        getData();
-      }
-    } else {
-      setIsLoading(false);
+      setUserData(getClientInfo());
     }
-  }, []);
+    setIsLoading(false);
+  }, [isFetchingUser]);
 
   //reference all form input fields
   const legalNameRef = useRef();

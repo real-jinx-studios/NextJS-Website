@@ -667,7 +667,7 @@ export default function ProductCard({
             <h3 className="license-title">{option.name}:</h3>
             <div className="license-wrapper">
               {option.values.map((value, i) => (
-                <div key={value.id + i}>
+                <div key={value.id + i + option.name}>
                   {" "}
                   <input
                     type="radio"

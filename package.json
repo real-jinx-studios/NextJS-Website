@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "lint": "next lint",
-    "start": "node_modules/next/dist/bin/next start -p $PORT"
+    "start": "next start",
+    "analyze": "cross-env ANALYZE=true next build",
+    "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
+    "test": "mocha --no-timeouts --reporter mochawesome --require mochawesome/register --reporter-options reportDir=./test/report,reportFilename=FirstReport"
   },
   "dependencies": {
     "@builder.io/partytown": "^0.5.1",

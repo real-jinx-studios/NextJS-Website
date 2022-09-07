@@ -612,8 +612,9 @@ function SelectCheckoutCountry() {
             className={`country-wrapper ${
               country.code === selectedCountry ? "selected" : ""
             }`}
+            key={country.code}
           >
-            <icon className={`country `}>{country.icon}</icon>
+            <span className={`country `}>{country.icon}</span>
           </div>
         ))}
       </div>

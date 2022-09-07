@@ -73,9 +73,11 @@ export default function ServicesPortalMain(props) {
   };
 
   const handleLogout = async () => {
+    setIsLoading(true);
     const res = await logoutClient();
+    setIsLoading(false);
 
-    router.reload();
+    //router.reload();
   };
 
   return (
