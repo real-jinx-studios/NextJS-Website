@@ -15,7 +15,8 @@ export default function BillingInformation() {
   const [formErrors, setFormErrors] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [clisntInfo, setClientInfo] = useState(null);
-  const { updateClientInfo, getClientInfo, getFullClientInfo } = useClient();
+  const { updateClientInfo, getClientInfo, getFullClientInfo, isFetchingUser } =
+    useClient();
 
   //reference all form input fields
   const legalNameRef = useRef();
@@ -37,19 +38,13 @@ export default function BillingInformation() {
 
   const [isShippingSameAsBilling, setIsShippingSameAsBilling] = useState(false);
   useEffect(() => {
+    if (isFetchingUser) return;
     setIsLoading(true);
-    if (getClientInfo()) {
-      setClientInfo(getClientInfo());
-      setIsLoading(false);
-    } else {
-      const getData = async () => {
-        const data = await getFullClientInfo();
-        setClientInfo(data);
-        setIsLoading(false);
-      };
-      getData();
-    }
-  }, []);
+
+    setClientInfo(getClientInfo());
+
+    setIsLoading(false);
+  }, [isFetchingUser]);
 
   const handleInfoUpdate = async (e) => {
     e.preventDefault();

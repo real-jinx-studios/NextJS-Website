@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import Cart from "../../components/checkout/cart";
 import BillingInfoStep from "../../components/checkout/steps/BillingInfoStep";
@@ -10,6 +10,20 @@ import PaymentStep from "../../components/checkout/steps/PaymentStep";
 import { cartState } from "../../lib/cartContext";
 export default function CheckoutWrapper() {
   const { cState, dispatch } = cartState();
+
+  const loadedCart = useRef(cState.cartLoaded);
+  useEffect(() => {
+    if (!loadedCart.current) {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      if (user?.uInfo?.SiteUser) {
+        dispatch({
+          type: "LOAD_CART",
+          payload: user.uInfo.SiteUser,
+        });
+      }
+      loadedCart.current = true;
+    }
+  }, []);
 
   const [isCartEditable, setIsCartEditable] = useState(true);
 

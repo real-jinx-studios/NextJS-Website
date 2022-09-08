@@ -10,7 +10,7 @@ export default function ChangeEmail() {
   const [formErrors, setFormErrors] = useState({});
   const [emailChanged, setEmailChanged] = useState(false);
 
-  const { getClientInfo } = useClient();
+  const { getClientInfo, changeEmail } = useClient();
 
   const emailRef = useRef();
   const checkFormForErrors = () => {
@@ -36,29 +36,37 @@ export default function ChangeEmail() {
 
       return;
     }
-    let emailExists = false;
-    emailExists = Math.random() > 0.5;
-    //make artificial delay to simulate api call
+    const email = emailRef.current.value;
+    const res = await changeEmail(email);
 
-    if (emailExists) {
+    if (res.status === 400 && res.message) {
       setFormErrors({
         ...formErrors,
-        Email: "Email already exists",
+        Email: res.message,
       });
       setIsLoading(false);
+
       return;
+    } else if (res.status === 500) {
+      router.replace({
+        pathname: "/500",
+        query: { err: "internal server error" },
+      });
+    } else if (res.status === 200) {
+      toast.success("Email changed successfully!", {
+        position: "bottom-center",
+        autoClose: false,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+      emailRef.current = res.newEmail;
     }
 
-    toast.success("Email changed successfully!", {
-      position: "bottom-center",
-      autoClose: false,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
     setEmailChanged(true);
     setIsLoading(false);
   };
@@ -81,11 +89,10 @@ export default function ChangeEmail() {
             Email Changed successfully
           </h3>
           <CustomInput
-            default={getClientInfo().Email}
+            default={emailRef.current}
             type="text"
             placeholder="Email"
             name="Email"
-            reference={emailRef}
             isDisabled
           />
           <div className="email-actions">

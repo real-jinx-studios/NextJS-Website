@@ -58,10 +58,10 @@ export default function App({ Component, pageProps: { ...pageProps } }) {
 
   const isBreakpoint = useMediaQuery(1111);
   return (
-    <ClientProvider>
-      <ProductsProvider>
-        <CountriesProvider>
-          <CartContext>
+    <CartContext>
+      <ClientProvider>
+        <ProductsProvider>
+          <CountriesProvider>
             <header>
               {isBreakpoint ? (
                 <NavbarSmall />
@@ -78,17 +78,17 @@ export default function App({ Component, pageProps: { ...pageProps } }) {
             <ToastContainer />
             <StateViewer stateName={"cart"} />
             <StateViewer stateName={"user"} />
-          </CartContext>
-        </CountriesProvider>
-      </ProductsProvider>
-      <Sidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
-      <SidebarVariant
-        setSidebarVariantOpen={setSidebarVariantOpen}
-        sidebarVariantOpen={sidebarVariantOpen}
-      />
-      <AuthCheck fallback={<></>}>
-        <UserIdleHandler />
-      </AuthCheck>
-    </ClientProvider>
+          </CountriesProvider>
+        </ProductsProvider>
+        <Sidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
+        <SidebarVariant
+          setSidebarVariantOpen={setSidebarVariantOpen}
+          sidebarVariantOpen={sidebarVariantOpen}
+        />
+        <AuthCheck fallback={<></>}>
+          <UserIdleHandler />
+        </AuthCheck>
+      </ClientProvider>
+    </CartContext>
   );
 }

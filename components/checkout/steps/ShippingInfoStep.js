@@ -132,6 +132,7 @@ export default function ShippingInfoStep({
         },
       },
     });
+    setIsLoading(false);
     return true;
   };
   const handleShippingCancel = (e) => {
@@ -143,11 +144,11 @@ export default function ShippingInfoStep({
 
   const handleShippingSameAsBilling = (e) => {
     setIsShippingSameAsBilling(!isShippingSameAsBilling);
+    dispatch({
+      type: "SET_SHIPPING_SAME_AS_BILLING",
+      payload: !isShippingSameAsBilling,
+    });
     if (!isShippingSameAsBilling) {
-      dispatch({
-        type: "SET_SHIPPING_SAME_AS_BILLING",
-        payload: !isShippingSameAsBilling,
-      });
       setUserData({
         Shipping: {
           RecipientName: cState.billingInfo.ContactName,
@@ -205,7 +206,9 @@ export default function ShippingInfoStep({
   const verifyStep = (e) => {
     const isValid = handleShippingSubmit(e);
     setStepValid(isValid);
-    stepIncrement();
+    if (isValid) {
+      stepIncrement();
+    }
   };
 
   useEffect(() => {
@@ -278,7 +281,7 @@ export default function ShippingInfoStep({
                   name="isShipping"
                   value={isShippingSameAsBilling}
                   checked={isShippingSameAsBilling}
-                  onChange={() => handleShippingSameAsBilling()}
+                  onChange={(e) => handleShippingSameAsBilling(e)}
                 />
                 <label htmlFor="isShipping">Shipping same as billing</label>
               </div>
@@ -286,7 +289,7 @@ export default function ShippingInfoStep({
             <div className={styles.step_actions}>
               <button
                 className="button button_basic_long_on_light_bg"
-                onClick={handleShippingSubmit}
+                onClick={verifyStep}
               >
                 Next
               </button>
