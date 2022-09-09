@@ -30,12 +30,10 @@ export default function BillingInfoSteps({
   const [userData, setUserData] = useState(null);
   const { cState, dispatch } = cartState();
 
-  const isBillingValid = cState.checkout.billing;
-
   useEffect(() => {
     if (isFetchingUser) return;
     setIsLoading(true);
-    if (isBillingValid) {
+    if (isDirty) {
       setUserData(cState.billingInfo);
       setIsShippingSameAsBilling(cState.billingInfo.isShippingSameAsBilling);
     } else if (!userData) {
@@ -67,13 +65,6 @@ export default function BillingInfoSteps({
       e.preventDefault();
     }
     setIsLoading(true);
-
-    const err = checkFormForErrors();
-    if (Object.keys(err).length > 0) {
-      setIsLoading(false);
-
-      return false;
-    }
     const billingDetails = {
       LegalName: legalNameRef.current.value,
       ContactName: contactNameRef.current.value,
@@ -92,12 +83,21 @@ export default function BillingInfoSteps({
       type: "SET_BILLING_INFO",
       payload: { billingDetails, stepName },
     });
+
+    const err = checkFormForErrors();
+    if (Object.keys(err).length > 0) {
+      setIsLoading(false);
+
+      return false;
+    }
+
     return true;
   };
 
   const verifyStep = (e) => {
     const isValid = handleBillingSubmit(e);
     setStepValid(isValid);
+    setStepDirty(true);
     if (isValid) {
       stepIncrement();
     }
@@ -107,6 +107,7 @@ export default function BillingInfoSteps({
     if (cState.setStepToBeActive === true) {
       const isValid = handleBillingSubmit();
       setStepValid(isValid);
+      setStepDirty(true);
       dispatch({
         type: "SET_STEP",
       });
@@ -145,14 +146,9 @@ export default function BillingInfoSteps({
     setFormErrors(errorObject);
     return errorObject;
   };
-
   useEffect(() => {
-    if (!isDirty) {
-      setStepDirty(true);
-    } else {
-      if (!isLoading) {
-        checkFormForErrors();
-      }
+    if (!isLoading && !isDirty) {
+      checkFormForErrors();
     }
   }, [isLoading]);
 

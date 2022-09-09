@@ -5,12 +5,18 @@ import { promiseResolver } from "../../../lib/promiseResolver";
 import CustomInput from "../../inputs/customInput";
 import FancyLoader from "../../utils/FancyLoader";
 import { useClient } from "../../../lib/context";
+import GenericModal from "../../modal/GenericModal";
+import PasswordPromptModal from "../../modal/PasswordPromptModal";
 export default function ChangeEmail() {
+  const [isPasswordPromptModalOpen, setIsPasswordPromptModalOpen] =
+    useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [emailChanged, setEmailChanged] = useState(false);
+  const [emailResent, setEmailResent] = useState(false);
 
-  const { getClientInfo, changeEmail } = useClient();
+  const { getClientInfo, changeEmail, resendChangeEmailVerification } =
+    useClient();
 
   const emailRef = useRef();
   const checkFormForErrors = () => {
@@ -26,8 +32,7 @@ export default function ChangeEmail() {
     return errorObject;
   };
 
-  const handleEmailChange = async (e) => {
-    e.preventDefault();
+  const handleEmailChange = async (password) => {
     setIsLoading(true);
 
     const err = checkFormForErrors();
@@ -37,7 +42,7 @@ export default function ChangeEmail() {
       return;
     }
     const email = emailRef.current.value;
-    const res = await changeEmail(email);
+    const res = await changeEmail(email, password);
 
     if (res.status === 400 && res.message) {
       setFormErrors({
@@ -53,7 +58,7 @@ export default function ChangeEmail() {
         query: { err: "internal server error" },
       });
     } else if (res.status === 200) {
-      toast.success("Email changed successfully!", {
+      toast.info("Email request sent", {
         position: "bottom-center",
         autoClose: false,
         hideProgressBar: true,
@@ -71,39 +76,87 @@ export default function ChangeEmail() {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    console.log(formErrors);
-  }, [formErrors]);
+  const handleResendEmail = async () => {
+    setIsLoading(true);
+    const res = await resendChangeEmailVerification(emailRef.current.value);
+    if (res.status === 400 && res.message) {
+      setFormErrors({
+        ...formErrors,
+        Email: res.message,
+      });
+      setIsLoading(false);
+
+      return;
+    } else if (res.status === 500) {
+      router.replace({
+        pathname: "/500",
+        query: { err: "internal server error" },
+      });
+    } else if (res.status === 200) {
+      toast.info("Email request resent!", {
+        position: "bottom-center",
+        autoClose: false,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      setEmailResent(true);
+    }
+  };
 
   return (
     <div className="email-wrapper">
+      <GenericModal
+        open={isPasswordPromptModalOpen}
+        onClose={() => setIsPasswordPromptModalOpen(false)}
+      >
+        <PasswordPromptModal
+          setIsPasswordPromptModalOpen={setIsPasswordPromptModalOpen}
+          onConfirm={(password) => handleEmailChange(password)}
+        />
+      </GenericModal>
       <style jsx>{`
-        .email-success-title {
-          font-size: 1.5em;
-          color: var(--clr-correct);
+        .email-change-request-title {
+          font-size: 1.38rem;
+          color: var(--clr-neutral-800);
+        }
+        .email-change-request-description {
+          font-size: 1rem;
+          color: var(--clr-neutral-700);
+        }
+        .highlight {
+          color: var(--clr-primary);
+          font-weight: 600;
+        }
+        .email-resent {
+          color: var(--clr-primary);
         }
       `}</style>
       {emailChanged && (
-        <div className="email-changed">
-          <h3 className="      email-success-title ">
-            Email Changed successfully
-          </h3>
-          <CustomInput
-            default={emailRef.current}
-            type="text"
-            placeholder="Email"
-            name="Email"
-            isDisabled
-          />
+        <div className="email-change-request">
+          <h2 className="email-change-request-title">
+            Email Change Confirmation
+          </h2>
+          <p className="email-change-request-description">
+            A confirmation email has been sent to your new email address (
+            <span className="highlight">{emailRef.current}</span>). Please click
+            the link in the email to confirm your new email address.
+          </p>
           <div className="email-actions">
-            <button
-              onClick={() => {
-                setEmailChanged(false);
-              }}
-              className="button button_basic_long_on_light_bg "
-            >
-              Change email again
-            </button>
+            {!emailResent && (
+              <button
+                onClick={() => {
+                  handleResendEmail();
+                }}
+                className="button button_basic_long_on_light_bg "
+              >
+                Resend
+              </button>
+            )}
+            {emailResent && <span className="email-resent">Email resent!</span>}
           </div>
         </div>
       )}
@@ -122,7 +175,7 @@ export default function ChangeEmail() {
           />
           <div className="email-actions">
             <button
-              onClick={handleEmailChange}
+              onClick={() => setIsPasswordPromptModalOpen(true)}
               className="button button_basic_long_on_light_bg "
             >
               Change email

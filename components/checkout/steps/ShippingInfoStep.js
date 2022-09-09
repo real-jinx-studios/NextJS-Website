@@ -33,18 +33,14 @@ export default function ShippingInfoStep({
   const isShippingValid = cState.checkout.shipping;
 
   useEffect(() => {
-    if (!isDirty) {
-      setStepDirty(true);
-    } else {
-      if (!isLoading) {
-        checkFormForErrors();
-      }
+    if (!isLoading && isDirty) {
+      checkFormForErrors();
     }
   }, [isLoading]);
 
   useEffect(() => {
     setIsLoading(true);
-    if (isShippingValid) {
+    if (isDirty) {
       if (cState.billingInfo.isShippingSameAsBilling) {
         setUserData({
           Shipping: {
@@ -111,14 +107,6 @@ export default function ShippingInfoStep({
     }
     setIsLoading(true);
 
-    const err = checkFormForErrors();
-
-    if (Object.keys(err).length > 0) {
-      setIsLoading(false);
-
-      return false;
-    }
-
     dispatch({
       type: "SET_SHIPPING_INFO",
       payload: {
@@ -132,6 +120,15 @@ export default function ShippingInfoStep({
         },
       },
     });
+
+    const err = checkFormForErrors();
+
+    if (Object.keys(err).length > 0) {
+      setIsLoading(false);
+
+      return false;
+    }
+
     setIsLoading(false);
     return true;
   };
@@ -206,6 +203,7 @@ export default function ShippingInfoStep({
   const verifyStep = (e) => {
     const isValid = handleShippingSubmit(e);
     setStepValid(isValid);
+    setStepDirty(true);
     if (isValid) {
       stepIncrement();
     }
@@ -215,6 +213,7 @@ export default function ShippingInfoStep({
     if (cState.setStepToBeActive === true) {
       const isValid = handleShippingSubmit();
       setStepValid(isValid);
+      setStepDirty(true);
       dispatch({
         type: "SET_STEP",
       });

@@ -73,6 +73,7 @@ export default function WorkstationIdStep({
             id={`${item.productReferenceId}-${i}`}
             key={`${item.productReferenceId}-${i}`}
             name={i}
+            isParentDirty={isDirty}
             productReferenceId={item.productReferenceId}
             workstationIds={workstationIds}
             setWorkstationIds={setWorkstationIds}
@@ -97,16 +98,15 @@ export default function WorkstationIdStep({
   };
   const handleSubmit = () => {
     setIsLoading(true);
+    dispatch({
+      type: "SET_WORKSTATION_IDS",
+      payload: workstationIds,
+    });
 
     if (Object.keys(formErrors).length > 0) {
       setIsLoading(false);
       return false;
     }
-
-    dispatch({
-      type: "SET_WORKSTATION_IDS",
-      payload: workstationIds,
-    });
 
     return true;
   };
@@ -114,7 +114,9 @@ export default function WorkstationIdStep({
   const verifyStep = (e) => {
     const isValid = handleSubmit(e);
     setStepValid(isValid);
-    stepIncrement();
+    if (isValid) {
+      stepIncrement();
+    }
   };
 
   useEffect(() => {
@@ -214,7 +216,7 @@ export default function WorkstationIdStep({
 
 function WorkstationIdField({
   item,
-
+  isParentDirty,
   workstationIds,
   setWorkstationIds,
   productReferenceId,
@@ -301,9 +303,16 @@ function WorkstationIdField({
     }
     setIsValid(false);
     handleSetError("Invalid workstation Id");
-    console.log("invalid");
+
     return;
   };
+
+  useEffect(() => {
+    if (isParentDirty) {
+      handleBlur();
+      setDirty(true);
+    }
+  }, []);
 
   return (
     <div className="workstation-id-field-wrapper">

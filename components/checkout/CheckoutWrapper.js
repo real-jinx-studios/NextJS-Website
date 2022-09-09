@@ -8,6 +8,7 @@ import WorkstationIdStep from "../../components/checkout/steps/WorkstationIdStep
 import PaymentStep from "../../components/checkout/steps/PaymentStep";
 
 import { cartState } from "../../lib/cartContext";
+import Cookies from "js-cookie";
 export default function CheckoutWrapper() {
   const { cState, dispatch } = cartState();
 
@@ -15,6 +16,7 @@ export default function CheckoutWrapper() {
   useEffect(() => {
     if (!loadedCart.current) {
       const user = JSON.parse(sessionStorage.getItem("user"));
+
       if (user?.uInfo?.SiteUser) {
         dispatch({
           type: "LOAD_CART",
@@ -24,6 +26,38 @@ export default function CheckoutWrapper() {
       loadedCart.current = true;
     }
   }, []);
+
+  useEffect(() => {
+    if (loadedCart.current) {
+      if (cState.orderType === "duePayment") {
+        let found = false;
+        fetch("/api/rest/WebSite/due-payments", {
+          method: "POST",
+          body: JSON.stringify({
+            LoginToken: Cookies.get("uat"),
+          }),
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            data.Payments.forEach((payment) => {
+              if (payment.Order.OrderId === cState.duePaymentId) {
+                found = true;
+              }
+            });
+            if (!found) {
+              dispatch({
+                type: "CLEAR_CART",
+              });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    }
+  }, [cState.orderType]);
 
   const [isCartEditable, setIsCartEditable] = useState(true);
 
