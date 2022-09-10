@@ -70,6 +70,7 @@ async function sendOrderToKMWeb(
   let shippableCount = cState.checkout.shippableCount;
 
   let totalPrice = 0;
+  let totalVAT = 0;
 
   let formattedOptionalProducts = [];
 
@@ -201,6 +202,12 @@ async function sendOrderToKMWeb(
     console.log(e);
   }
 
+  totalVAT = cState.vat.isVat
+    ? cState.vat.isValid && cState.vat.substractVAT
+      ? 0
+      : Math.round(totalPrice * (cState.vat.vat / 100))
+    : 0;
+
   const OrderDetails = {
     PaymentMethod: paymentMethod,
     BillingInfo: {
@@ -237,6 +244,7 @@ async function sendOrderToKMWeb(
     },
     Order: {
       OrderType: cState.orderType,
+      VATPrice: totalVAT,
       OrderId:
         cState.orderType === "duePayment"
           ? cState.duePaymentId

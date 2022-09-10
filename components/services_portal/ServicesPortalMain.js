@@ -28,18 +28,9 @@ export default function ServicesPortalMain(props) {
 
   useEffect(() => {
     setIsLoading(true);
-    getFullClientInfo()
-      .then((res) => {
-        setIsLoading(false);
-      })
-
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-      });
 
     const fetchData = async () => {
-      const paymentData = await handleFetchDuePayments();
+      await handleFetchDuePayments();
     };
     fetchData();
   }, []);

@@ -319,6 +319,29 @@ function WorkstationIdField({
       <style jsx>{`
         .workstation-id-field-wrapper {
           margin-bottom: 0.5em;
+          position: relative;
+        }
+        .workstation-id-field-wrapper::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: -0.8em;
+          width: 5px;
+          border-radius: 50px;
+          height: 95%;
+          background-color: ${isFocused
+            ? "var(--clr-primary)"
+            : error
+            ? "var(--clr-warn)"
+            : isValid && dirty
+            ? "var(--clr-correct)"
+            : "var(--clr-neutral-500)"};
+
+          opacity: ${isFocused ? 1 : 0.8};
+
+          z-index: 1;
+          transform: translateY(-50%);
+          transition: all 0.2s ease-in-out;
         }
         .workstation-id-field-details {
           display: flex;
@@ -421,6 +444,14 @@ function WorkstationIdField({
           margin-top: 1em !important;
         }
       `}</style>
+      {item.hardwareIdCount > 0 && item.shippableCount > 0 && (
+        <div className="special-info">
+          <span className="font-size-xs">
+            🔽 Temporary Workstation ID so you can use your product while you
+            wait for your dongle to arrive.
+          </span>
+        </div>
+      )}
       <div className="workstation-id-field-details">
         <div className="workstation-id-field-wrapper__icon">
           <img

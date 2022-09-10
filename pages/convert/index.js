@@ -120,6 +120,7 @@ function HeroSection({ size, weight, caps, spacing, text, cnt, btn }) {
   const [heroText, setHeroText] = useState(text || "Hero Text");
   const [constricted, setConstricted] = useState(cnt || false);
   const [isButton, setIsButton] = useState(btn || false);
+  const [isMobile, setIsMobile] = useState(false);
   return (
     <div className="hero_section">
       <style jsx>{`
@@ -152,6 +153,31 @@ function HeroSection({ size, weight, caps, spacing, text, cnt, btn }) {
           max-width: 500px;
 
         }
+        .hero_title_text.mobile{
+          position: relative;
+          max-width: 375px;
+          height: 812px;
+        
+        
+          padding: 1rem;
+          padding-top: 3rem;
+      
+        }
+        .hero_title_text.mobile::before{
+          content: "";
+          background-image: url("/images/apple12.png");
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 1;
+          
+        }
+
         .hero_font_adjust_input{
           position: relative;
           width: 100%;
@@ -244,7 +270,7 @@ function HeroSection({ size, weight, caps, spacing, text, cnt, btn }) {
         <div className="hero_section__title">
           <h1
             className={`${isButton ? "button" : "hero_title_text"} ${
-              constricted ? "constricted" : ""
+              isMobile ? "mobile" : constricted ? "constricted" : ""
             }`}
             data-font={`${heroFontSize}px`}
           >
@@ -287,6 +313,14 @@ function HeroSection({ size, weight, caps, spacing, text, cnt, btn }) {
                   value={heroLetterSpacing}
                   onChange={(e) => setHeroLetterSpacing(e.target.value)}
                 />
+              </div>
+              <div
+                className={`trigger_all-caps ${isMobile ? "active" : ""}`}
+                onClick={() => setIsMobile(!isMobile)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                  <path d="M7 23q-.825 0-1.412-.587Q5 21.825 5 21V3q0-.825.588-1.413Q6.175 1 7 1h10q.825 0 1.413.587Q19 2.175 19 3v18q0 .825-.587 1.413Q17.825 23 17 23Zm0-5v3h10v-3Zm5 2.5q.425 0 .713-.288.287-.287.287-.712t-.287-.712Q12.425 18.5 12 18.5t-.712.288Q11 19.075 11 19.5t.288.712q.287.288.712.288ZM7 16h10V6H7ZM7 4h10V3H7Zm0 14v3ZM7 4V3v1Z" />
+                </svg>
               </div>
             </div>
             <div className="section-text-actions">
