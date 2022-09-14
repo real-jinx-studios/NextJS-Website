@@ -12,6 +12,7 @@ import {
 import ErrorBoundaryMissingComponent from "../errors/ErrorBoundaryMissingComponent";
 import { useProducts } from "../../lib/productsContext";
 import quantityPriceMultiplier from "../../lib/quantityPriceMultiplier";
+import CustomInputRadio from "../inputs/CustomInputRadio";
 export default function ProductCard({
   setIsAddProductModalOpen,
   product,
@@ -23,12 +24,26 @@ export default function ProductCard({
   isEditMode = false,
   hasPresets = false,
   presetProduct = {},
+  selectedProduct,
+  setSelectedProduct,
 }) {
   const { cState, dispatch } = cartState();
   const { getProduct, getPayment, getPayments } = useProducts();
 
   const { id, name, options, supportedPayments, preferences, visible } =
     product;
+
+  //state and effect for overlay animation transition opacity and then remove the overlay based on selectedProduct prop
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  useEffect(() => {
+    if (selectedProduct !== id) {
+      setIsOverlayVisible(true);
+    } else {
+      setTimeout(() => {
+        setIsOverlayVisible(false);
+      }, 300);
+    }
+  }, [selectedProduct]);
 
   const [selectedOptions, setSelectedOptions] = useState(() => {
     if (options.length > 0) {
@@ -253,12 +268,19 @@ export default function ProductCard({
     if (!preferences.custom.length > 0) {
       return;
     }
+
+    if (!paymentPlansLocal.includes(paymentPlan)) {
+      console.log("payment plan not supported");
+      setPaymentPlan(paymentPlansLocal[0]);
+      setPaymentOption("");
+      return;
+    }
+
     let customKey = generateItemCustomKey(
       selectedOptions,
       paymentPlan,
       paymentOption
     );
-    console.log(customKey);
 
     handleOptionalProducts(customKey);
     handleFreeProducts(customKey);
@@ -380,6 +402,7 @@ export default function ProductCard({
       <style jsx>{`
         .product_card {
           display: grid;
+          position: relative;
 
           padding: 1.3em;
           background-color: var(--clr-white);
@@ -388,13 +411,112 @@ export default function ProductCard({
             0 1px 2px rgba(0, 0, 0, 0.24);
           grid-template-areas:
             "image name name price price"
-            "image description description price price"
             "license license license license license"
             "special special special special special"
             "payment payment payment payment payment"
             "installment installment installment installment installment"
             "duration duration duration duration duration"
             "add add add add add";
+        }
+        .product_card-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: var(--clr-neutral-50);
+          z-index: 2;
+          overflow: hidden;
+          opacity: ${selectedProduct === id ? "0" : "1"};
+          display: ${isOverlayVisible ? "block" : "none"};
+          transition: opacity 0.25s ease-in-out;
+        }
+        .product_card-overlay-content {
+          overflow: hidden;
+          position: relative;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 1em;
+          flex-direction: column;
+          border: 1px solid transparent;
+          border-radius: 0.5em;
+          transition: all 0.3s ease-in-out;
+        }
+        .product_card-overlay-content:hover {
+          cursor: pointer;
+          gap: 2em;
+          border: 1px solid var(--clr-${id});
+        }
+        .product_card-overlay-action {
+          opacity: 0;
+          border: 1px solid var(--clr-neutral-500);
+          border-radius: 0.5em;
+          padding: 0.3em 1em;
+          background-color: var(--clr-neutral-50);
+          transition: all 0.4s ease-in-out;
+        }
+
+        .product_card-overlay-content:hover .product_card-overlay-action {
+          opacity: 1;
+        }
+        .product_card-overlay-action:hover {
+          cursor: pointer;
+          color: var(--clr-neutral-50);
+          background-color: var(--clr-neutral-700);
+        }
+
+        .product_card-overlay-content::before {
+          content: "${name.substring(0, name.length / 2)}";
+
+          font-size: 22rem;
+          line-height: 0.5;
+          font-weight: 900;
+          color: var(--clr-${id});
+          position: absolute;
+          top: 0.05em;
+          left: -0.15em;
+          opacity: 0.12;
+          z-index: -1;
+        }
+        .product_card-overlay-content::after {
+          content: "${name.substring(name.length / 2, name.length)}";
+
+          font-size: 22rem;
+          line-height: 0.5;
+          font-weight: 900;
+          color: var(--clr-${id});
+          position: absolute;
+          bottom: 0.08em;
+          left: 0.1em;
+          opacity: 0.12;
+          z-index: -1;
+        }
+        .product_card-overlay-backgorund {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+
+          z-index: -1;
+        }
+        .product_card-overlay-icon {
+        }
+        .overlay-title {
+          font-size: 1.5em;
+          font-weight: 700;
+          line-height: 0.5;
+          letter-spacing: 0.08em;
+          color: var(--clr-neutral-800);
+        }
+        .overlay-description {
+          font-size: 1.2em;
+          font-weight: 400;
+          color: var(--clr-neutral-600);
+          text-align: center;
         }
         .product_card-icon {
           grid-area: image;
@@ -413,13 +535,19 @@ export default function ProductCard({
 
         .info-title {
           grid-area: name;
-          font-size: 1.3rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+        }
+        .info-title .title {
+          font-size: 1.1rem;
           font-weight: 400;
           margin-bottom: 0;
+          line-height: 1.5;
           color: var(--clr-neutral-800);
         }
-        .info-description {
-          grid-area: description;
+        .info-title .descritption {
           font-size: 1rem;
           color: var(--clr-neutral-700);
         }
@@ -444,6 +572,7 @@ export default function ProductCard({
           justify-content: space-around;
           align-items: center;
           margin-top: auto;
+          ${product.id !== "SAToken" ? "" : "flex-direction: column-reverse;"}
         }
         .info-add-product-special {
           grid-area: special;
@@ -481,15 +610,17 @@ export default function ProductCard({
           font-size: 1.1rem;
           color: var(--clr-neutral-800);
         }
+
         .license-wrapper {
           display: flex;
           width: 100%;
-          flex-direction: column;
+
           justify-content: space-around;
           align-items: flex-start;
           margin: 0.8em 0;
         }
-        .options-wrapper {
+        .options-wrapper,
+        .options-values {
           width: 100%;
           display: flex;
           align-items: center;
@@ -497,6 +628,7 @@ export default function ProductCard({
 
           justify-content: space-around;
         }
+
         .duration-options {
           grid-area: duration;
         }
@@ -513,10 +645,8 @@ export default function ProductCard({
             0 1px 2px rgba(0, 0, 0, 0.24);
         }
         .value {
-          font-size: 1.3rem;
-          font-weight: 500;
           color: var(--clr-neutral-600);
-          padding: 0.5em;
+          padding: 0 0.5em;
           user-select: none;
           pointer-events: none;
         }
@@ -609,12 +739,52 @@ export default function ProductCard({
           color: var(--clr-neutral-800);
           border: 1px solid var(--clr-primary);
         }
+        .quantity-control {
+          ${product.id !== "SAToken" ? "" : "margin-bottom:2em;"}
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          flex-direction: column;
+        }
+        .quantity-label span {
+          font-size: 0.8rem;
+          font-weight: 500;
+          color: var(--clr-neutral-600);
+        }
         .quantity-wrapper {
           display: flex;
           justify-content: center;
           align-items: center;
         }
       `}</style>
+      <div
+        className="product_card-overlay"
+        onClick={() => {
+          if (typeof setSelectedProduct === "function") {
+            setSelectedProduct(id);
+          }
+        }}
+      >
+        <div className="product_card-overlay-content">
+          <div className="product_card-overlay-backgorund"></div>
+          <div className="product_card-overlay-icon">
+            <img
+              src={`/images/icons/${id}.png`}
+              alt={`${name} icon`}
+              width="68px"
+              height="68px"
+            />
+          </div>
+          <span className="overlay-title">{name}</span>
+          <span className="overlay-description">
+            {preferences?.defaults?.productDescription}
+          </span>
+
+          <div className="product_card-overlay-action">Show more</div>
+        </div>
+      </div>
       <div className="product_card-icon">
         <img
           src={`/images/icons/${id}.png`}
@@ -624,11 +794,12 @@ export default function ProductCard({
         />
       </div>
       <div className="info-title">
-        <span>{name}</span>
+        <span className="title">{name}</span>
+        <span className="description">
+          {preferences?.defaults?.productDescription}
+        </span>
       </div>
-      <div className="info-description">
-        <span>{preferences?.defaults?.productDescription}</span>
-      </div>
+
       {preferences?.defaults?.customPrice === false ? (
         <PriceBreakdown
           currentPrice={currentPrice}
@@ -665,19 +836,21 @@ export default function ProductCard({
         return (
           <div className="license-options" key={option.name + index}>
             <h3 className="license-title">{option.name}:</h3>
-            <div className="license-wrapper">
+            <div className="flex-center-sa">
               {option.values.map((value, i) => (
                 <div key={value.id + i}>
-                  {" "}
-                  <input
-                    type="radio"
+                  <CustomInputRadio
+                    labelText={value.name}
+                    key={value.id + i + value.name}
                     id={name + value.id}
                     name={name + option.name}
                     defaultChecked={
                       hasPresets
                         ? presetProduct.options[option.id].indexOf(value.id) >
                           -1
-                        : i === 0
+                        : !option.default
+                        ? i === 0
+                        : option.default === value.id
                     }
                     value={value.id}
                     onChange={(e) => {
@@ -692,13 +865,22 @@ export default function ProductCard({
                         value.supportedPayments &&
                         value.supportedPayments.length > 0
                       ) {
+                        if (
+                          value.supportedPayments.indexOf(paymentPlan) === -1
+                        ) {
+                          console.log(
+                            "not supported",
+                            value.supportedPayments,
+                            value.supportedPayments[0],
+                            paymentPlan
+                          );
+                        }
                         setPaymentPlansLocal(value.supportedPayments);
                       } else {
                         setPaymentPlansLocal(supportedPayments);
                       }
                     }}
                   />
-                  <label htmlFor={name + option.name}>{value.name}</label>
                 </div>
               ))}
             </div>
@@ -707,7 +889,7 @@ export default function ProductCard({
       })}
       {optionalProducts.length > 0 && (
         <div className="info-add-product-special">
-          <h3 className="options-title">Addons:</h3>
+          <h3 className="options-title">Add-ons:</h3>
 
           {optionalProducts.map((op, index) => {
             return (
@@ -724,59 +906,82 @@ export default function ProductCard({
           })}
         </div>
       )}
-      <div className="payment-options">
-        <h3 className="options-title">Payment type:</h3>
-        <div className="options-wrapper">
-          {paymentPlansLocal.map((plan, index) => {
-            return (
-              <div key={index + plan + name}>
-                <input
-                  type="radio"
-                  id={plan}
-                  name={name}
-                  defaultChecked={
-                    hasPresets
-                      ? presetProduct.paymentPlan === plan
-                      : index === 0
-                  }
-                  value={plan}
-                  onChange={(e) => {
-                    setPaymentPlan(plan);
-                    setPaymentPlanDetails(
-                      paymentPlans.find((option) => option.id === plan).options
-                    );
 
-                    setAdditionalCharges(0);
-                    setSelectedOptionalProducts([]);
-                    setPaymentOption(() => {
-                      if (plan === "installment") {
-                        return installmentPlan + "";
-                      } else {
-                        return "";
-                      }
-                    });
-                    if (plan === "rent") {
-                      setRentDuration(() => {
-                        return (
-                          paymentPlans.find((option) => option.id === plan)
-                            ?.options[0].default / 30
-                        );
-                      });
+      {paymentPlansLocal.length > 1 && (
+        <div className="payment-options">
+          <h3 className="options-title">Payment type:</h3>
+          <div className="flex-center-sa">
+            {paymentPlansLocal.map((plan, index) => {
+              return (
+                <div key={index + plan + name}>
+                  <CustomInputRadio
+                    key={index + plan + name + "radio"}
+                    labelText={plan}
+                    id={plan}
+                    name={name}
+                    checked={
+                      hasPresets
+                        ? presetProduct.paymentPlan === plan
+                        : paymentPlan === plan
+                        ? true
+                        : index === 0
                     }
-                  }}
-                />
-                <label htmlFor={name} style={{ textTransform: "capitalize" }}>
-                  {plan}
-                </label>
-              </div>
-            );
-          })}
+                    value={plan}
+                    onChange={(e) => {
+                      setPaymentPlan(plan);
+                      setPaymentPlanDetails(
+                        paymentPlans.find((option) => option.id === plan)
+                          .options
+                      );
+
+                      setAdditionalCharges(0);
+                      setSelectedOptionalProducts([]);
+                      setPaymentOption(() => {
+                        if (plan === "installment") {
+                          return installmentPlan + "";
+                        } else {
+                          return "";
+                        }
+                      });
+                      if (plan === "rent") {
+                        setRentDuration(() => {
+                          return (
+                            paymentPlans.find((option) => option.id === plan)
+                              ?.options[0].default / 30
+                          );
+                        });
+                      }
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+          {freeProducts.length > 0 && (
+            <div className="info-add-product-special">
+              {freeProducts.map((op, index) => {
+                return (
+                  <span>
+                    *
+                    <strong
+                      style={{
+                        fontWeight: "600",
+                      }}
+                    >
+                      {op?.name}
+                    </strong>{" "}
+                    included in the price.
+                  </span>
+                );
+              })}
+            </div>
+          )}
         </div>
-      </div>
+      )}
       {paymentPlans.find((plan) => plan.id === paymentPlan).options.length >
         0 && (
         <div className="payment-plan-options">
-          <div className="options-wrapper">
+          <div className="flex-center-sa">
             {paymentPlans
               .find((plan) => plan.id === paymentPlan)
               .options.map((plan, index) => {
@@ -787,179 +992,183 @@ export default function ProductCard({
                     className="text-center"
                   >
                     <h3 className="options-title">{plan.name}</h3>
-                    {plan.type === "discrete" &&
-                      plan.values.map((value, index) => {
-                        return (
-                          <div key={value.id + index + plan.name}>
-                            <input
-                              type="radio"
-                              id={value.id}
-                              disabled={
-                                paymentPlan !== "installment"
-                                  ? ""
-                                  : cState.checkout.installmentCount === 0
-                                  ? ""
-                                  : cState.checkout.installmentPlan === value.id
-                                  ? ""
-                                  : "true"
-                              }
-                              name={name + "_" + paymentPlan}
-                              defaultChecked={
-                                hasPresets
-                                  ? presetProduct.paymentOption === value.id ||
-                                    value.id === installmentPlan + ""
-                                  : paymentPlan !== "installment"
-                                  ? value.id === installmentPlan + ""
-                                  : cState.checkout.installmentCount === 0
-                                  ? value.id === installmentPlan + ""
-                                  : cState.checkout.installmentPlan === value.id
-                                  ? "true"
-                                  : value.id === installmentPlan + ""
-                                  ? "true"
-                                  : value.id === installmentPlan + ""
-                              }
-                              value={value.id}
-                              onChange={(e) => {
-                                setPaymentOption(value.id);
-                                setPaymentPlanDetails((prev) => {
-                                  return prev.map((option) => {
-                                    if (option.id === plan.id) {
-                                      return {
-                                        ...option,
-                                        currentValue: e.target.value,
-                                      };
-                                    }
-                                    return option;
+                    <div className="options-values">
+                      {plan.type === "discrete" &&
+                        plan.values.map((value, index) => {
+                          return (
+                            <div key={value.id + index + plan.name}>
+                              <CustomInputRadio
+                                labelText={value.name}
+                                key={value.id + index + plan.name + "radio"}
+                                id={value.id}
+                                disabled={
+                                  paymentPlan !== "installment"
+                                    ? ""
+                                    : cState.checkout.installmentCount === 0
+                                    ? ""
+                                    : cState.checkout.installmentPlan ===
+                                      value.id
+                                    ? ""
+                                    : "true"
+                                }
+                                name={name + "_" + paymentPlan}
+                                checked={
+                                  hasPresets
+                                    ? presetProduct.paymentOption ===
+                                        value.id ||
+                                      value.id === installmentPlan + ""
+                                    : paymentPlan !== "installment"
+                                    ? value.id === installmentPlan + ""
+                                    : cState.checkout.installmentCount === 0
+                                    ? value.id === installmentPlan + ""
+                                    : cState.checkout.installmentPlan ===
+                                      value.id
+                                    ? "true"
+                                    : value.id === installmentPlan + ""
+                                    ? "true"
+                                    : value.id === installmentPlan + ""
+                                }
+                                value={value.id}
+                                onChange={(e) => {
+                                  setPaymentOption(value.id);
+                                  setPaymentPlanDetails((prev) => {
+                                    return prev.map((option) => {
+                                      if (option.id === plan.id) {
+                                        return {
+                                          ...option,
+                                          currentValue: e.target.value,
+                                        };
+                                      }
+                                      return option;
+                                    });
                                   });
+                                  if (paymentPlan === "installment") {
+                                    setInstallmentPlan(e.target.value);
+                                  }
+                                }}
+                              />
+                            </div>
+                          );
+                        })}
+                      {plan.type === "numeric" && (
+                        <div className="rent-duration-control">
+                          <div
+                            className="decrease"
+                            onClick={() =>
+                              setPaymentPlanDetails((prev) => {
+                                return prev.map((option) => {
+                                  if (option.id === plan.id) {
+                                    return {
+                                      ...option,
+                                      currentValue:
+                                        option.currentValue === undefined
+                                          ? plan.default
+                                          : option.currentValue -
+                                              plan.default >=
+                                            plan.min
+                                          ? option.currentValue - plan.default
+                                          : option.currentValue,
+                                    };
+                                  }
+                                  return option;
                                 });
-                                if (paymentPlan === "installment") {
-                                  setInstallmentPlan(e.target.value);
-                                }
-                              }}
-                            />
-                            <label htmlFor={name + "_" + paymentPlan}>
-                              {value.name}
-                            </label>
+                              })
+                            }
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-6 w-6"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={2}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M20 12H4"
+                              />
+                            </svg>
                           </div>
-                        );
-                      })}
-                    {plan.type === "numeric" && (
-                      <div className="rent-duration-control">
-                        <div
-                          className="decrease"
-                          onClick={() =>
-                            setPaymentPlanDetails((prev) => {
-                              return prev.map((option) => {
-                                if (option.id === plan.id) {
-                                  return {
-                                    ...option,
-                                    currentValue:
-                                      option.currentValue === undefined
-                                        ? plan.default
-                                        : option.currentValue - plan.default >=
-                                          plan.min
-                                        ? option.currentValue - plan.default
-                                        : option.currentValue,
-                                  };
-                                }
-                                return option;
-                              });
-                            })
-                          }
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={2}
+                          <div className="value">
+                            <span>
+                              {paymentPlan === "rent" &&
+                                (paymentPlanDetails.find(
+                                  (option) => option.id === plan.id
+                                ).currentValue || plan.default) / 30}
+                              {paymentPlan !== "rent" &&
+                                (paymentPlanDetails.find(
+                                  (option) => option.id === plan.id
+                                ).currentValue ||
+                                  plan.default)}
+                            </span>{" "}
+                          </div>
+                          <div
+                            className="increase"
+                            onClick={() =>
+                              setPaymentPlanDetails((prev) => {
+                                return prev.map((option) => {
+                                  if (option.id === plan.id) {
+                                    return {
+                                      ...option,
+                                      currentValue:
+                                        option.currentValue === undefined
+                                          ? plan.default + +plan.default
+                                          : option.currentValue + plan.default <
+                                            plan.max
+                                          ? option.currentValue + plan.default
+                                          : option.currentValue,
+                                    };
+                                  }
+                                  return option;
+                                });
+                              })
+                            }
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M20 12H4"
-                            />
-                          </svg>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-6 w-6"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={2}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 4v16m8-8H4"
+                              />
+                            </svg>
+                          </div>
                         </div>
-                        <div className="value">
-                          <span>
-                            {paymentPlan === "rent" &&
-                              (paymentPlanDetails.find(
+                      )}
+                      {plan.type === "date" && (
+                        <div className="rent-duration-control">
+                          <CustomInput
+                            type="date"
+                            name="date"
+                            id="date"
+                            special="date"
+                            value={
+                              paymentPlanDetails.find(
                                 (option) => option.id === plan.id
-                              ).currentValue || plan.default) / 30}
-                            {paymentPlan !== "rent" &&
-                              (paymentPlanDetails.find(
-                                (option) => option.id === plan.id
-                              ).currentValue ||
-                                plan.default)}
-                          </span>{" "}
-                        </div>
-                        <div
-                          className="increase"
-                          onClick={() =>
-                            setPaymentPlanDetails((prev) => {
-                              return prev.map((option) => {
-                                if (option.id === plan.id) {
-                                  return {
-                                    ...option,
-                                    currentValue:
-                                      option.currentValue === undefined
-                                        ? plan.default + +plan.default
-                                        : option.currentValue + plan.default <
-                                          plan.max
-                                        ? option.currentValue + plan.default
-                                        : option.currentValue,
-                                  };
-                                }
-                                return option;
+                              ).currentValue || plan.default
+                            }
+                            handleChange={(e) => {
+                              setPaymentPlanDetails((prev) => {
+                                return prev.map((option) => {
+                                  if (option.id === plan.id) {
+                                    return {
+                                      ...option,
+                                      currentValue: e.target.value,
+                                    };
+                                  }
+                                  return option;
+                                });
                               });
-                            })
-                          }
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={2}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 4v16m8-8H4"
-                            />
-                          </svg>
+                            }}
+                          />
                         </div>
-                      </div>
-                    )}
-                    {plan.type === "date" && (
-                      <div className="rent-duration-control">
-                        <CustomInput
-                          type="date"
-                          name="date"
-                          id="date"
-                          special="date"
-                          value={
-                            paymentPlanDetails.find(
-                              (option) => option.id === plan.id
-                            ).currentValue || plan.default
-                          }
-                          handleChange={(e) => {
-                            setPaymentPlanDetails((prev) => {
-                              return prev.map((option) => {
-                                if (option.id === plan.id) {
-                                  return {
-                                    ...option,
-                                    currentValue: e.target.value,
-                                  };
-                                }
-                                return option;
-                              });
-                            });
-                          }}
-                        />
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 );
               })}
@@ -980,10 +1189,6 @@ export default function ProductCard({
         )}
         {isEditMode && (
           <>
-            <span className="product-quantity">
-              <small>✖</small>
-              {quantity}
-            </span>
             <button
               className="button button_basic_long_on_light_bg confirm-edit-product-button"
               onClick={handleAddItemClick}
@@ -998,64 +1203,83 @@ export default function ProductCard({
             </button>
           </>
         )}
-        {product.id !== "SAToken" && (
-          <div className="quantity-wrapper">
-            <div
-              className="decrease"
-              onClick={() => handleQuantityChange("down")}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M20 12H4"
-                />
-              </svg>
-            </div>
-
-            <div className="value">{quantity}</div>
-
-            <div
-              className="increase"
-              onClick={() => handleQuantityChange("up")}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-            </div>
+        <div className="quantity-control">
+          <div className="quantity-label">
+            <span>Quantity</span>
           </div>
-        )}
-        {product.id === "SAToken" && (
-          <CustomInput
-            type="text"
-            placeholder="Min. 50 tokens"
-            value={quantity}
-            handleBlur={(e) => {
-              if (e.target.value < 50) {
-                handleQuantityChange("set", 50);
+          {product?.id !== "SAToken" && (
+            <div className="quantity-wrapper">
+              <div
+                className="decrease"
+                onClick={() => handleQuantityChange("down")}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M20 12H4"
+                  />
+                </svg>
+              </div>
+
+              <div className="value">{quantity}</div>
+
+              <div
+                className="increase"
+                onClick={() => handleQuantityChange("up")}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+              </div>
+            </div>
+          )}
+          {product.id === "SAToken" && (
+            <CustomInput
+              cssBefore={
+                "x " +
+                priceFormatter(
+                  quantityPriceMultiplier(
+                    quantity,
+                    formatMultiplierTable(
+                      product.preferences.defaults.quantityMultiplierTable
+                    )
+                  ) * currentPrice
+                )
               }
-            }}
-            handleChange={(e) =>
-              handleQuantityChange("set", e.target.value.replace(/[^0-9]/g, ""))
-            }
-          />
-        )}
+              type="text"
+              placeholder="Min. 50 tokens"
+              value={quantity}
+              handleBlur={(e) => {
+                if (e.target.value < 50) {
+                  handleQuantityChange("set", 50);
+                }
+              }}
+              handleChange={(e) =>
+                handleQuantityChange(
+                  "set",
+                  e.target.value.replace(/[^0-9]/g, "")
+                )
+              }
+            />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -1081,10 +1305,27 @@ function PriceBreakdown({
   const totalPrice =
     modifiedPrice * quantity * rentDuration + additionalCharges;
   return (
-    <div className="info-price">
+    <div className="  info-price_wrapper ">
       <style jsx>{`
-        .info-price {
+        .info-price_wrapper {
           grid-area: price;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+          padding: 0 1rem;
+        }
+        .info-price_wrapper-inner {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          position: relative;
+        }
+
+        .info-price {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -1093,7 +1334,7 @@ function PriceBreakdown({
           flex-direction: column;
           position: relative;
         }
-        .info-price::before {
+        .info-price_wrapper-inner::before {
           position: absolute;
           content: "";
 
@@ -1117,42 +1358,10 @@ function PriceBreakdown({
           color: var(--clr-neutral-700);
         }
       `}</style>
-      <>
-        <span className="price">{priceFormatter(modifiedPrice)}</span>
-        {selectedOptionalProducts.length > 0 &&
-          selectedOptionalProducts.map((optProduct, index) => (
-            <span className="price-details" key={optProduct.id + index}>
-              {quantity}x{priceFormatter(optProduct.price)}
-            </span>
-          ))}
-
-        {paymentPlan === "rent" && (
-          <>
-            <span className="price-details">x</span>
-            <span className="price-details">
-              {rentDuration} {rentDuration > 1 ? "mnts" : "mnt"}
-            </span>
-            <span className="price-details">
-              = {priceFormatter(currentPrice * rentDuration)}
-              <small>/mnt</small>
-            </span>
-          </>
-        )}
-
-        <span className="price-details">
-          <small>x {quantity}</small>
-        </span>
-
-        <span className="price-details">{priceFormatter(totalPrice)}</span>
-        {paymentPlan === "installment" && (
-          <>
-            <span className="price-details">
-              <small>then {installmentPlan / 3 - 1}x</small>
-            </span>
-            <span className="price-details">{priceFormatter(totalPrice)}</span>
-          </>
-        )}
-      </>
+      <div className="info-price_wrapper-inner">
+        {paymentPlan === "installment" && <small>{installmentPlan} x</small>}
+        <span className="info-price">{priceFormatter(totalPrice)}</span>
+      </div>
     </div>
   );
 }

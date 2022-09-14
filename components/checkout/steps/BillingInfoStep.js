@@ -1,10 +1,7 @@
 import styles from "./steps.module.css";
-import CustomInput from "../../inputs/customInput";
+
 import React, { useEffect, useRef, useState } from "react";
 
-import { promiseResolver } from "../../../lib/promiseResolver";
-import Cookies from "js-cookie";
-import LoaderDots from "../../utils/loaderDots";
 import BillingInfoForm from "../../forms/BillingInfoForm";
 import { cartState } from "../../../lib/cartContext";
 import { useClient } from "../../../lib/context";

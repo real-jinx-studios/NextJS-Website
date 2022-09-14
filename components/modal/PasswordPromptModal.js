@@ -1,19 +1,34 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import FancyLoader from "../utils/FancyLoader";
 import CustomInput from "../inputs/customInput";
+import { useClient } from "../../lib/context";
 export default function PasswordPromptModal({
   setIsPasswordPromptModalOpen,
   onConfirm,
+  oldEmail,
 }) {
   const passwordRef = useRef();
+  const { verifyPassword } = useClient();
+  const [loading, setLoading] = useState(false);
   const [formErrors, setFormErrors] = useState({});
-  const handleClick = () => {
+  const [invalidPassword, setInvalidPassword] = useState(false);
+  const handleClick = async () => {
+    setLoading(true);
     const err = checkFormForErrors();
     if (Object.keys(err).length > 0) {
+      setLoading(false);
       return;
     }
-    console.log(onConfirm);
 
-    onConfirm(passwordRef.current.value);
+    const res = await verifyPassword(oldEmail, passwordRef.current.value);
+
+    if (res.status === 400 || res.status === 401) {
+      setInvalidPassword(true);
+      setLoading(false);
+      return;
+    }
+
+    onConfirm(res.loginToken);
     setIsPasswordPromptModalOpen(false);
   };
 
@@ -27,6 +42,13 @@ export default function PasswordPromptModal({
     setFormErrors(errorObject);
     return errorObject;
   };
+  useEffect(() => {
+    passwordRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    console.log("PasswordPromptModal mounted", formErrors);
+  }, [formErrors]);
   return (
     <div className=" flex-center-center-column">
       <style jsx>{`
@@ -54,11 +76,17 @@ export default function PasswordPromptModal({
           align-items: center;
           justify-content: space-around;
         }
+        .invalid-password {
+          color: var(--clr-warn);
+        }
       `}</style>
       <h2 className="modal-title">Confirm Password</h2>
       <p className="modal-subtitle">Please confirm your password to continue</p>
       <div className="modal-body">
         <div className="modal-inputs">
+          {invalidPassword && (
+            <h3 className="invalid-password">Invalid password</h3>
+          )}
           <CustomInput
             type="password"
             placeholder="Password"
@@ -69,13 +97,17 @@ export default function PasswordPromptModal({
             isRequired={true}
           />
         </div>
+
         <div className="modal-actions">
-          <button
-            onClick={handleClick}
-            className="button button_basic_long_on_light_bg"
-          >
-            Submit
-          </button>
+          {!loading && (
+            <button
+              onClick={handleClick}
+              className="button button_basic_long_on_light_bg"
+            >
+              Submit
+            </button>
+          )}
+          {loading && <FancyLoader />}
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ const paypal = require("@paypal/checkout-server-sdk");
 import redirect from "../../../../lib/redirectService";
 import sanitizeVAT from "../../../../lib/sanitizeVAT";
 const Environment =
-  process.env.NODE_ENV === "production"
+  process.env.NODE_ENV === "production" && process.env.PAYPAL_ENV === "live"
     ? paypal.core.LiveEnvironment
     : paypal.core.SandboxEnvironment;
 const paypalClient = new paypal.core.PayPalHttpClient(

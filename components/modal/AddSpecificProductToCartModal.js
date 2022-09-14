@@ -17,6 +17,7 @@ export default function AddSpecificProductToCartModal({
   const [products, setProducts] = useState([]);
   const [productId, setProductId] = useState(null);
   const { getProducts, getPayments } = useProducts();
+  const [selectedProduct, setSelectedProduct] = useState("");
   const router = useRouter();
   useEffect(() => {
     setIsLoading(true);
@@ -50,6 +51,12 @@ export default function AddSpecificProductToCartModal({
     }
     setIsRouteLoading(false);
   }, [currentRoute]);
+
+  useEffect(() => {
+    if (productId) {
+      setSelectedProduct(productId);
+    }
+  }, [productId]);
 
   return (
     <div className="add_product_wrapper flex-center-center-column">
@@ -92,6 +99,8 @@ export default function AddSpecificProductToCartModal({
                       paymentTaxes={products.paymentTaxes}
                       index={index}
                       product={product}
+                      selectedProduct={selectedProduct}
+                      setSelectedProduct={setSelectedProduct}
                       setIsAddProductModalOpen={() => {
                         setIsAddSpecificProductToCartModalOpen(false);
                         router.push("/checkout");
@@ -107,6 +116,8 @@ export default function AddSpecificProductToCartModal({
                     paymentTaxes={products.paymentTaxes}
                     index={index}
                     product={product}
+                    selectedProduct={selectedProduct}
+                    setSelectedProduct={setSelectedProduct}
                     setIsAddProductModalOpen={() => {
                       setIsAddSpecificProductToCartModalOpen(false);
                       router.push("/checkout");

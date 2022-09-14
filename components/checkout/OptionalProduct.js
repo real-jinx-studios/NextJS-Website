@@ -2,6 +2,7 @@ import { useState } from "react";
 import priceFormatter from "../utils/priceFormatter";
 import { cartState } from "../../lib/cartContext";
 import { useProducts } from "../../lib/productsContext";
+import CustomInputCheckbox from "../inputs/CustomInputCheckbox";
 export default function OptionalProduct({
   product,
   hasPresets,
@@ -51,6 +52,7 @@ export default function OptionalProduct({
 
   const handleChange = (e) => {
     setChecked(!checked);
+    console.log("checked", options, product.options);
     if (e.target.checked) {
       setSelectedOptionalProducts((prev) => [
         ...prev,
@@ -59,6 +61,7 @@ export default function OptionalProduct({
           name,
           price: currentPrice,
           quantity: 1,
+          options: options,
           shippable: preferences.defaults.shippable,
           workstationId: preferences.defaults.workstationId,
         },
@@ -74,18 +77,16 @@ export default function OptionalProduct({
 
   return (
     <div key={product.id + product.name}>
-      <style jsx>{``}</style>
-
-      <input
-        type="checkbox"
-        id="special"
-        name={`special-${name}`}
+      <CustomInputCheckbox
+        labelText={`Add ${name} for ${priceFormatter(
+          currentPrice
+        )} per license`}
         checked={checked}
+        id={`special-${name}`}
+        name={`special-${name}`}
         onChange={handleChange}
+        label={`Add ${name} for ${priceFormatter(currentPrice)} per license`}
       />
-      <label htmlFor={`special-${name}`}>
-        Add {name} for {priceFormatter(currentPrice)} w/o VAT
-      </label>
     </div>
   );
 }

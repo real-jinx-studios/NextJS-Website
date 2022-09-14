@@ -78,8 +78,36 @@ export default function CustomInput(props) {
 
   //default input component
   return (
-    <div className={styles.input_wrapper}>
+    <div className="input-wrapper">
       <style jsx>{`
+        .input-wrapper {
+          position: relative;
+        }
+
+        .input-wrapper::before {
+          content: "${props.cssBefore}";
+
+          position: absolute;
+          top: calc(1.72rem / 2);
+          top: 1px;
+          display: ${props.cssBefore ? "flex" : "none"};
+          align-items: center;
+          justify-content: center;
+          height: 42px;
+          right: 0.5rem;
+          padding-right: 5px;
+          padding-left: 3px;
+          right: 2px;
+          z-index: 1;
+          background-color: #fefefecc;
+          line-height: 1;
+
+          color: var(--clr-neutral-500);
+          font-size: 0.75rem;
+          font-weight: bold;
+
+          pointer-events: none;
+        }
         .error_icon_wrapper {
           cursor: pointer;
           display: flex;
@@ -112,6 +140,7 @@ export default function CustomInput(props) {
           color: var(--clr-warn) !important;
         }
       `}</style>
+
       <input
         name={props.name}
         ref={reference}
@@ -139,6 +168,7 @@ export default function CustomInput(props) {
           }
         }}
       />
+
       <label htmlFor={props.id} className={styles.input_label}>
         {props.placeholder}
         {props.isRequired && "*"}
@@ -241,8 +271,12 @@ function Password({ props }) {
   };
 
   return (
-    <div className={styles.input_wrapper}>
+    <div className="input-wrapper">
       <style jsx>{`
+        .input-wrapper {
+          position: relative;
+        }
+
         .password_icon_wrapper {
           cursor: pointer;
           display: flex;

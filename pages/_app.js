@@ -2,10 +2,9 @@ import "../styles/global.css";
 import NavbarWide from "../components/navigation/navbarWide";
 import Footer from "../components/navigation/footer";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 import React, { useCallback, useEffect, useState, useRef } from "react";
-
 import NavbarSmall from "../components/navigation/navbarSmall";
-
 import { ToastContainer } from "react-toastify";
 import { CartContext } from "../lib/cartContext";
 import { ClientProvider } from "../lib/context";
@@ -59,6 +58,9 @@ export default function App({ Component, pageProps: { ...pageProps } }) {
   const isBreakpoint = useMediaQuery(1111);
   return (
     <CartContext>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <ClientProvider>
         <ProductsProvider>
           <CountriesProvider>

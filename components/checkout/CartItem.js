@@ -124,8 +124,8 @@ export default function CartItem({
             "paymentOption paymentOption paymentOption paymentOption paymentOption paymentOption"
             "img name type quantity price delete"
             "img name type quantity price delete"
-            "hardware hardware hardware hardware hardware hardware"
             "multiplicationTable multiplicationTable multiplicationTable multiplicationTable multiplicationTable multiplicationTable"
+            "hardware hardware hardware hardware hardware hardware"
             "footer footer footer footer footer footer";
         }
         .cart-item-wrapper::before {
@@ -222,6 +222,9 @@ export default function CartItem({
           align-items: center;
           flex-direction: column;
         }
+        .cart-item_price .title {
+          font-size: 0.9rem;
+        }
         .cart-item_delete {
           grid-area: delete;
           display: flex;
@@ -246,21 +249,10 @@ export default function CartItem({
           font-weight: 500;
           color: var(--clr-primary-800);
         }
-        .price-total::before {
-          position: absolute;
-          content: "";
-
-          top: 1px;
-          left: 0;
-          right: 0;
-          width: 100%;
-          height: 1px;
-          background-color: var(--clr-neutral-800);
-        }
 
         .cart-item_hardware_wrapper {
           grid-area: hardware;
-          padding-right: 2em;
+
           display: flex;
           flex-direction: column;
         }
@@ -281,42 +273,7 @@ export default function CartItem({
           background-color: var(--clr-neutral-150);
           transition: all 0.3s var(--cubic-bezier);
         }
-        .cart-item_delete_svg-wrapper::before {
-          content: "";
-          position: absolute;
-          top: 50%;
-          left: 0;
-          width: 100%;
-          height: 3px;
-          background-color: var(--clr-warn-opacity-75);
-          opacity: 0;
-          transform-origin: right center;
-          transform: translateY(-50%) translateX(-100%) scaleX(0);
-          transition: all 0.3s ease;
-        }
-        .cart-item_delete_svg-wrapper:hover::before {
-          opacity: 1;
-          transform: translateY(-50%) translateX(-100%) scaleX(0.8);
-        }
-        .cart-item_delete_svg-wrapper::after {
-          border-radius: 25px;
-          content: "";
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 3px;
-          height: 100%;
-          background-color: var(--clr-warn-opacity-75);
-          opacity: 0;
-          transform-origin: center center;
-          transform: translateX(-29px) scaleY(0);
-          transition: all 0.15s ease 0s;
-        }
-        .cart-item_delete_svg-wrapper:hover::after {
-          opacity: 1;
-          transform: translateX(-29px) scaleY(1);
-          transition: all 0.3s ease 0.2s;
-        }
+
         .cart-item_delete_svg-wrapper svg {
           cursor: pointer;
           width: 1.5em;
@@ -464,10 +421,18 @@ export default function CartItem({
       <div className="cart-item_title">
         <span>{name}</span>
         {Object.keys(options).map((option, index) => (
-          <span className="font-size-xs" key={index + options[option][0]}>
+          <span
+            className="font-size-xs capitalize"
+            key={index + options[option][0]}
+          >
             {options[option][0]}
           </span>
         ))}
+        {!Object.keys(options).length && (
+          <span className="font-size-xs">
+            {product?.preferences?.defaults?.productDescription}
+          </span>
+        )}
       </div>
 
       <div className="cart-item_purchase">
@@ -504,7 +469,7 @@ export default function CartItem({
           <div
             className={`cart-item_licenses ${id === "SAToken" && "token-type"}`}
           >
-            <span>{id === "SAToken" ? "Tokens" : "Licenses"}</span>
+            <span>{id === "SAToken" ? "Tokens" : "Quantity"}</span>
             <div className="cart-item_number">
               <div className="cart-item_number-inner">
                 {id !== "SAToken" && (
@@ -530,7 +495,7 @@ export default function CartItem({
                       </div>
                     )}
 
-                    <div className="value">{quantity}</div>
+                    <div className="value no-select">{quantity}</div>
 
                     {!isCartLocked && (
                       <div
@@ -583,81 +548,26 @@ export default function CartItem({
         </>
       )}
       <div className="cart-item_price">
-        <span className="price-details">{priceFormatter(price)}</span>
-        {id !== "Custom" && (
-          <>
-            <span className="price-details_operation">✖</span>
-            <span className="price-details">qty. {quantity}</span>
-          </>
-        )}
-
-        {paymentPlan === "rent" && (
-          <>
-            <span className="price-details_operation">✖</span>
-            <span className="price-details">
-              {rentDuration} {rentDuration > 1 ? ".mnts" : ".mnt"}
-            </span>
-          </>
-        )}
-        {optionalProducts.map((optionalProduct, index) => {
-          return (
-            <Fragment key={optionalProduct.name + productReferenceId + index}>
-              <span className="price-details_operation">+</span>
-              <span className="price-details">
-                {priceFormatter(optionalProduct.price)}
-              </span>
-              <span className="price-details_operation">✖</span>
-              <span className="price-details">qty. {quantity}</span>
-            </Fragment>
-          );
-        })}
-
-        {freeProducts.map((freeProduct, index) => {
-          return (
-            <Fragment key={freeProduct.name + productReferenceId + index}>
-              <span className="price-details_operation">+</span>
-              <span className="price-details">
-                {priceFormatter(freeProduct.price)}
-              </span>
-              <span className="price-details_operation">✖</span>
-              <span className="price-details">qty. {quantity}</span>
-            </Fragment>
-          );
-        })}
-        <span className="price-details_operation line"> </span>
+        <span className="title">Product Total</span>
         <span className="price-total">
-          {priceFormatter(
-            price * quantity * rentDuration +
-              optionalProducts.reduce(
-                (acc, curr) => acc + curr.price * quantity,
-                0
-              )
-          )}
+          {priceFormatter(price * quantity * rentDuration)}
         </span>
       </div>
 
       <div className="cart-item_hardware_wrapper">
         {optionalProducts.length > 0 && (
           <>
-            <h3 className="cart-item_hardware_title">Addons:</h3>
+            <h3 className="cart-item_hardware_title"></h3>
             {optionalProducts.map((op, index) => (
-              <div key={op.id + id + index}>
-                <span>
-                  ✔ {quantity}x {op.name}
-                </span>
-              </div>
+              <AddonItem item={op} quantity={quantity} key={op.name + index} />
             ))}
           </>
         )}
         {freeProducts.length > 0 && (
           <>
-            <h3 className="cart-item_hardware_title">Free Addons:</h3>
+            <h3 className="cart-item_hardware_title"></h3>
             {freeProducts.map((op, index) => (
-              <div key={op.id + id + index}>
-                <span>
-                  ✔ {quantity}x {op.name}
-                </span>
-              </div>
+              <AddonItem item={op} quantity={quantity} key={op.name + index} />
             ))}
           </>
         )}
@@ -774,6 +684,88 @@ export default function CartItem({
           setIsAddProductModalOpen={setIsEditModalOpen}
         />
       </GenericModal>
+    </div>
+  );
+}
+
+function AddonItem({ item, quantity }, props) {
+  const { id, name, price, options } = item;
+  return (
+    <div className="cart-item_addon_wrapper">
+      <style jsx>{`
+        .cart-item_addon_wrapper {
+          position: relative;
+          display: grid;
+
+          padding: 0.5em 0em;
+          grid-column-gap: 0.2em;
+          grid-template-rows: repeat(2, minmax(0px, auto));
+          grid-template-columns: 3.2em repeat(3, minmax(0px, 0.65fr)) 1fr;
+          grid-template-areas: "img name . quantity price .";
+        }
+        .cart-item_addon_icon {
+          grid-area: img;
+        }
+        .cart-item_addon_title {
+          grid-area: name;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+          flex-direction: column;
+        }
+        .cart-item_addon_title > span {
+          font-size: 0.86em;
+        }
+        .cart-item_addon_quantity {
+          grid-area: quantity;
+          text-align: center;
+        }
+        .cart-item_addon_price {
+          grid-area: price;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: column;
+        }
+        .cart-item_addon_price .title {
+          font-size: 0.86rem;
+        }
+
+        .cart-item_addon_quantity > span {
+          font-size: 0.86rem;
+        }
+
+        .cart-item_addon_number > span {
+          margin: 0 auto;
+        }
+        .price-total {
+          position: relative;
+          font-size: 1rem;
+          font-weight: 500;
+          color: var(--clr-primary-800);
+        }
+      `}</style>
+      <div className="cart-item_addon_icon">
+        <img
+          src={"/images/icons/" + id + ".png"}
+          width={39}
+          height={39}
+          layout="intrinsic"
+        />
+      </div>
+      <div className="cart-item_addon_title">
+        <span>{name}</span>
+      </div>
+      <div className="cart-item_addon_quantity">
+        <span>Quantity</span>
+        <div className="cart-item_number">
+          <div className="value">{quantity}</div>
+        </div>
+      </div>
+      <div className="cart-item_addon_price">
+        <span className="title">Item Total</span>
+        <span className="price-total">{priceFormatter(price * quantity)}</span>
+      </div>
     </div>
   );
 }

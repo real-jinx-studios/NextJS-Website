@@ -1,14 +1,17 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
 import ChangeEmailConfirmationForm from "../../../components/forms/ChangeEmailConfirmationForm";
 
 export default function VerifyEmailPage() {
   const router = useRouter();
+
   const [emailToken, setEmailToken] = useState("");
 
   useEffect(() => {
     if (!router.isReady) return;
-    setEmailToken(router.query.eToken);
+
+    setEmailToken(router.query.customer);
   }, [router.isReady]);
 
   return (

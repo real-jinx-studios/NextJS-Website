@@ -2,7 +2,7 @@ import { generateAccessToken } from "./client-token";
 
 const paypal = require("@paypal/checkout-server-sdk");
 const Environment =
-  process.env.NODE_ENV === "production"
+  process.env.NODE_ENV === "production" && process.env.PAYPAL_ENV === "live"
     ? paypal.core.LiveEnvironment
     : paypal.core.SandboxEnvironment;
 const paypalClient = new paypal.core.PayPalHttpClient(

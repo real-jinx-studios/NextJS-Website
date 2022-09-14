@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import styles from "./trial_request_form.module.css";
 
 import FancyLoader from "../utils/FancyLoader";
+import { useClient } from "../../lib/context";
 
 export default function ChangeEmailConfirmationForm({
   handleFormStateChange,
@@ -12,21 +13,21 @@ export default function ChangeEmailConfirmationForm({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const effectRan = useRef(false);
-
+  const { logoutClient } = useClient();
   useEffect(() => {
+    if (!emailToken) return;
     if (effectRan.current) return;
     effectRan.current = true;
-    if (!emailToken) return;
     verifyEmail();
-  }, []);
+  }, [emailToken]);
 
   const verifyEmail = async () => {
     setIsLoading(true);
 
-    const res = fetch(`/api/rest/WebSite/send-reset-password-email`, {
+    const res = fetch(`/api/rest/WebSite/apply-email-change`, {
       method: "POST",
       body: JSON.stringify({
-        EmailToken: emailToken,
+        Key: emailToken,
       }),
     });
     let data = {};
@@ -38,7 +39,8 @@ export default function ChangeEmailConfirmationForm({
         return;
       }
     }
-
+    await logoutClient();
+    console.log("data", sessionStorage.getItem("user"));
     toast.success("Email changed successfully!", {
       position: "bottom-center",
       autoClose: false,
@@ -89,7 +91,12 @@ export default function ChangeEmailConfirmationForm({
 
         {!isLoading ? (
           <div className="email-change">
-            {!error && <p className="success">Email changed successfully!</p>}
+            {!error && (
+              <>
+                <p className="success">Email changed successfully!</p>
+                <p>You can now login with you new email.</p>
+              </>
+            )}
             {error && <p className="error">{error}</p>}
           </div>
         ) : (

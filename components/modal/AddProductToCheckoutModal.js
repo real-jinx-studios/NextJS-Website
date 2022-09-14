@@ -13,12 +13,13 @@ export default function AddProductToCheckoutModal({
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const { getProducts, getPayments } = useProducts();
+  const [selectedProduct, setSelectedProduct] = useState("EZTitles");
   useEffect(() => {
     setIsLoading(true);
 
     const loadProducts = async () => {
       const prds = await getProducts();
-      console.log("prds", prds);
+
       setProducts(prds);
       setIsLoading(false);
     };
@@ -34,6 +35,7 @@ export default function AddProductToCheckoutModal({
     <div className="add_product_wrapper flex-center-center-column">
       <style jsx>{`
         .add_product_wrapper {
+          posisiton: relative;
         }
 
         .add_product-title {
@@ -56,8 +58,9 @@ export default function AddProductToCheckoutModal({
       `}</style>
       <h2 className="add_product-title">Add Product</h2>
       <p className="add_product-subtitle">
-        Choose a product to add to your installment paln
+        Select a product to add to your order.
       </p>
+
       {!isLoading ? (
         <div className="products">
           {products.products.map((product, index) => {
@@ -69,6 +72,8 @@ export default function AddProductToCheckoutModal({
                   paymentTaxes={products.paymentTaxes}
                   index={index}
                   product={product}
+                  selectedProduct={selectedProduct}
+                  setSelectedProduct={setSelectedProduct}
                   setIsAddProductModalOpen={setIsAddProductModalOpen}
                 />
               );

@@ -13,7 +13,7 @@ export default function EditAccount() {
       <div className={styles.content_inner_edit_account}>
         <div className={styles.email_username_section}>
           <CustomInput
-            default={getClientInfo().SiteUser}
+            default={getClientInfo()?.SiteUser || ""}
             type="text"
             placeholder="Username"
             isDisabled

@@ -1,4 +1,9 @@
-export default function FancyLoader({ size, fontSize, white, variation }) {
+export default function FancyLoader({
+  size = "150",
+  fontSize = "1.25",
+  white,
+  variation,
+}) {
   return (
     <div className="spinner">
       <style jsx>{`

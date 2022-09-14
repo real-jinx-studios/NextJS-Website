@@ -43,6 +43,10 @@ html,
   --clr-correct-opacity-50: #268e6c55;
   --clr-correct-opacity-75: #268e6cbb;
   --clr-candy: #e56b6f;
+  --clr-EZTitles: hsl(200, 59%, 42%);
+  --clr-EZConvert: hsl(5, 81%, 31%);
+  --clr-EZCambria: hsl(21, 96%, 38%);
+  --clr-SAToken: hsl(40, 100%, 51%);
 
   --system-w-blue: #007aff;
   --system-b-blue: #0a84ff;
@@ -152,9 +156,18 @@ html,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+* {
   margin: 0;
   padding: 0;
+  font: inherit;
 }
+
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
 body.dev * {
   /*outline: 1px solid #de41cd44 !important;*/
   /*background: rgba(17, 54, 148, 0.1) !important;*/
@@ -166,37 +179,21 @@ body.dev * {
   /*outline: 1px solid #04daf644 !important;*/
 }
 
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-p,
-figure,
-picture {
-  margin: 0;
-}
-
 body {
   line-height: 1.5;
   min-height: 100vh;
   text-rendering: optimizeSpeed;
 }
+
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
 img,
+/* svg, */
 picture {
   max-width: 100%;
   display: block;
-}
-input,
-button,
-textarea,
-select {
-  font: inherit;
-}
-
-ul {
-  list-style: none;
 }
 
 /*negate animations and unnecessary movement for people with the sickness*/
@@ -293,6 +290,14 @@ footer {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+.flex-center-sa {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  justify-content: space-around;
 }
 .gap-1 {
   gap: 1rem;
@@ -1729,7 +1734,26 @@ li {
 .dark {
   color: var(--clr-neutral-700) !important;
 }
+.capitalize {
+  text-transform: capitalize;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.lowercase {
+  text-transform: lowercase;
+}
+.no-select {
+  user-select: none;
+}
+input[type="checkbox"] {
+  appearance: auto;
+
+  margin-block: 3px;
+  margin-inline: 4px 3px;
+}
 /*add media queries for all screens*/
+
 @media (min-width: 576px) {
   .section-heading {
     font-size: var(--fs-600);

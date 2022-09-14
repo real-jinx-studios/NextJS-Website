@@ -19,6 +19,8 @@ export default function ChangeEmail() {
     useClient();
 
   const emailRef = useRef();
+  const oldEmailRef = useRef(getClientInfo()?.Email || null);
+  const loginTokenRef = useRef();
   const checkFormForErrors = () => {
     const errorObject = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
@@ -32,8 +34,9 @@ export default function ChangeEmail() {
     return errorObject;
   };
 
-  const handleEmailChange = async (password) => {
+  const handleEmailChange = async (loginToken) => {
     setIsLoading(true);
+    loginTokenRef.current = loginToken;
 
     const err = checkFormForErrors();
     if (Object.keys(err).length > 0) {
@@ -41,8 +44,9 @@ export default function ChangeEmail() {
 
       return;
     }
+    if (!emailRef.current?.value) return;
     const email = emailRef.current.value;
-    const res = await changeEmail(email, password);
+    const res = await changeEmail(email, loginToken);
 
     if (res.status === 400 && res.message) {
       setFormErrors({
@@ -78,7 +82,7 @@ export default function ChangeEmail() {
 
   const handleResendEmail = async () => {
     setIsLoading(true);
-    const res = await resendChangeEmailVerification(emailRef.current.value);
+    const res = await changeEmail(emailRef.current, loginTokenRef.current);
     if (res.status === 400 && res.message) {
       setFormErrors({
         ...formErrors,
@@ -107,6 +111,18 @@ export default function ChangeEmail() {
     }
   };
 
+  const handleClick = () => {
+    if (emailRef.current.value === oldEmailRef.current) {
+      setFormErrors({
+        ...formErrors,
+        Email: "Please enter a new email address",
+      });
+      return;
+    }
+
+    setIsPasswordPromptModalOpen(true);
+  };
+
   return (
     <div className="email-wrapper">
       <GenericModal
@@ -115,7 +131,8 @@ export default function ChangeEmail() {
       >
         <PasswordPromptModal
           setIsPasswordPromptModalOpen={setIsPasswordPromptModalOpen}
-          onConfirm={(password) => handleEmailChange(password)}
+          onConfirm={(loginToken) => handleEmailChange(loginToken)}
+          oldEmail={oldEmailRef.current}
         />
       </GenericModal>
       <style jsx>{`
@@ -164,7 +181,7 @@ export default function ChangeEmail() {
       {!emailChanged && !isLoading && (
         <>
           <CustomInput
-            default={getClientInfo().Email}
+            default={getClientInfo()?.Email || ""}
             type="text"
             placeholder="Email"
             name="Email"
@@ -175,7 +192,7 @@ export default function ChangeEmail() {
           />
           <div className="email-actions">
             <button
-              onClick={() => setIsPasswordPromptModalOpen(true)}
+              onClick={handleClick}
               className="button button_basic_long_on_light_bg "
             >
               Change email
