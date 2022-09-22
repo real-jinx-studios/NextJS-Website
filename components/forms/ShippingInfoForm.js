@@ -8,6 +8,9 @@ import React, {
 } from "react";
 import CustomInputDropdown from "../inputs/customInputDropdown";
 import { cartState } from "../../lib/cartContext";
+import TextInput from "../inputs/TextInput";
+
+import DropdownCountries from "../inputs/DropdownCountries";
 
 const ShippingInfoForm = forwardRef(
   (
@@ -17,6 +20,8 @@ const ShippingInfoForm = forwardRef(
       formErrors = {},
       setFormErrors,
       requiredFields = [],
+      checkFormForErrors,
+      isShippingSameAsBilling,
     },
     ref
   ) => {
@@ -32,7 +37,11 @@ const ShippingInfoForm = forwardRef(
     useImperativeHandle(ref, () => ({
       set(c) {
         console.log("set", c);
+
         setCountry(c);
+      },
+      get() {
+        return dispatch;
       },
     }));
 
@@ -58,18 +67,23 @@ const ShippingInfoForm = forwardRef(
         ...countryObject,
       });
     };
+
     return (
       <div className="custom_checkout_form_fields">
         <style jsx>{`
           .custom_checkout_form_fields {
             margin-bottom: 3em;
             display: grid;
-            grid-gap: 1.3em;
+            grid-column-gap: var(--margin-bottom-input, 0.82353rem);
 
-            grid-template-columns: 1fr;
+            grid-template-areas:
+              "recipient recipient"
+              "country city"
+              "address address"
+              "postcode recipient_phone";
           }
 
-          @media (min-width: 432px) {
+          @media (min-width: 950px) {
             .custom_checkout_form_fields {
               grid-template-areas:
                 "recipient recipient"
@@ -104,11 +118,10 @@ const ShippingInfoForm = forwardRef(
           }
         `}</style>
         <div className="recipient">
-          <CustomInput
+          <TextInput
             default={
               userInfo?.Shipping?.RecipientName || userInfo?.Shipping?.Recipient
             }
-            type="text"
             id={`shipping_recipient`}
             placeholder="Recipient Name"
             isRequired={requiredFields.includes("RecipientName")}
@@ -118,9 +131,8 @@ const ShippingInfoForm = forwardRef(
           />
         </div>
         <div className="country">
-          <CustomInputDropdown
+          <DropdownCountries
             value={country.country}
-            type="text"
             id={`shipping_country`}
             placeholder="Country"
             isRequired={requiredFields.includes("Country")}
@@ -134,9 +146,8 @@ const ShippingInfoForm = forwardRef(
           />
         </div>
         <div className="city">
-          <CustomInput
+          <TextInput
             default={userInfo?.Shipping?.City}
-            type="text"
             id={`shipping_city`}
             placeholder="City"
             name="City"
@@ -146,7 +157,7 @@ const ShippingInfoForm = forwardRef(
           />
         </div>
         <div className="address">
-          <CustomInput
+          <TextInput
             default={userInfo?.Shipping?.Address}
             type="text"
             id={`shipping_address`}
@@ -159,7 +170,7 @@ const ShippingInfoForm = forwardRef(
         </div>
 
         <div className="postcode">
-          <CustomInput
+          <TextInput
             default={userInfo?.Shipping?.PostCode}
             type="text"
             id={`shipping_postcode`}
@@ -171,7 +182,7 @@ const ShippingInfoForm = forwardRef(
           />
         </div>
         <div className="recipient_phone">
-          <CustomInput
+          <TextInput
             default={userInfo?.Shipping?.RecipientPhone}
             type="text"
             id={`shipping_recipient_phone`}
