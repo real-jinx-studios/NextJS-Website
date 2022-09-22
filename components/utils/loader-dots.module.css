@@ -30,6 +30,10 @@
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
 }
+.loading_s.white {
+  border: 3px solid #fefefe55;
+  border-top-color: var(--clr-neutral-50);
+}
 .loading_ms {
   display: inline-block;
   width: 1.8rem;
@@ -40,6 +44,10 @@
   border-top-color: #e4641c;
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
+}
+.loading_ms.white {
+  border: 5px solid #fefefe55;
+  border-top-color: var(--clr-neutral-50);
 }
 .loading_m {
   display: inline-block;

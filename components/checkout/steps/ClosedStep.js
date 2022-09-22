@@ -19,7 +19,12 @@ export default function ClosedStep({
         });
       }}
     >
-      <div className={`${styles.billing__inner} `} data-step={stepNumber}>
+      <div
+        className={`${styles.billing__inner} ${
+          isValid ? styles.valid : styles.invalid
+        }`}
+        data-step={stepNumber}
+      >
         <h3
           className={`${styles.billing__title} ${
             isDirty

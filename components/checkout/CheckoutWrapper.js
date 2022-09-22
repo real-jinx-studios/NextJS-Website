@@ -177,11 +177,23 @@ export default function CheckoutWrapper() {
     <section className="checkout offset-top inset-bottom">
       <style jsx>{`
         .cart-wrapper {
-          position: sticky;
-          top: var(--offset-top);
+          display: none;
+        }
+        @media (min-width: 429px) {
+          .cart-wrapper {
+            display: block;
+            position: sticky;
+            top: var(--offset-top);
+          }
+        }
+        .checkout-wrapper {
+          display: flex;
+          width: 100%;
+          align-items: center;
+          flex-direction: column;
         }
       `}</style>
-      <div>
+      <div id="main" className="checkout-wrapper">
         {checkoutStepsFiltered.map((step, index) => {
           if (step.isActive) {
             return (

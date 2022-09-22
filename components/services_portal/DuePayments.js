@@ -14,6 +14,7 @@ import { useProducts } from "../../lib/productsContext";
 import addProductsToCheckout, {
   formatProductsForCart,
 } from "../../lib/addProductsToCheckout";
+
 import { toast } from "react-toastify";
 
 export default function DuePayments({ duePayments, handleFetchDuePayments }) {

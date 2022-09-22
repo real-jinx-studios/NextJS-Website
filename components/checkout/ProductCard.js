@@ -191,6 +191,7 @@ export default function ProductCard({
         return duration;
       })(),
       optionalProducts: selectedOptionalProducts,
+      availableOptionalProducts: optionalProducts,
       freeProducts,
       paymentPlan,
       paymentOption,
@@ -275,12 +276,20 @@ export default function ProductCard({
       setPaymentOption("");
       return;
     }
+    console.log(
+      "payment plan supported",
+      selectedOptions,
+      paymentPlan,
+      paymentOption
+    );
 
     let customKey = generateItemCustomKey(
       selectedOptions,
       paymentPlan,
       paymentOption
     );
+
+    console.log(customKey, "from handle price change");
 
     handleOptionalProducts(customKey);
     handleFreeProducts(customKey);
@@ -865,16 +874,6 @@ export default function ProductCard({
                         value.supportedPayments &&
                         value.supportedPayments.length > 0
                       ) {
-                        if (
-                          value.supportedPayments.indexOf(paymentPlan) === -1
-                        ) {
-                          console.log(
-                            "not supported",
-                            value.supportedPayments,
-                            value.supportedPayments[0],
-                            paymentPlan
-                          );
-                        }
                         setPaymentPlansLocal(value.supportedPayments);
                       } else {
                         setPaymentPlansLocal(supportedPayments);
@@ -919,7 +918,7 @@ export default function ProductCard({
                     labelText={plan}
                     id={plan}
                     name={name}
-                    checked={
+                    defaultChecked={
                       hasPresets
                         ? presetProduct.paymentPlan === plan
                         : paymentPlan === plan

@@ -23,9 +23,8 @@ export default async function handler(req, res) {
     console.log("******legal_name: ", cState.billingInfo.LegalName);
     console.log("******contact_name: ", cState.billingInfo.ContactName);
 
-    const order = !cState.payWhatYouWant.isPayWhatYouWant
-      ? await createOrder(cState)
-      : await createOrderFake(cState);
+    const order = await createOrder(cState);
+
     if (order.error) {
       res.status(500).json(order);
     } else {
@@ -201,92 +200,6 @@ async function createOrder(cState) {
   try {
     const order = await paypalClient.execute(request);
     console.log(order, "order");
-    return { id: order.result.id };
-  } catch (e) {
-    console.log(e, "error in create order");
-    return { error: e.message };
-  }
-}
-
-async function createOrderFake(cState) {
-  const request = new paypal.orders.OrdersCreateRequest();
-
-  let paypalOrderObject = {
-    intent: "CAPTURE",
-    purchase_units: [
-      {
-        amount: {
-          currency_code: "EUR",
-          value: (cState.payWhatYouWant.price / 100).toFixed(2),
-        },
-
-        custom_id:
-          cState.orderType === "duePayment"
-            ? cState.duePaymentId
-            : cState.orderId,
-        [cState.checkout.shipping ? "shipping" : ""]: {
-          address: {
-            country_code: cState.shippingInfo.CountryCode,
-            address_line_1: cState.shippingInfo.Shipping.Address,
-            address_line_2: "",
-            admin_area_2: cState.shippingInfo.Shipping.City,
-            postal_code: cState.billingInfo.Billing.PostCode,
-          },
-          name: {
-            full_name: cState.shippingInfo.Shipping.RecipientName,
-          },
-        },
-      },
-    ],
-    payer: {
-      email_address: cState.billingInfo.Email,
-      address: {
-        country_code: cState.vat.code,
-        address_line_1: cState.billingInfo.Billing.Address,
-        address_line_2: "",
-        admin_area_2: cState.billingInfo.Billing.City,
-        postal_code: cState.billingInfo.Billing.PostCode,
-      },
-    },
-    application_context: {
-      brand_name: "EZTitles",
-      landing_page: "BILLING",
-      payment_method: {
-        payee_preferred: "IMMEDIATE_PAYMENT_REQUIRED",
-      },
-      shipping_preference: cState.checkout.shipping
-        ? "SET_PROVIDED_ADDRESS"
-        : "NO_SHIPPING",
-      user_action: "PAY_NOW",
-      cancel_url: "https://www.eztitles.com/checkout/failed",
-      return_url: "https://www.eztitles.com/checkout/success",
-    },
-  };
-
-  if (cState.checkout.shipping) {
-    paypalOrderObject.purchase_units[0].shipping = {
-      address: {
-        country_code: cState.shippingInfo.CountryCode,
-        address_line_1: cState.shippingInfo.Shipping.Address,
-        address_line_2: "",
-        admin_area_2: cState.shippingInfo.Shipping.City,
-        postal_code: cState.shippingInfo.Shipping.PostCode,
-      },
-      name: {
-        full_name: cState.shippingInfo.Shipping.RecipientName,
-      },
-    };
-  }
-  request.prefer("return=representation");
-  request.requestBody(paypalOrderObject);
-
-  try {
-    const order = await paypalClient.execute(request);
-    console.log(
-      "********ORDER_START********",
-      JSON.stringify(order, null, 2),
-      "********ORDER_END********"
-    );
     return { id: order.result.id };
   } catch (e) {
     console.log(e, "error in create order");

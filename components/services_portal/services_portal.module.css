@@ -20,7 +20,7 @@
 .services_wrapper {
   position: relative;
   padding: 3.2em 2em;
-  width: 1170px;
+  max-width: 1170px;
   display: flex;
   gap: 2em;
   border-radius: var(--border-radius);

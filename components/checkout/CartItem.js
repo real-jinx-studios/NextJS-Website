@@ -321,7 +321,8 @@ export default function CartItem({
         }
 
         .cart-item_multiplication-table {
-          padding-top: 0.5em;
+          margin-top: 0.6em;
+          padding-top: 0.3em;
           grid-area: multiplicationTable;
           display: flex;
           flex-direction: column;
@@ -681,6 +682,7 @@ export default function CartItem({
           hasPresets={true}
           presetProduct={item}
           paymentTaxes={paymentTaxes}
+          selectedProduct={item.id}
           setIsAddProductModalOpen={setIsEditModalOpen}
         />
       </GenericModal>

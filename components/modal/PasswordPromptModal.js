@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import FancyLoader from "../utils/FancyLoader";
 import CustomInput from "../inputs/customInput";
 import { useClient } from "../../lib/context";
+import PasswordInput from "../inputs/PasswordInput";
 export default function PasswordPromptModal({
   setIsPasswordPromptModalOpen,
   onConfirm,
@@ -87,7 +88,8 @@ export default function PasswordPromptModal({
           {invalidPassword && (
             <h3 className="invalid-password">Invalid password</h3>
           )}
-          <CustomInput
+
+          <PasswordInput
             type="password"
             placeholder="Password"
             name="Password"

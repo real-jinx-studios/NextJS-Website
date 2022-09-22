@@ -5,6 +5,8 @@ import { cartState } from "../../../lib/cartContext";
 import { useCheckHardwareId } from "../../../lib/hookers";
 import { useClient } from "../../../lib/context";
 import LoaderDots from "../../utils/loaderDots";
+import Cookies from "js-cookie";
+import TextInput from "../../inputs/TextInput";
 export default function WorkstationIdStep({
   user = {},
   isCartEditable = false,
@@ -80,6 +82,7 @@ export default function WorkstationIdStep({
             setFormErrors={setFormErrors}
             formErrors={formErrors}
             usedWorkstationIds={usedWorkstationIds}
+            loginToken={getClientToken()}
           />
         );
       }
@@ -190,15 +193,15 @@ export default function WorkstationIdStep({
               <div className={styles.step_actions}>
                 <button
                   className="button button_basic_long_on_light_bg"
-                  onClick={verifyStep}
-                >
-                  Next
-                </button>
-                <button
-                  className="button button_basic_long_on_light_bg"
                   onClick={handleCancel}
                 >
                   Previous
+                </button>
+                <button
+                  className="button button_basic_long_on_light_bg"
+                  onClick={verifyStep}
+                >
+                  Next
                 </button>
               </div>
             </>
@@ -225,6 +228,7 @@ function WorkstationIdField({
   formErrors = {},
   setFormErrors,
   usedWorkstationIds = [],
+  loginToken,
 }) {
   const hardwareIDRef = useRef();
   const [error, setError] = useState(false);
@@ -289,7 +293,7 @@ function WorkstationIdField({
       return;
     }
 
-    const result = await useCheckHardwareId(hardwareID);
+    const result = await useCheckHardwareId(hardwareID, item, loginToken);
     if (result.status === 200) {
       setIsValid(true);
       handleSetError();
@@ -301,8 +305,10 @@ function WorkstationIdField({
       });
       return;
     }
+    const err = await result.json();
+
     setIsValid(false);
-    handleSetError("Invalid workstation Id");
+    handleSetError(err.error);
 
     return;
   };
@@ -314,6 +320,7 @@ function WorkstationIdField({
     }
   }, []);
 
+  console.log(item, "item");
   return (
     <div className="workstation-id-field-wrapper">
       <style jsx>{`
@@ -371,14 +378,15 @@ function WorkstationIdField({
           width: 100%;
           height: 100%;
         }
-        .suggestions-dropdown-wrapper {
+        .suggestion-dropdown-container {
           position: absolute;
-          top: calc(
-            100% + var(--border-width-1) * 4 - var(--fs-input-label) * 2
-          );
-          left: 0;
-          width: calc(100%);
+          top: calc(3.29412rem - 1px);
+          left: -1px;
+          width: calc(100% + 2px);
           z-index: 3;
+        }
+        .suggestions-dropdown-wrapper {
+          position: relative;
           border-radius: 0 0 9px 9px;
           overflow: hidden;
           border: 2px solid var(--clr-primary);
@@ -397,7 +405,7 @@ function WorkstationIdField({
           bottom: 0;
           right: 0;
           opacity: 0;
-          z-index: -1;
+
           background-color: var(--clr-neutral-800);
         }
         .suggestions-dropdown_title {
@@ -432,6 +440,7 @@ function WorkstationIdField({
           border-radius: 9px;
           color: var(--clr-neutral-800);
           transition: all 0.2s ease-in-out;
+
           border: 1px solid var(--clr-primary);
         }
         .suggestion-item:hover {
@@ -452,6 +461,25 @@ function WorkstationIdField({
           </span>
         </div>
       )}
+      {item.id === "EZConvert" &&
+        item.options.licenseType[0] === "Pro" &&
+        item.paymentPlan !== "rent" && (
+          <div className="special-info">
+            <span className="font-size-xs">
+              🔽 Temporary Workstation ID so you can use your product while you
+              wait for a permanent license to be issued.
+            </span>
+          </div>
+        )}
+      {item.hardwareIdCount > 0 &&
+        item.shippableCount === 0 &&
+        item?.availableOptionalProducts?.length > 0 && (
+          <div className="special-info">
+            <span className="font-size-xs">
+              🔽 Permanent Workstation ID. This is forever and ever.
+            </span>
+          </div>
+        )}
       <div className="workstation-id-field-details">
         <div className="workstation-id-field-wrapper__icon">
           <img
@@ -498,52 +526,63 @@ function WorkstationIdField({
       <div className="input-outer">
         {" "}
         {isFocused && usedWorkstationIds.length > 0 && (
-          <div className="suggestions-dropdown-wrapper">
-            <div className="suggestions-wrapper">
-              <div
-                className="suggestions-close-overlay"
-                onClick={() => {
-                  setIsFocused(false);
-                }}
-              ></div>
-
-              <h4 className="suggestions-dropdown_title">
-                Previously used ids
-              </h4>
-              <ul className="suggestions-dropdown">
-                {usedWorkstationIds.map((usedWorkstationId) => {
-                  if (!idsProductAlradyHas.includes(usedWorkstationId)) {
-                    return (
-                      <li
-                        className="suggestion-item"
-                        key={usedWorkstationId}
-                        onClick={() => {
-                          hardwareIDRef.current.value = usedWorkstationId;
-                          setDirty(true);
-                          handleBlur();
-                          setIsFocused(false);
-                        }}
-                      >
-                        {usedWorkstationId}
-                      </li>
-                    );
-                  }
-                })}
-              </ul>
+          <div className="suggestion-dropdown-container">
+            {" "}
+            <div
+              className="suggestions-close-overlay"
+              onClick={() => {
+                setIsFocused(false);
+              }}
+            ></div>
+            <div className="suggestions-dropdown-wrapper">
+              <div className="suggestions-wrapper">
+                <h4 className="suggestions-dropdown_title">
+                  Previously used ids
+                </h4>
+                <ul className="suggestions-dropdown">
+                  {usedWorkstationIds.map((usedWorkstationId) => {
+                    console.log(usedWorkstationId);
+                    if (!idsProductAlradyHas.includes(usedWorkstationId)) {
+                      return (
+                        <li
+                          className="suggestion-item"
+                          key={usedWorkstationId}
+                          onClick={() => {
+                            hardwareIDRef.current.value = usedWorkstationId;
+                            setDirty(true);
+                            handleBlur();
+                            setIsFocused(false);
+                          }}
+                        >
+                          {usedWorkstationId}
+                        </li>
+                      );
+                    }
+                  })}
+                </ul>
+              </div>
             </div>
           </div>
         )}{" "}
-        <CustomInput
+        <TextInput
           reference={hardwareIDRef}
           type="text"
           name={identity}
           placeholder="Workstation ID"
           value={workstationIds[identity]?.hardwareID}
-          handleBlur={() => {
+          handleBlur={(e) => {
             handleBlur();
           }}
-          handleClick={() => {
+          handleFocus={(event) => {
             setIsFocused(true);
+            document.addEventListener("keydown", function handler(e) {
+              if (e.key === "Tab") {
+                setIsFocused(false);
+                //remove event listener
+
+                document.removeEventListener(e.type, handler);
+              }
+            });
           }}
           handleChange={(e) => {
             setDirty(true);

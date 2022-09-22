@@ -1,9 +1,13 @@
 import styles from "./loader-dots.module.css";
 export default function LoaderDots({ size, color, style }) {
   if (size === "s") {
-    return <div className={`${styles.loading_s} ${color}`} style={style} />;
+    return (
+      <div className={`${styles.loading_s} ${styles[color]}`} style={style} />
+    );
   } else if (size === "ms") {
-    return <div className={`${styles.loading_ms} ${color}`} style={style} />;
+    return (
+      <div className={`${styles.loading_ms} ${styles[color]}`} style={style} />
+    );
   } else if (size === "m") {
     return <div className={`${styles.loading_m} ${color}`} style={style} />;
   } else if (size === "l") {

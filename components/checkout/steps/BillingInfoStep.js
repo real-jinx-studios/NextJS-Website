@@ -6,6 +6,9 @@ import BillingInfoForm from "../../forms/BillingInfoForm";
 import { cartState } from "../../../lib/cartContext";
 import { useClient } from "../../../lib/context";
 import ParrotLoader from "../../utils/ParrotLoader";
+import Button from "../../actions/Button";
+import UpdateclientinfoComponent from "../../utils/UpdateClientInfoComponent";
+import TextInput from "../../inputs/TextInput";
 
 export default function BillingInfoSteps({
   isCartEditable = false,
@@ -19,21 +22,24 @@ export default function BillingInfoSteps({
   setStepDirty,
 }) {
   const [isLoading, setIsLoading] = useState(true);
-  const { getClientInfo, isFetchingUser } = useClient();
+  const { getClientInfo, isFetchingUser, updateClientInfo } = useClient();
 
   const [formErrors, setFormErrors] = useState({});
   const [isShippingSameAsBilling, setIsShippingSameAsBilling] =
     useState(isFetchingUser);
   const [userData, setUserData] = useState(null);
   const { cState, dispatch } = cartState();
+  const [isUpdateLoading, setIsUpdateLoading] = useState(false);
 
   useEffect(() => {
     if (isFetchingUser) return;
     setIsLoading(true);
     if (isDirty) {
+      console.log("is dirty");
       setUserData(cState.billingInfo);
       setIsShippingSameAsBilling(cState.billingInfo.isShippingSameAsBilling);
     } else if (!userData) {
+      console.log("is not dirty");
       setUserData(getClientInfo());
     }
     setIsLoading(false);
@@ -179,12 +185,14 @@ export default function BillingInfoSteps({
           data-step={stepNumber}
         >
           <h3 className={styles.billing__title}>Billing details</h3>
+
           {!isLoading && (
             <>
               <BillingInfoForm
                 userInfo={userData}
                 setFormErrors={setFormErrors}
                 formErrors={formErrors}
+                showUpdateButton={true}
                 requiredFields={[
                   "LegalName",
                   "ContactName",
@@ -205,6 +213,21 @@ export default function BillingInfoSteps({
                   emailAddressRef: emailAddressRef,
                 }}
               />
+              <UpdateclientinfoComponent
+                update="billing"
+                text="*Update billing info details in your account(w/o email)."
+                errorCheckingFunction={checkFormForErrors}
+                billingInfoObjectReferences={{
+                  LegalName: legalNameRef,
+                  ContactName: contactNameRef,
+                  Country: billingCountryRef,
+                  City: billingCityRef,
+                  VatID: vatRef,
+                  Address: billingAddressRef,
+                  PostCode: billingPostcodeRef,
+                }}
+              />
+
               {cState.items.length > 0 && (
                 <div>
                   {cState.checkout.shippableCount > 0 && (

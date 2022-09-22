@@ -14,6 +14,7 @@ import UserIdleHandler from "../components/utils/UserIdleHandler";
 import Sidebar from "../components/navigation/Sidebar";
 import SidebarVariant from "../components/navigation/SidebarVariant";
 import AuthCheck from "../components/forms/auth/AuthCheck";
+import SkipToContentLink from "../components/utils/SkipToContentLink";
 
 const StateViewer = dynamic(() => import("../components/utils/StateViewer"), {
   ssr: false,
@@ -54,6 +55,7 @@ export default function App({ Component, pageProps: { ...pageProps } }) {
 
     return targetReached;
   };
+  // new version ok
 
   const isBreakpoint = useMediaQuery(1111);
   return (
@@ -65,6 +67,7 @@ export default function App({ Component, pageProps: { ...pageProps } }) {
         <ProductsProvider>
           <CountriesProvider>
             <header>
+              <SkipToContentLink />
               {isBreakpoint ? (
                 <NavbarSmall />
               ) : (
@@ -78,8 +81,8 @@ export default function App({ Component, pageProps: { ...pageProps } }) {
             <Component {...pageProps} />
             <Footer />
             <ToastContainer />
-            <StateViewer stateName={"cart"} />
-            <StateViewer stateName={"user"} />
+            {/* <StateViewer stateName={"cart"} />
+            <StateViewer stateName={"user"} /> */}
           </CountriesProvider>
         </ProductsProvider>
         <Sidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />

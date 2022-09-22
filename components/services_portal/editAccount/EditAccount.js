@@ -3,6 +3,7 @@ import { useClient } from "../../../lib/context";
 import CustomInput from "../../inputs/customInput";
 import ChangeEmail from "./ChangeEmail";
 import ChangePassword from "./ChangePassword";
+import TextInput from "../../inputs/TextInput";
 export default function EditAccount() {
   const { getClientInfo } = useClient();
   return (
@@ -12,7 +13,7 @@ export default function EditAccount() {
       </div>
       <div className={styles.content_inner_edit_account}>
         <div className={styles.email_username_section}>
-          <CustomInput
+          <TextInput
             default={getClientInfo()?.SiteUser || ""}
             type="text"
             placeholder="Username"

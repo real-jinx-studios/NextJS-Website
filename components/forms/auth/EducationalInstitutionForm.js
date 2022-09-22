@@ -1,4 +1,5 @@
 import CustomInput from "../../inputs/customInput";
+import TextInput from "../../inputs/TextInput";
 export default function EducationalInstitutionForm({
   references = {},
 
@@ -11,7 +12,7 @@ export default function EducationalInstitutionForm({
   return (
     <>
       {" "}
-      <CustomInput
+      <TextInput
         reference={references.eduRef}
         type="text"
         name="EducationalInstitution"
@@ -22,7 +23,7 @@ export default function EducationalInstitutionForm({
         isRegister={isRegister}
         isRequired={requiredFields.includes("EducationalInstitution")}
       />
-      <CustomInput
+      <TextInput
         reference={references.teacherRef}
         type="text"
         placeholder="Professor/Lecturer"

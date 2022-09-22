@@ -2,6 +2,8 @@ import styles from "../services_portal/customPayment/custom_payment.module.css";
 import CustomInput from "../inputs/customInput";
 import React from "react";
 import CustomInputDropdown from "../inputs/customInputDropdown";
+import TextInput from "../inputs/TextInput";
+import PasswordInput from "../inputs/PasswordInput";
 
 export default function AccountInfoForm({
   references = {},
@@ -47,8 +49,7 @@ export default function AccountInfoForm({
         }
       `}</style>
       <div className="email_address">
-        <CustomInput
-          type="text"
+        <TextInput
           placeholder="Email Address"
           isRequired={requiredFields.includes("Email")}
           id={`account_email`}
@@ -60,8 +61,7 @@ export default function AccountInfoForm({
         />
       </div>
       <div className="username">
-        <CustomInput
-          type="text"
+        <TextInput
           placeholder="Username"
           isRequired={requiredFields.includes("Username")}
           id={`account_username`}
@@ -74,7 +74,7 @@ export default function AccountInfoForm({
       </div>
 
       <div className="password">
-        <CustomInput
+        <PasswordInput
           type="password"
           placeholder="Password"
           isRegisterPassword={true}
@@ -89,7 +89,7 @@ export default function AccountInfoForm({
         />
       </div>
       <div className="repeat_password">
-        <CustomInput
+        <PasswordInput
           type="password"
           placeholder="Repeat Password"
           isRequired={requiredFields.includes("RepeatPassword")}

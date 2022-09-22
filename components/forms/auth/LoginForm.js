@@ -6,6 +6,8 @@ import CustomInput from "../../inputs/customInput";
 import styles from "./trial_forms.module.css";
 import Loader from "../../utils/Loader";
 import { useClient } from "../../../lib/context";
+import PasswordInput from "../../inputs/PasswordInput";
+import TextInput from "../../inputs/TextInput";
 
 export default function LoginForm({
   handleFormStateChange,
@@ -18,6 +20,7 @@ export default function LoginForm({
   //make useRef const to attach to html input fields for user
   const usernameRef = useRef();
   const passwordRef = useRef();
+  const componentReference = useRef();
 
   //state for the conditional rendering if register is true or false
   const [loginError, setIsLoginError] = useState(false);
@@ -54,63 +57,70 @@ export default function LoginForm({
     }
   };
 
+  useEffect(() => {
+    const handleEnterKey = (e) => {
+      if (e.key === "Enter") {
+        handleSubmit(e);
+      }
+    };
+    document.addEventListener("keydown", handleEnterKey);
+    return () => {
+      document.removeEventListener("keydown", handleEnterKey);
+    };
+  }, []);
+
   return (
-    <div className="container">
-      <form
-        className={`${styles.input_wrapper} ${styles.form}`}
-        onSubmit={handleSubmit}
-        data-before-title="LOG"
-        data-after-title="IN"
-      >
-        <div className={styles.title__section}>
-          <p className={styles.title__section_p}>Log in</p>
-          <p className={styles.title__section_p_subtext}>
-            Don't have an account yet?{" "}
-            <a
-              className={styles.title__section_a}
-              onClick={() => handleFormStateChange("register")}
-            >
-              Sign up
-            </a>
-          </p>
-        </div>
+    <form
+      className={`${styles.input_wrapper} ${styles.form}`}
+      onSubmit={handleSubmit}
+      data-before-title="LOG"
+      data-after-title="IN"
+    >
+      <div className={styles.title__section}>
+        <p className={styles.title__section_p}>Log in</p>
+        <p className={styles.title__section_p_subtext}>
+          Don't have an account yet?{" "}
+          <a
+            className={styles.title__section_a}
+            onClick={() => handleFormStateChange("register")}
+          >
+            Sign up
+          </a>
+        </p>
+      </div>
+      <div>
         <div
           className={`${styles.error} ${loginError ? styles.error_active : ""}`}
         >
           Incorrect username or password.
         </div>
-        <CustomInput
+        <TextInput
           reference={usernameRef}
           type="text"
           name="username"
           id="login_username"
           placeholder="Username or Email"
         />
-        <CustomInput
+
+        <PasswordInput
           reference={passwordRef}
           type="password"
           name="password"
           id="login_password"
           placeholder="Password"
         />
-        {true ? (
-          <Fragment>
-            <button className="button button_basic_long" type="submit">
-              SIGN IN
-            </button>
-            <a
-              className={styles.title__section_a}
-              onClick={() => handleFormStateChange("reset")}
-            >
-              Forgot password?
-            </a>
-          </Fragment>
-        ) : (
-          <div className={styles.loader_wrapper}>
-            <Loader />
-          </div>
-        )}
-      </form>
-    </div>
+        <div className="flex-c-c column">
+          <button className="button button_basic_long" type="submit">
+            SIGN IN
+          </button>
+          <a
+            className={styles.title__section_a}
+            onClick={() => handleFormStateChange("reset")}
+          >
+            Forgot password?
+          </a>
+        </div>
+      </div>
+    </form>
   );
 }

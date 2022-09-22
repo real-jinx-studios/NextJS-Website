@@ -9,6 +9,7 @@ import priceFormatter from "../utils/priceFormatter";
 import CustomInput from "../inputs/customInput";
 import checkIfVat from "../../lib/checkIfVat";
 import CartItem from "./CartItem";
+import PriceBreakdown from "./PriceBreakdown";
 export default function Cart({
   isCartEditable = true,
   setIsCartEditable,
@@ -161,7 +162,7 @@ export default function Cart({
         `}</style>
         <div className="cart__inner">
           <div className="cart__title-section">
-            <h2 className="cart__title"> Order Summary</h2>
+            <h2 className="cart__title">Your order</h2>
             <span
               className="cart-empty-button"
               onClick={() => {
@@ -250,69 +251,7 @@ export default function Cart({
               </button>
             </div>
           )}
-          <div className="cart__sum">
-            <div className="cart__sum__title flex justify-sb">
-              <span className="font-size-m">subtotal: </span>
-              <span className="font-size-m">{priceFormatter(totalPrice)}</span>
-            </div>
-            {cState.vat.isVat && (
-              <div
-                className={`cart__sum__title flex justify-sb ${
-                  cState.vat.isVat &&
-                  cState.vat.isValid &&
-                  cState.vat.substractVAT
-                    ? "vat-cleared"
-                    : ""
-                }`}
-              >
-                <span className="font-size-m">VAT {cState.vat.vat} %: </span>
-                <span className="font-size-m">
-                  {priceFormatter(
-                    cState.items.reduce(
-                      (acc, item) =>
-                        acc + item.price * item.quantity * item.rentDuration,
-                      0
-                    ) *
-                      (cState.vat.vat / 100)
-                  )}
-                </span>
-              </div>
-            )}
-            {cState.checkout.installmentCount > 0 && (
-              <div className="cart__sum__title flex justify-sb">
-                <span className="font-size-m">installment fee: </span>
-                <span className="font-size-m">
-                  {priceFormatter(cState.checkout.installmentPlanFee)}
-                </span>
-              </div>
-            )}
-            <div className="cart__sum__title-total flex justify-sb font-bold">
-              <span
-                onClick={() => modalRef.current.show()}
-                className="font-size-ml"
-              >
-                TOTAL:{" "}
-              </span>
-              <span className="font-size-ml">
-                {priceFormatter(
-                  totalPrice +
-                    (cState.checkout.installmentCount > 0
-                      ? cState.checkout.installmentPlanFee
-                      : 0) +
-                    (cState.vat.isVat
-                      ? totalPrice *
-                        (!cState.vat.isValid
-                          ? cState.vat.vat / 100
-                          : cState.vat.substractVAT
-                          ? 0
-                          : cState.vat.vat / 100)
-                      : 0)
-                )}
-              </span>
-            </div>
-            <PayWhatYouWant />
-            <SelectCheckoutCountry />
-          </div>
+          <PriceBreakdown cart={cState} totalPrice={totalPrice} />
         </div>
         <GenericModal
           open={isAddProductModalOpen}
@@ -462,162 +401,6 @@ function InstallmentHeader() {
           </div>
         </>
       )}
-    </div>
-  );
-}
-
-function PayWhatYouWant() {
-  const [currentPrice, setCurrentPrice] = useState(0);
-  const { cState, dispatch } = cartState();
-  return (
-    <div className="pay-what-you-want">
-      <style jsx>{`
-        .pay-what-you-want {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          gap: 1.2em;
-          margin-top: 1.5em;
-        }
-        .pay-what-you-want h4 {
-          color: var(--clr-neutral-800);
-          font-size: 1.2em;
-          font-weight: bold;
-          margin: 0;
-          position: relative;
-          padding: 0 0.3em;
-          background-color: var(--clr-neutral-50);
-        }
-        .pay-what-you-want h4::before {
-          content: "";
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translateY(-50%) translateX(-50%);
-          width: 200%;
-          z-index: -1;
-          height: 1px;
-          background-color: var(--clr-neutral-700);
-        }
-      `}</style>
-      <h4>OR</h4>
-      <span>💊 just pay what you want 💊</span>
-
-      <CustomInput
-        type="text"
-        placeholder="if > €0.00 the use ⬆this⬆ amount"
-        name="customPrice"
-        id="custom-price"
-        special="price"
-        value={priceFormatter(currentPrice)}
-        handleBlur={(e) => {
-          let isCustomPrice = false;
-          if (currentPrice > 0) {
-            isCustomPrice = true;
-          }
-          dispatch({
-            type: "SET-PAY-WHAT-YOU-WANT",
-            payload: {
-              price: currentPrice,
-              isPayWhatYouWant: isCustomPrice,
-            },
-          });
-        }}
-        handleChange={(e) => {
-          setCurrentPrice(e.target.value.replace(/[^0-9]/g, ""));
-        }}
-      />
-    </div>
-  );
-}
-
-function SelectCheckoutCountry() {
-  const { dispatch } = cartState();
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const listOfCountryCodes = [
-    { code: "", icon: "🏴‍☠️" },
-    { code: "US", icon: "🇺🇸", locale: "en_US" },
-    { code: "FR", icon: "🇫🇷", locale: "fr_FR" },
-    { code: "DE", icon: "🇩🇪", locale: "de_DE" },
-    { code: "IT", icon: "🇮🇹", locale: "it_IT" },
-    { code: "IN", icon: "🇮🇳", locale: "en_IN" },
-    { code: "JP", icon: "🇯🇵", locale: "ja_JP" },
-    { code: "CN", icon: "🇨🇳", locale: "zh_CN" },
-    { code: "UK", icon: "🇬🇧", locale: "en_GB" },
-  ];
-  const handleClick = (country) => {
-    dispatch({
-      type: "SET-CHECKOUT-COUNTRY",
-      payload: {
-        code: country.code,
-        locale: country.locale,
-      },
-    });
-    setSelectedCountry(country.code);
-  };
-
-  return (
-    <div className="select-checkout-country-wrapper">
-      <style jsx>{`
-        .select-checkout-country-wrapper {
-          margin-top: 2.2em;
-        }
-        .select-checkout-country {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: space-around;
-          align-items: center;
-          width: 100%;
-          gap: 0.5em;
-          margin-top: 1.5em;
-        }
-        .country-wrapper {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 2.8em;
-          height: 2em;
-          border-radius: 9px;
-          overflow: hidden;
-          cursor: pointer;
-          transition: transform 0.2s ease-in-out;
-          border: 2px solid var(--clr-neutral-250);
-        }
-        .country {
-          font-size: 3rem;
-
-          line-height: 1.3;
-          padding: 0;
-          margin: 0;
-          user-select: none;
-          pointer-events: none;
-        }
-        .selected {
-          transform: scale(1.2);
-          border: 3px solid var(--clr-primary);
-        }
-        .title {
-          font-size: 1.2rem;
-          text-align: center;
-          color: var(--clr-neutral-800);
-        }
-      `}</style>
-      <h4 className="title">Select paypal browser country</h4>
-      <div className="select-checkout-country">
-        {listOfCountryCodes.map((country) => (
-          <div
-            onClick={() => handleClick(country)}
-            className={`country-wrapper ${
-              country.code === selectedCountry ? "selected" : ""
-            }`}
-            key={country.code}
-          >
-            <span className={`country `}>{country.icon}</span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

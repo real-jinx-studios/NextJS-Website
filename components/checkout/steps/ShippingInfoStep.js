@@ -8,7 +8,7 @@ import LoaderDots from "../../utils/loaderDots";
 import ShippingInfoForm from "../../forms/ShippingInfoForm";
 import { cartState } from "../../../lib/cartContext";
 import { useClient } from "../../../lib/context";
-import { use } from "chai";
+import UpdateclientinfoComponent from "../../utils/UpdateClientInfoComponent";
 
 export default function ShippingInfoStep({
   setCurrentStepNumber,
@@ -51,6 +51,8 @@ export default function ShippingInfoStep({
             Country: cState.billingInfo.Billing.Country,
             RecipientPhone: isShippingValid
               ? cState.shippingInfo.Shipping.RecipientPhone
+              : getClientInfo()?.Shipping?.RecipientPhone
+              ? getClientInfo()?.Shipping?.RecipientPhone
               : "",
           },
         });
@@ -70,6 +72,8 @@ export default function ShippingInfoStep({
             Country: cState.billingInfo.Billing.Country,
             RecipientPhone: isShippingValid
               ? cState.shippingInfo.Shipping.RecipientPhone
+              : getClientInfo()?.Shipping?.RecipientPhone
+              ? getClientInfo()?.Shipping?.RecipientPhone
               : "",
           },
         });
@@ -220,6 +224,13 @@ export default function ShippingInfoStep({
     }
   }, [cState.setStepToBeActive]);
 
+  useEffect(() => {
+    console.log(shippingCountryForwardRef);
+    if (shippingCountryForwardRef.current) {
+      console.log(shippingCountryForwardRef.current.get());
+    }
+  }, [shippingCountryForwardRef.current]);
+
   if (!isLoading) {
     return (
       <div
@@ -272,7 +283,19 @@ export default function ShippingInfoStep({
               setFormErrors={setFormErrors}
               ref={shippingCountryForwardRef}
             />
-
+            <UpdateclientinfoComponent
+              update="shipping"
+              text="*Update shipping info details in your account."
+              errorCheckingFunction={checkFormForErrors}
+              shippingInfoObjectReferences={{
+                Recipient: shippingRecipientRef,
+                Country: shippingCountryRef,
+                City: shippingCityRef,
+                RecipientPhone: shippingRecipientPhoneRef,
+                Address: shippingAddressRef,
+                PostCode: shippingPostcodeRef,
+              }}
+            />
             <div>
               <div className="same-as-billing-wrapper">
                 <input
@@ -288,15 +311,15 @@ export default function ShippingInfoStep({
             <div className={styles.step_actions}>
               <button
                 className="button button_basic_long_on_light_bg"
-                onClick={verifyStep}
-              >
-                Next
-              </button>
-              <button
-                className="button button_basic_long_on_light_bg"
                 onClick={handleShippingCancel}
               >
                 Previous
+              </button>
+              <button
+                className="button button_basic_long_on_light_bg"
+                onClick={verifyStep}
+              >
+                Next
               </button>
             </div>
           </div>

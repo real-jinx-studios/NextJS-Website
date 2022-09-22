@@ -48,6 +48,7 @@ export default function CustomInputRadio({
           value={value}
           onChange={onChange}
           checked={checked}
+          defaultChecked={defaultChecked}
           disabled={disabled}
           className="custom_input_radio"
         />

@@ -11,6 +11,7 @@ import { promiseResolver } from "../../lib/promiseResolver";
 
 import ParrotLoader from "../utils/ParrotLoader";
 import { useClient } from "../../lib/context";
+import CustomInputCheckbox from "../inputs/CustomInputCheckbox";
 export default function BillingInformation() {
   const [formErrors, setFormErrors] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -187,6 +188,7 @@ export default function BillingInformation() {
                   "Country",
                 ]}
                 formErrors={formErrors}
+                checkFormForErrors={checkFormForErrors}
               />
             </form>
           </div>
@@ -205,14 +207,13 @@ export default function BillingInformation() {
             <h2>Shipping Information</h2>
 
             <div className="same-as-billing-wrapper">
-              <input
-                type="checkbox"
+              <CustomInputCheckbox
                 name="isShipping"
+                labelText={"Shipping same as billing"}
                 value={isShippingSameAsBilling}
                 checked={isShippingSameAsBilling}
                 onChange={() => handleShippingSameAsBilling()}
               />
-              <label htmlFor="isShipping">Shipping same as billing</label>
             </div>
           </div>
           <div className={styles.content_inner}>
@@ -235,6 +236,8 @@ export default function BillingInformation() {
                 formErrors={formErrors}
                 requiredFields={[]}
                 ref={shippingCountryForwardRef}
+                checkFormForErrors={checkFormForErrors}
+                isShippingSameAsBilling={isShippingSameAsBilling}
               />
               <div className={styles.submit_buttons}>
                 {Object.keys(formErrors).length > 0 && (

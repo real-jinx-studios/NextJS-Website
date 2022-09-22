@@ -7,6 +7,7 @@ import FancyLoader from "../../utils/FancyLoader";
 import { useClient } from "../../../lib/context";
 import GenericModal from "../../modal/GenericModal";
 import PasswordPromptModal from "../../modal/PasswordPromptModal";
+import TextInput from "../../inputs/TextInput";
 export default function ChangeEmail() {
   const [isPasswordPromptModalOpen, setIsPasswordPromptModalOpen] =
     useState(false);
@@ -180,7 +181,7 @@ export default function ChangeEmail() {
 
       {!emailChanged && !isLoading && (
         <>
-          <CustomInput
+          <TextInput
             default={getClientInfo()?.Email || ""}
             type="text"
             placeholder="Email"

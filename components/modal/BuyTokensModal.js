@@ -113,6 +113,7 @@ export default function BuyTokensModal({ setIsCreateWalletOpen, forceUpdate }) {
           align-items: center;
           justify-content: center;
           gap: 2em;
+          flex-wrap: wrap;
           margin-bottom: 2em;
         }
         .token-input {

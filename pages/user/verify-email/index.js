@@ -23,7 +23,7 @@ export default function VerifyEmailPage() {
           alignItems: "center",
         }}
       >
-        <VerifyEmail userName={userName} />
+        <VerifyEmail usernameInput={userName} />
       </div>
     </section>
   );

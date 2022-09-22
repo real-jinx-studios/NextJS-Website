@@ -50,7 +50,6 @@ export default function FreeTrialFormWrapper() {
         }
       >
         <div className="container">
-          {" "}
           <TrialRequestForm />
         </div>
       </AuthCheck>

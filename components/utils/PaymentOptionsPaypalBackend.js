@@ -32,7 +32,6 @@ export default function PaymentOptionsPaypal({ setIsLoading }) {
       <style jsx>{`
         /*paypal mockup*/
         .paypal_button_container_inner {
-          margin-bottom: 2.9em;
         }
         .paypal_button_container {
         }
@@ -162,7 +161,13 @@ export default function PaymentOptionsPaypal({ setIsLoading }) {
                   captureOrder(data, cState).then((res) => {
                     console.log(res, "captureOrder");
                     if (res?.captureData?.status === "success") {
-                      console.log("success");
+                      dispatch({
+                        type: "COMPLETE_PURCHASE",
+                        payload: {
+                          date: new Date(Date.now()).toLocaleString(),
+                          paymentMethod: "PayPal / Credit Card",
+                        },
+                      });
                       router.replace("/checkout/success");
                       return;
                     } else if (res?.captureData?.status === "pending") {

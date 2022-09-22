@@ -78,36 +78,8 @@ export default function CustomInput(props) {
 
   //default input component
   return (
-    <div className="input-wrapper">
+    <div className={styles.input_wrapper}>
       <style jsx>{`
-        .input-wrapper {
-          position: relative;
-        }
-
-        .input-wrapper::before {
-          content: "${props.cssBefore}";
-
-          position: absolute;
-          top: calc(1.72rem / 2);
-          top: 1px;
-          display: ${props.cssBefore ? "flex" : "none"};
-          align-items: center;
-          justify-content: center;
-          height: 42px;
-          right: 0.5rem;
-          padding-right: 5px;
-          padding-left: 3px;
-          right: 2px;
-          z-index: 1;
-          background-color: #fefefecc;
-          line-height: 1;
-
-          color: var(--clr-neutral-500);
-          font-size: 0.75rem;
-          font-weight: bold;
-
-          pointer-events: none;
-        }
         .error_icon_wrapper {
           cursor: pointer;
           display: flex;
@@ -140,7 +112,6 @@ export default function CustomInput(props) {
           color: var(--clr-warn) !important;
         }
       `}</style>
-
       <input
         name={props.name}
         ref={reference}
@@ -168,7 +139,6 @@ export default function CustomInput(props) {
           }
         }}
       />
-
       <label htmlFor={props.id} className={styles.input_label}>
         {props.placeholder}
         {props.isRequired && "*"}
@@ -271,12 +241,8 @@ function Password({ props }) {
   };
 
   return (
-    <div className="input-wrapper">
+    <div className={styles.input_wrapper}>
       <style jsx>{`
-        .input-wrapper {
-          position: relative;
-        }
-
         .password_icon_wrapper {
           cursor: pointer;
           display: flex;
@@ -314,6 +280,9 @@ function Password({ props }) {
         .failed {
           color: var(--clr-warn) !important;
         }
+        .material-symbols-outlined {
+          font-family: "Material Icons Outlined" !important;
+        }
       `}</style>
       <input
         name={props.name}
@@ -343,9 +312,9 @@ function Password({ props }) {
           onClick={() => setShowPassword(!showPassword)}
         >
           {showPassword ? (
-            <i className="fas fa-eye-slash"></i>
+            <span class="material-symbols-outlined">visibility_off</span>
           ) : (
-            <i className="fas fa-eye"></i>
+            <span class="material-symbols-outlined">visibility</span>
           )}
         </div>
       </div>

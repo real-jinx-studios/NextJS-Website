@@ -2,6 +2,10 @@ import CustomInput from "../inputs/customInput";
 import React, { useState, useId, useEffect } from "react";
 import CustomInputDropdown from "../inputs/customInputDropdown";
 import { cartState, readState } from "../../lib/cartContext";
+import Button from "../actions/Button";
+import TextInput from "../inputs/TextInput";
+import VatInput from "../inputs/VatInput";
+import DropdownCountries from "../inputs/DropdownCountries";
 
 export default function BillingInfoForm({
   userInfo = {},
@@ -10,6 +14,7 @@ export default function BillingInfoForm({
   isRegister = false,
   formErrors,
   setFormErrors,
+  checkFormForErrors,
   registrationType = "standard",
 }) {
   const id = useId();
@@ -54,14 +59,51 @@ export default function BillingInfoForm({
     >
       <style jsx>{`
         .custom_checkout_form_fields {
-          margin-bottom: 3em;
           display: grid;
-          grid-gap: 1.3em;
+          grid-column-gap: var(--margin-bottom-input, 0.82353rem);
 
-          grid-template-columns: 1fr;
+          grid-template-areas:
+            "contact_name contact_name"
+            "legal_name legal_name"
+            "address address"
+            "country country"
+            "city postcode"
+            "vat vat"
+            "email email";
         }
 
-        @media (min-width: 432px) {
+        @media (min-width: 750px) {
+          .custom_checkout_form_fields {
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas:
+              "contact_name legal_name"
+              "address address"
+              "country city"
+              "postcode vat"
+              "email email";
+          }
+          .custom_checkout_form_fields.is_register {
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas:
+              "first_name last_name"
+              "legal_name legal_name"
+              "address address"
+              "country city"
+              "postcode vat"
+              "email email";
+          }
+          .custom_checkout_form_fields.is_register.is_trial {
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas:
+              "first_name last_name"
+              "legal_name legal_name"
+              "country country"
+              "email_address username"
+              "password repeat_password";
+          }
+        }
+
+        @media (min-width: 1000px) {
           .custom_checkout_form_fields {
             grid-template-columns: 1fr 1fr;
             grid-template-areas:
@@ -137,11 +179,10 @@ export default function BillingInfoForm({
           grid-area: email;
         }
       `}</style>
-      {registrationType === "trial" ? (
+      {isRegister && (
         <>
           <div className="first_name">
-            <CustomInput
-              type="text"
+            <TextInput
               id={`billing_first_name`}
               placeholder="First Name"
               isRequired={requiredFields.includes("FirstName")}
@@ -153,8 +194,7 @@ export default function BillingInfoForm({
             />
           </div>
           <div className="last_name">
-            <CustomInput
-              type="text"
+            <TextInput
               id={`billing_last_name`}
               placeholder="Last Name"
               isRequired={requiredFields.includes("LastName")}
@@ -165,90 +205,29 @@ export default function BillingInfoForm({
               formErrors={formErrors}
             />
           </div>
-
-          <div className="legal_name">
-            <CustomInput
-              type="text"
-              id={`billing_legal_name`}
-              placeholder="Legal Name"
-              isRequired={requiredFields.includes("LegalName")}
-              isRegister={isRegister}
-              name="LegalName"
-              reference={references?.legalNameRef}
-              setFormErrors={setFormErrors}
-              formErrors={formErrors}
-            />
-          </div>
-
-          <div className="country">
-            <CustomInputDropdown
-              type="text"
-              id={`billing_country`}
-              placeholder="Country"
-              isRequired={requiredFields.includes("Country")}
-              isRegister={isRegister}
-              name="Country"
-              isCountry={true}
-              handleChange={handleCountryChange}
-              reference={references?.billingCountryRef}
-              formErrors={formErrors}
-              value={country.country}
-              setFormErrors={setFormErrors}
-            />
-          </div>
         </>
-      ) : (
-        <>
-          {!isRegister ? (
-            <div className="contact_name">
-              <CustomInput
-                default={userInfo?.ContactName}
-                type="text"
-                id={`billing_contact_name`}
-                placeholder="Contact Name"
-                isRequired={requiredFields.includes("ContactName")}
-                isRegister={isRegister}
-                name="ContactName"
-                formErrors={formErrors}
-                setFormErrors={setFormErrors}
-                reference={references?.contactNameRef}
-              />
-            </div>
-          ) : (
-            <>
-              <div className="first_name">
-                <CustomInput
-                  type="text"
-                  id={`billing_first_name`}
-                  placeholder="First Name"
-                  isRequired={requiredFields.includes("FirstName")}
-                  name="FirstName"
-                  isRegister={isRegister}
-                  reference={references?.firstNameRef}
-                  setFormErrors={setFormErrors}
-                  formErrors={formErrors}
-                />
-              </div>
-              <div className="last_name">
-                <CustomInput
-                  type="text"
-                  id={`billing_last_name`}
-                  placeholder="Last Name"
-                  isRequired={requiredFields.includes("LastName")}
-                  isRegister={isRegister}
-                  name="LastName"
-                  reference={references?.lastNameRef}
-                  setFormErrors={setFormErrors}
-                  formErrors={formErrors}
-                />
-              </div>
-            </>
-          )}
+      )}
+      {!isRegister && (
+        <div className="contact_name">
+          <TextInput
+            default={userInfo?.ContactName}
+            id={`billing_contact_name`}
+            placeholder="Contact Name"
+            isRequired={requiredFields.includes("ContactName")}
+            isRegister={isRegister}
+            name="ContactName"
+            formErrors={formErrors}
+            reference={references?.contactNameRef}
+          />
+        </div>
+      )}
 
+      {registrationType !== "trial" && (
+        <>
+          {" "}
           <div className="legal_name">
-            <CustomInput
+            <TextInput
               default={userInfo?.LegalName}
-              type="text"
               id={`billing_legal_name`}
               placeholder="Legal Name"
               isRequired={requiredFields.includes("LegalName")}
@@ -260,9 +239,8 @@ export default function BillingInfoForm({
             />
           </div>
           <div className="address">
-            <CustomInput
+            <TextInput
               default={userInfo?.Billing?.Address}
-              type="text"
               id={`billing_address`}
               placeholder="Address"
               isRegister={isRegister}
@@ -273,27 +251,29 @@ export default function BillingInfoForm({
               reference={references?.billingAddressRef}
             />
           </div>
-          <div className="country">
-            <CustomInputDropdown
-              value={country.country}
-              type="text"
-              id={`billing_country`}
-              placeholder="Country"
-              isRequired={requiredFields.includes("Country")}
-              isRegister={isRegister}
-              name="Country"
-              isCountry={true}
-              handleChange={handleCountryChange}
-              reference={references?.billingCountryRef}
-              formErrors={formErrors}
-              setCountry={setCountry}
-              setFormErrors={setFormErrors}
-            />
-          </div>
+        </>
+      )}
+      <div className="country">
+        <DropdownCountries
+          value={country.country}
+          id={`billing_country`}
+          placeholder="Country"
+          isRequired={requiredFields.includes("Country")}
+          isRegister={isRegister}
+          name="Country"
+          isCountry={true}
+          handleChange={handleCountryChange}
+          reference={references?.billingCountryRef}
+          formErrors={formErrors}
+          setCountry={setCountry}
+          setFormErrors={setFormErrors}
+        />
+      </div>
+      {registrationType !== "trial" && (
+        <>
           <div className="city">
-            <CustomInput
+            <TextInput
               default={userInfo?.Billing?.City}
-              type="text"
               id={`billing_city`}
               placeholder="City"
               isRegister={isRegister}
@@ -305,9 +285,8 @@ export default function BillingInfoForm({
             />
           </div>
           <div className="postcode">
-            <CustomInput
+            <TextInput
               default={userInfo?.Billing?.PostCode}
-              type="text"
               id={`billing_postcode`}
               placeholder="Postal Code"
               isRegister={isRegister}
@@ -320,7 +299,7 @@ export default function BillingInfoForm({
           </div>
 
           <div className="vat">
-            <CustomInput
+            <VatInput
               default={userInfo?.VAT_ID}
               type="text"
               id={`billing_vat`}
@@ -336,12 +315,10 @@ export default function BillingInfoForm({
               countryReference={references?.billingCountryRef}
             />
           </div>
-
           {references?.emailAddressRef && (
             <div className="email">
-              <CustomInput
+              <TextInput
                 default={userInfo?.Email}
-                type="text"
                 id={`billing_email`}
                 placeholder="Email"
                 isRegister={isRegister}

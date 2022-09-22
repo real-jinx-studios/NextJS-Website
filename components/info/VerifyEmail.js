@@ -14,6 +14,7 @@ export default function VerifyEmail(props) {
 
   const handleClick = async (e) => {
     e.preventDefault();
+    console.log("clicked", props);
 
     const [data, error] = await promiseResolver(
       fetch(
@@ -21,7 +22,7 @@ export default function VerifyEmail(props) {
         {
           method: "POST",
           body: JSON.stringify({
-            UserOrEmail: props.userName,
+            UserOrEmail: props.usernameInput,
             VerificationLink:
               "http://" +
               process.env.NEXT_PUBLIC_WEBSITE_HOST +

@@ -4,6 +4,7 @@ import styles from "../services_portal.module.css";
 import CustomInput from "../../inputs/customInput";
 import FancyLoader from "../../utils/FancyLoader";
 import { useClient } from "../../../lib/context";
+import PasswordInput from "../../inputs/PasswordInput";
 
 export default function ChangePassword() {
   const [passwordChanged, setPasswordChanged] = useState(false);
@@ -104,6 +105,18 @@ export default function ChangePassword() {
           font-size: 1.5em;
           color: var(--clr-correct);
         }
+        .password-change-form {
+          display: flex;
+          flex-direction: column;
+
+          width: 100%;
+          gap: 1em;
+        }
+        .form-actions {
+          display: flex;
+          justify-content: flex-start;
+          gap: 1em;
+        }
       `}</style>
       <h3>Change Password</h3>
       {passwordChanged && (
@@ -126,45 +139,53 @@ export default function ChangePassword() {
       )}
 
       {!passwordChanged && !isLoading && (
-        <form onSubmit={handlePasswordChange} key={passwordFormKey}>
-          <CustomInput
-            reference={oldPass}
-            type="password"
-            placeholder="Old Password"
-            formErrors={formErrors}
-            name="PreviousPassword"
-            setFormErrors={setFormErrors}
-            isRequired
-          />
-          <CustomInput
-            reference={newPass}
-            repeatPasswordRef={newPassRe}
-            type="password"
-            isRegisterPassword={true}
-            placeholder="New Password"
-            formErrors={formErrors}
-            name="Password"
-            setFormErrors={setFormErrors}
-            isRequired
-          />
-          <CustomInput
-            reference={newPassRe}
-            type="password"
-            name="RepeatPassword"
-            isRegisterPassword={true}
-            isRepeatPassword={true}
-            passwordReference={newPass}
-            formErrors={formErrors}
-            setFormErrors={setFormErrors}
-            placeholder="Repeat New Password"
-            isRequired
-          />
-          <button
-            type="submit"
-            className="button button_basic_long_on_light_bg "
-          >
-            Change password
-          </button>
+        <form
+          onSubmit={handlePasswordChange}
+          key={passwordFormKey}
+          className="password-change-form"
+        >
+          <div>
+            <PasswordInput
+              reference={oldPass}
+              type="password"
+              placeholder="Old Password"
+              formErrors={formErrors}
+              name="PreviousPassword"
+              setFormErrors={setFormErrors}
+              isRequired
+            />
+            <PasswordInput
+              reference={newPass}
+              repeatPasswordRef={newPassRe}
+              type="password"
+              isRegisterPassword={true}
+              placeholder="New Password"
+              formErrors={formErrors}
+              name="Password"
+              setFormErrors={setFormErrors}
+              isRequired
+            />
+            <PasswordInput
+              reference={newPassRe}
+              type="password"
+              name="RepeatPassword"
+              isRegisterPassword={true}
+              isRepeatPassword={true}
+              passwordReference={newPass}
+              formErrors={formErrors}
+              setFormErrors={setFormErrors}
+              placeholder="Repeat New Password"
+              isRequired
+            />
+          </div>
+          <div className="form-actions">
+            <button
+              type="submit"
+              className="button button_basic_long_on_light_bg "
+            >
+              Change password
+            </button>
+          </div>
         </form>
       )}
       {!passwordChanged && isLoading && (

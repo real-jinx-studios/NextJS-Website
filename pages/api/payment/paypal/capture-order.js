@@ -276,19 +276,4 @@ async function sendOrderToKMWeb(
       body: JSON.stringify({ OrderDetails, LoginToken: loginToken }),
     }
   );
-
-  // redirect(
-  //   "/WebSite/complete-purchase",
-  //   "POST",
-  //   JSON.stringify({
-  //     OrderDetails,
-  //     LoginToken: loginToken,
-  //   })
-  // )
-  //   .then((response) => {
-  //     console.log(response);
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Fragment, useState, useRef, useEffect } from "react";
+import { Fragment, useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import Loader from "../../utils/Loader";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import CustomInput from "../../inputs/customInput";
 import EducationalInstitutionForm from "./EducationalInstitutionForm";
 import customLog from "../../utils/customLog";
+import SmartInput from "../../inputs/SmartInput";
 export default function RegisterForm({
   handleFormStateChange,
   registrationType = "standard",
@@ -24,6 +25,13 @@ export default function RegisterForm({
   const [isStudent, setIsStudent] = useState(false);
   const [isRegister, setIsRegister] = useState(true);
   const [formErrors, setFormErrors] = useState({});
+
+  const smartInputRef = useRef();
+  const smartInputRef2 = useRef();
+  const smartInputRef3 = useRef();
+  const smartInputRef4 = useRef();
+  const smartInputRef5 = useRef();
+  const smartInputRef6 = useRef();
 
   //make useRef const to attach to html input fields for registration billing details
   const legalNameRef = useRef();
@@ -59,6 +67,14 @@ export default function RegisterForm({
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
+    // const one = smartInputRef.current.checkError();
+    // const two = smartInputRef2.current.checkError();
+    // const three = smartInputRef3.current.checkError();
+    // if (one || two || three) {
+    //   return;
+    // }
+    // return;
+
     setIsLoading(true);
 
     const err = checkFormForErrors();
@@ -164,17 +180,7 @@ export default function RegisterForm({
         )
       );
       handleUsernameInput(usernameRef.current.value);
-      if (process.env.NEXT_PUBLIC_IS_DEVELOPMENT) {
-        toast.info("Registration request sent", {
-          position: "top-center",
-          autoClose: false,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-        });
-      }
+
       //check response for error object
       if (data.status === 400) {
         const responseFormErrors = await data.json();
@@ -224,17 +230,6 @@ export default function RegisterForm({
       )
     );
     handleUsernameInput(usernameRef.current.value);
-    if (process.env.NEXT_PUBLIC_IS_DEVELOPMENT) {
-      toast.info("Registration request sent", {
-        position: "top-center",
-        autoClose: false,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-      });
-    }
 
     //check response for error object
     if (data.status === 400) {
@@ -262,14 +257,24 @@ export default function RegisterForm({
 
     setIsLoading(false);
   };
-  console.log(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, "site key");
 
   //check if form has any errors
   const checkFormForErrors = () => {
     const errorObject = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (legalNameRef.current.value == "") {
-      errorObject.LegalName = "Please enter your legal name";
+    if (registrationType !== "trial") {
+      if (legalNameRef.current.value == "") {
+        errorObject.LegalName = "Please enter your legal name";
+      }
+      if (billingAddressRef.current.value == "") {
+        errorObject.Address = "Please enter your address name";
+      }
+      if (billingPostcodeRef.current.value == "") {
+        errorObject.Postcode = "Please enter your postcode";
+      }
+      if (billingCityRef.current.value == "") {
+        errorObject.City = "Please enter your city";
+      }
     }
     if (firstNameRef.current.value == "") {
       errorObject.FirstName = "Please enter your first name";
@@ -556,6 +561,106 @@ export default function RegisterForm({
           </div>
           <div className={styles.form_section_wrapper}>
             <div className={styles.form_section_title_wrapper} step-number="1">
+              {/* <SmartInput
+                ref={smartInputRef}
+                name="Email"
+                placeholder="Email"
+                isRequired={true}
+                id="user_email"
+                checkOnBlur={true}
+                checkForTheseErrors={(v) => {
+                  let errors = [];
+                  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+                  if (!v) {
+                    errors.push("Email is required");
+                    return errors;
+                  }
+                  if (!regex.test(v)) {
+                    errors.push("Email is not valid");
+                    return errors;
+                  }
+                  return errors;
+                }}
+              />
+              <SmartInput
+                ref={smartInputRef2}
+                name="Password"
+                placeholder="Password"
+                isRequired={true}
+                id="user_password"
+                checkOnValueChange={true}
+                checkForTheseErrors={(v) => {
+                  let errors = [];
+
+                  if (!v) {
+                    errors.push("Password is required");
+                    return errors;
+                  }
+
+                  if (v.length < 8) {
+                    errors.push("Password must be at least 8 characters");
+                  }
+                  if (!v.match(/[a-z]/)) {
+                    errors.push(
+                      "Password must contain at least one lowercase letter"
+                    );
+                  }
+                  if (!v.match(/[A-Z]/)) {
+                    errors.push(
+                      "Password must contain at least one uppercase letter"
+                    );
+                  }
+                  if (!v.match(/[0-9]/)) {
+                    errors.push("Password must contain at least one number");
+                  }
+                  if (!v.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/)) {
+                    errors.push(
+                      "Password must contain at least one special character"
+                    );
+                  }
+                  return errors;
+                }}
+              />
+              <SmartInput
+                ref={smartInputRef3}
+                name="Confirm Password"
+                placeholder="Confirm Password"
+                isRequired={true}
+                id="user_password_confirm"
+                checkOnValueChange={true}
+                checkOnBlur={true}
+                checkForTheseErrors={(v) => {
+                  let errors = [];
+                  if (!v) {
+                    errors.push("Confirm Password is required");
+                    return errors;
+                  }
+                  console.log("password", v, smartInputRef2.current.getValue());
+                  if (v !== smartInputRef2.current.getValue()) {
+                    console.log(
+                      "passwords dont match",
+                      v,
+                      smartInputRef2.current.getValue()
+                    );
+                    errors.push("Passwords do not match");
+                    return errors;
+                  }
+                  return errors;
+                }}
+              />
+              <SmartInput
+                ref={smartInputRef4}
+                defaultValue="Bullshit"
+                name="First Name"
+                placeholder="First Name"
+                id="user_first_name"
+              />
+              <SmartInput
+                ref={smartInputRef5}
+                name="VAT"
+                placeholder="VAT Number"
+                id="billing_vat_number"
+              /> */}
               <h3 className="section_title">Billing Details</h3>
             </div>
             <BillingInfoForm
@@ -571,13 +676,14 @@ export default function RegisterForm({
                 billingPostcodeRef: billingPostcodeRef,
               }}
               requiredFields={[
-                "LegalName",
                 "FirstName",
                 "LastName",
+                "LegalName",
                 "ContactName",
                 "Country",
-                "LegalName",
-                "Country",
+                "City",
+                "Address",
+                "Postcode",
               ]}
               setFormErrors={setFormErrors}
               formErrors={formErrors}

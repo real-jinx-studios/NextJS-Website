@@ -1,13 +1,15 @@
 .step {
 }
 .billing {
+  max-width: 543px;
   display: flex;
+  width: 100%;
   flex-direction: column;
 }
 .billing__inner {
   position: relative;
   background-color: var(--clr-neutral-50);
-  padding: 1.3em;
+  padding: 0.6em;
   border-radius: 0.6em;
   margin-bottom: 1em;
   transition: all 0.3s ease;
@@ -17,6 +19,7 @@
   flex-grow: 1;
   flex-shrink: 0;
 }
+
 .billing__inner.cart_editable {
   cursor: pointer;
   opacity: 0.6;
@@ -36,14 +39,37 @@
   color: var(--clr-neutral-50);
   font-size: var(--fs-400);
   font-weight: 600;
-  width: 2.3em;
-  height: 2.3em;
+  width: 2em;
+  height: 2em;
   position: absolute;
-  top: 1em;
-  left: -2.3em;
+  top: 0.5em;
+  right: 2em;
   border-radius: 50%;
   transform: translateX(50%);
   background-color: var(--system-b-blue);
+}
+@media (min-width: 630px) {
+  .billing__inner {
+    padding: 1.3em;
+  }
+  .billing__inner::before {
+    content: attr(data-step);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--clr-neutral-50);
+    font-size: var(--fs-400);
+    font-weight: 600;
+    width: 2.3em;
+    height: 2.3em;
+    position: absolute;
+    top: 1em;
+    left: -2.3em;
+    border-radius: 50%;
+    transform: translateX(50%);
+    background-color: var(--system-b-blue);
+  }
 }
 .billing-step__title {
   font-size: 1.5rem;
@@ -64,6 +90,7 @@
   margin-top: 1em;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
 }
